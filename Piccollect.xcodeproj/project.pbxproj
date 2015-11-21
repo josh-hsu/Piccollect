@@ -1,0 +1,530 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03324CE31C005CBD000618F0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03324CE21C005CBD000618F0 /* main.m */; };
+		03324CE61C005CBD000618F0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03324CE51C005CBD000618F0 /* AppDelegate.m */; };
+		03324CE91C005CBD000618F0 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03324CE81C005CBD000618F0 /* FirstViewController.m */; };
+		03324CEC1C005CBD000618F0 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03324CEB1C005CBD000618F0 /* SecondViewController.m */; };
+		03324CEF1C005CBD000618F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03324CED1C005CBD000618F0 /* Main.storyboard */; };
+		03324CF11C005CBD000618F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03324CF01C005CBD000618F0 /* Assets.xcassets */; };
+		03324CF41C005CBD000618F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03324CF21C005CBD000618F0 /* LaunchScreen.storyboard */; };
+		03324CFF1C005CBD000618F0 /* PiccollectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03324CFE1C005CBD000618F0 /* PiccollectTests.m */; };
+		03324D0A1C005CBD000618F0 /* PiccollectUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03324D091C005CBD000618F0 /* PiccollectUITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		03324CFB1C005CBD000618F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 03324CD61C005CBD000618F0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 03324CDD1C005CBD000618F0;
+			remoteInfo = Piccollect;
+		};
+		03324D061C005CBD000618F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 03324CD61C005CBD000618F0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 03324CDD1C005CBD000618F0;
+			remoteInfo = Piccollect;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		03324CDE1C005CBD000618F0 /* Piccollect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Piccollect.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		03324CE21C005CBD000618F0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		03324CE41C005CBD000618F0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		03324CE51C005CBD000618F0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		03324CE71C005CBD000618F0 /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
+		03324CE81C005CBD000618F0 /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
+		03324CEA1C005CBD000618F0 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
+		03324CEB1C005CBD000618F0 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		03324CEE1C005CBD000618F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		03324CF01C005CBD000618F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		03324CF31C005CBD000618F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		03324CF51C005CBD000618F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03324CFA1C005CBD000618F0 /* PiccollectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PiccollectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		03324CFE1C005CBD000618F0 /* PiccollectTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PiccollectTests.m; sourceTree = "<group>"; };
+		03324D001C005CBD000618F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03324D051C005CBD000618F0 /* PiccollectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PiccollectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		03324D091C005CBD000618F0 /* PiccollectUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PiccollectUITests.m; sourceTree = "<group>"; };
+		03324D0B1C005CBD000618F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		03324CDB1C005CBD000618F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03324CF71C005CBD000618F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03324D021C005CBD000618F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		03324CD51C005CBD000618F0 = {
+			isa = PBXGroup;
+			children = (
+				03324CE01C005CBD000618F0 /* Piccollect */,
+				03324CFD1C005CBD000618F0 /* PiccollectTests */,
+				03324D081C005CBD000618F0 /* PiccollectUITests */,
+				03324CDF1C005CBD000618F0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		03324CDF1C005CBD000618F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				03324CDE1C005CBD000618F0 /* Piccollect.app */,
+				03324CFA1C005CBD000618F0 /* PiccollectTests.xctest */,
+				03324D051C005CBD000618F0 /* PiccollectUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		03324CE01C005CBD000618F0 /* Piccollect */ = {
+			isa = PBXGroup;
+			children = (
+				03324CE41C005CBD000618F0 /* AppDelegate.h */,
+				03324CE51C005CBD000618F0 /* AppDelegate.m */,
+				03324CE71C005CBD000618F0 /* FirstViewController.h */,
+				03324CE81C005CBD000618F0 /* FirstViewController.m */,
+				03324CEA1C005CBD000618F0 /* SecondViewController.h */,
+				03324CEB1C005CBD000618F0 /* SecondViewController.m */,
+				03324CED1C005CBD000618F0 /* Main.storyboard */,
+				03324CF01C005CBD000618F0 /* Assets.xcassets */,
+				03324CF21C005CBD000618F0 /* LaunchScreen.storyboard */,
+				03324CF51C005CBD000618F0 /* Info.plist */,
+				03324CE11C005CBD000618F0 /* Supporting Files */,
+			);
+			path = Piccollect;
+			sourceTree = "<group>";
+		};
+		03324CE11C005CBD000618F0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				03324CE21C005CBD000618F0 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		03324CFD1C005CBD000618F0 /* PiccollectTests */ = {
+			isa = PBXGroup;
+			children = (
+				03324CFE1C005CBD000618F0 /* PiccollectTests.m */,
+				03324D001C005CBD000618F0 /* Info.plist */,
+			);
+			path = PiccollectTests;
+			sourceTree = "<group>";
+		};
+		03324D081C005CBD000618F0 /* PiccollectUITests */ = {
+			isa = PBXGroup;
+			children = (
+				03324D091C005CBD000618F0 /* PiccollectUITests.m */,
+				03324D0B1C005CBD000618F0 /* Info.plist */,
+			);
+			path = PiccollectUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		03324CDD1C005CBD000618F0 /* Piccollect */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03324D0E1C005CBD000618F0 /* Build configuration list for PBXNativeTarget "Piccollect" */;
+			buildPhases = (
+				03324CDA1C005CBD000618F0 /* Sources */,
+				03324CDB1C005CBD000618F0 /* Frameworks */,
+				03324CDC1C005CBD000618F0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Piccollect;
+			productName = Piccollect;
+			productReference = 03324CDE1C005CBD000618F0 /* Piccollect.app */;
+			productType = "com.apple.product-type.application";
+		};
+		03324CF91C005CBD000618F0 /* PiccollectTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03324D111C005CBD000618F0 /* Build configuration list for PBXNativeTarget "PiccollectTests" */;
+			buildPhases = (
+				03324CF61C005CBD000618F0 /* Sources */,
+				03324CF71C005CBD000618F0 /* Frameworks */,
+				03324CF81C005CBD000618F0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				03324CFC1C005CBD000618F0 /* PBXTargetDependency */,
+			);
+			name = PiccollectTests;
+			productName = PiccollectTests;
+			productReference = 03324CFA1C005CBD000618F0 /* PiccollectTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		03324D041C005CBD000618F0 /* PiccollectUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03324D141C005CBD000618F0 /* Build configuration list for PBXNativeTarget "PiccollectUITests" */;
+			buildPhases = (
+				03324D011C005CBD000618F0 /* Sources */,
+				03324D021C005CBD000618F0 /* Frameworks */,
+				03324D031C005CBD000618F0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				03324D071C005CBD000618F0 /* PBXTargetDependency */,
+			);
+			name = PiccollectUITests;
+			productName = PiccollectUITests;
+			productReference = 03324D051C005CBD000618F0 /* PiccollectUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		03324CD61C005CBD000618F0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = "Mu Mu Corp.";
+				TargetAttributes = {
+					03324CDD1C005CBD000618F0 = {
+						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = DR68TNYMKL;
+					};
+					03324CF91C005CBD000618F0 = {
+						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = DR68TNYMKL;
+						TestTargetID = 03324CDD1C005CBD000618F0;
+					};
+					03324D041C005CBD000618F0 = {
+						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = DR68TNYMKL;
+						TestTargetID = 03324CDD1C005CBD000618F0;
+					};
+				};
+			};
+			buildConfigurationList = 03324CD91C005CBD000618F0 /* Build configuration list for PBXProject "Piccollect" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 03324CD51C005CBD000618F0;
+			productRefGroup = 03324CDF1C005CBD000618F0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				03324CDD1C005CBD000618F0 /* Piccollect */,
+				03324CF91C005CBD000618F0 /* PiccollectTests */,
+				03324D041C005CBD000618F0 /* PiccollectUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		03324CDC1C005CBD000618F0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03324CF41C005CBD000618F0 /* LaunchScreen.storyboard in Resources */,
+				03324CF11C005CBD000618F0 /* Assets.xcassets in Resources */,
+				03324CEF1C005CBD000618F0 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03324CF81C005CBD000618F0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03324D031C005CBD000618F0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		03324CDA1C005CBD000618F0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03324CEC1C005CBD000618F0 /* SecondViewController.m in Sources */,
+				03324CE61C005CBD000618F0 /* AppDelegate.m in Sources */,
+				03324CE91C005CBD000618F0 /* FirstViewController.m in Sources */,
+				03324CE31C005CBD000618F0 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03324CF61C005CBD000618F0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03324CFF1C005CBD000618F0 /* PiccollectTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03324D011C005CBD000618F0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03324D0A1C005CBD000618F0 /* PiccollectUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		03324CFC1C005CBD000618F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 03324CDD1C005CBD000618F0 /* Piccollect */;
+			targetProxy = 03324CFB1C005CBD000618F0 /* PBXContainerItemProxy */;
+		};
+		03324D071C005CBD000618F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 03324CDD1C005CBD000618F0 /* Piccollect */;
+			targetProxy = 03324D061C005CBD000618F0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		03324CED1C005CBD000618F0 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03324CEE1C005CBD000618F0 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		03324CF21C005CBD000618F0 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03324CF31C005CBD000618F0 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		03324D0C1C005CBD000618F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		03324D0D1C005CBD000618F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		03324D0F1C005CBD000618F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Piccollect/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mumucorp.Piccollect;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		03324D101C005CBD000618F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Piccollect/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mumucorp.Piccollect;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		03324D121C005CBD000618F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = PiccollectTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mumucorp.PiccollectTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piccollect.app/Piccollect";
+			};
+			name = Debug;
+		};
+		03324D131C005CBD000618F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = PiccollectTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mumucorp.PiccollectTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piccollect.app/Piccollect";
+			};
+			name = Release;
+		};
+		03324D151C005CBD000618F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = PiccollectUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mumucorp.PiccollectUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Piccollect;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		03324D161C005CBD000618F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = PiccollectUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mumucorp.PiccollectUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Piccollect;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		03324CD91C005CBD000618F0 /* Build configuration list for PBXProject "Piccollect" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03324D0C1C005CBD000618F0 /* Debug */,
+				03324D0D1C005CBD000618F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		03324D0E1C005CBD000618F0 /* Build configuration list for PBXNativeTarget "Piccollect" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03324D0F1C005CBD000618F0 /* Debug */,
+				03324D101C005CBD000618F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		03324D111C005CBD000618F0 /* Build configuration list for PBXNativeTarget "PiccollectTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03324D121C005CBD000618F0 /* Debug */,
+				03324D131C005CBD000618F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		03324D141C005CBD000618F0 /* Build configuration list for PBXNativeTarget "PiccollectUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03324D151C005CBD000618F0 /* Debug */,
+				03324D161C005CBD000618F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 03324CD61C005CBD000618F0 /* Project object */;
+}
