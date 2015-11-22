@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>0</key>
+	<dict>
+		<key>albumName</key>
+		<string>Default Album</string>
+		<key>albumKey</key>
+		<string>at9jkn</string>
+		<key>createDate</key>
+		<date>2015-11-22T06:54:26Z</date>
+		<key>order</key>
+		<integer>0</integer>
+	</dict>
+    <key>1</key>
+    <dict>
+        <key>albumName</key>
+        <string>Tumblr</string>
+        <key>albumKey</key>
+        <string>c20uxz</string>
+        <key>createDate</key>
+        <date>2015-11-22T06:54:10Z</date>
+        <key>order</key>
+        <integer>1</integer>
+    </dict>
+</dict>
+</plist>

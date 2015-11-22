@@ -1,5 +1,5 @@
 //
-//  SecondViewController.h
+//  SocialViewController.h
 //  Piccollect
 //
 //  Created by Josh on 2015/11/21.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SecondViewController : UIViewController
-
+@interface SocialViewController : UIViewController
 
 @end
-
