@@ -11,10 +11,10 @@
 
 @implementation AlbumListService
 
-@synthesize mAlbumPath;
+@synthesize mAlbumListPath;
+@synthesize mAlbumList;
 @synthesize mCount;
-@synthesize mMemberList;
-@synthesize mRootDir;
+@synthesize mDocumentRootPath;
 
 - (id)init {
     int ret = -1;
@@ -30,40 +30,56 @@
 - (int) initAlbumList {
     NSError *errorDesc;
     NSPropertyListFormat format;
-    mMemberList = [[NSMutableDictionary alloc] init];
     
     // 初始化檔案路徑
-    if (![[NSFileManager defaultManager] fileExistsAtPath:mAlbumPath]) {
-        mAlbumPath = [[NSBundle mainBundle] pathForResource:ALBUM_LIST_NAME ofType:@"plist"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:mAlbumListPath]) {
+        mAlbumListPath = [[NSBundle mainBundle] pathForResource:ALBUM_LIST_NAME ofType:@"plist"];
     }
     
-    NSData *plistXML = [[NSFileManager defaultManager] contentsAtPath:mAlbumPath];
-    mRootDir = (NSMutableDictionary *) [NSPropertyListSerialization propertyListWithData:plistXML
+    NSData *plistXML = [[NSFileManager defaultManager] contentsAtPath:mAlbumListPath];
+    mAlbumList = (NSMutableDictionary *) [NSPropertyListSerialization propertyListWithData:plistXML
                                               options:NSPropertyListMutableContainersAndLeaves format:&format error:&errorDesc];
     
-    if (!mRootDir) {
+    if (!mAlbumList) {
         NSLog(@"Error reading plist: %@, format: %lu", errorDesc, (unsigned long)format);
         return -1;
     }
-    
-    mMemberList = mRootDir;
-    mCount = (int)[mMemberList count];
+
+    mCount = (int)[mAlbumList count];
+    [self initAlbumByList];
     return 0;
 }
 
-- (Album *) objectInListAtIndex: (NSInteger)idx {
-    NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", (long)idx];
-    NSDictionary *eachPerson = [mMemberList objectForKey:rootKey];
+- (void) initAlbumByList {
+    if (!mAlbumList) {
+        NSLog(@"There is no album list presented.");
+    }
     
-    NSString *name  = [eachPerson objectForKey:ALBUM_KEY_NAME];
-    NSString *key   = [eachPerson objectForKey:ALBUM_KEY_KEY];
-    NSDate   *cdate = [eachPerson objectForKey:ALBUM_KEY_CDATE];
-    NSNumber *order = [eachPerson objectForKey:ALBUM_KEY_ORDER];
+    if (!mAlbum) {
+        mAlbum = [[NSMutableArray alloc] init];
+    }
     
-    Album *thisAlbum = [Album alloc];
-    [thisAlbum initWithName:name key:key date:cdate order:order];
+    for (unsigned i = 0; i < mCount; i++) {
+        NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", (long)i];
+        NSDictionary *eachPerson = [mAlbumList objectForKey:rootKey];
+        
+        NSString *name  = [eachPerson objectForKey:ALBUM_KEY_NAME];
+        NSString *key   = [eachPerson objectForKey:ALBUM_KEY_KEY];
+        NSDate   *cdate = [eachPerson objectForKey:ALBUM_KEY_CDATE];
+        NSNumber *order = [eachPerson objectForKey:ALBUM_KEY_ORDER];
+        
+        Album *thisAlbum = [Album alloc];
+        [thisAlbum initWithName:name key:key date:cdate order:order];
+        [mAlbum addObject:thisAlbum];
+    }
     
-    return thisAlbum;
+}
+
+- (Album *) albumInListAtIndex: (NSInteger)idx {
+    if (idx >= mCount)
+        return nil;
+    else
+        return [mAlbum objectAtIndex:idx];
 }
 
 @end

@@ -23,8 +23,14 @@
 - (void)initAlbumList {
     mAlbumList = [[AlbumListService alloc] init];
     
-    if (mAlbumList != nil)
+    if (mAlbumList != nil) {
+        // Initial document path for storing photos
         NSLog(@"Loading album list from service, total: %d", mAlbumList.mCount);
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSLog(@"Document path: %@", documentsDirectory);
+        mAlbumList.mDocumentRootPath = documentsDirectory;
+    }
 }
 
 #pragma mark - View cycle
@@ -64,7 +70,7 @@
     UILabel *subtitleLabel = [cell viewWithTag:3];
     
     // Configure view content
-    Album *thisAlbum = [mAlbumList objectInListAtIndex:indexPath.row];
+    Album *thisAlbum = [mAlbumList albumInListAtIndex:indexPath.row];
     [titleLabel setText:thisAlbum.mAlbumName];
     [subtitleLabel setText:thisAlbum.mAlbumKey];
     

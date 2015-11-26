@@ -10,8 +10,12 @@
 
 @class Album;
 
-@interface AlbumListService : NSObject
+@interface AlbumListService : NSObject {
+    // Local variable, it cannot be accessed outside this method
+    NSMutableArray *mAlbum;
+}
 
+// Album list keyword
 #define ALBUM_LIST_NAME     @"albums"
 #define ALBUM_LIST_FOLDER   @"Lists"
 #define ALBUM_KEY_NAME      @"albumName"
@@ -19,12 +23,15 @@
 #define ALBUM_KEY_CDATE     @"createDate"
 #define ALBUM_KEY_ORDER     @"order"
 
-@property (nonatomic, copy) NSString *mAlbumPath;
+// Album list path and list body
+@property (nonatomic, copy) NSString *mAlbumListPath;
+@property (nonatomic, retain) NSMutableDictionary *mAlbumList;
 @property (nonatomic) int mCount;
-@property (nonatomic, copy) NSMutableDictionary *mRootDir;
-@property (nonatomic, retain) NSMutableDictionary *mMemberList;
+// Photos document path
+@property (nonatomic, retain) NSString *mDocumentRootPath;
 
 - (int) initAlbumList;
-- (Album *) objectInListAtIndex: (NSInteger)idx;
+- (void) initAlbumByList;
+- (Album *) albumInListAtIndex: (NSInteger)idx;
 
 @end
