@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class Album, AlbumListService;
 @interface AlbumCollectionViewController : UICollectionViewController
+
+@property (nonatomic, retain) Album *mAlbum;
+@property (nonatomic, retain) AlbumListService *mAlbumListService;
 
 @end

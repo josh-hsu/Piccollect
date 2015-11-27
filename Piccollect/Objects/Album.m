@@ -10,10 +10,7 @@
 
 @implementation Album
 
-@synthesize mAlbumName;
-@synthesize mAlbumKey;
-@synthesize mCreateDate;
-@synthesize mOrder;
+@synthesize mAlbumName, mAlbumKey, mCreateDate, mOrder, mAlbumPhotos;
 
 - (void)initWithName:(NSString*) name key:(NSString*)key date:(NSDate*)date order:(NSNumber*)order {
     self.mAlbumName = name;
@@ -21,5 +18,7 @@
     self.mCreateDate = date;
     self.mOrder = order;
 }
+
+
 
 @end

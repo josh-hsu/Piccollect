@@ -7,12 +7,16 @@
 //
 
 #import "AlbumCollectionViewController.h"
+#import "AlbumListService.h"
+#import "Album.h"
 
 @interface AlbumCollectionViewController ()
 
 @end
 
 @implementation AlbumCollectionViewController
+
+@synthesize mAlbum, mAlbumListService;
 
 static NSString * const reuseIdentifier = @"Cell";
 
@@ -46,7 +50,7 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 13;
+    return [mAlbum.mAlbumPhotos count]/4 + ([mAlbum.mAlbumPhotos count]%4 ? 1 : 0);
 }
 
 
@@ -57,8 +61,16 @@ static NSString * const reuseIdentifier = @"Cell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"albumThumbCollectionCell" forIndexPath:indexPath];
     
-    // Configure the cell
-    cell.backgroundColor = [UIColor lightGrayColor];
+    if ((indexPath.row + indexPath.section * 4) < [mAlbum.mAlbumPhotos count]) {
+        NSString *subimagePath = [mAlbum.mAlbumPhotos objectAtIndex:(indexPath.row + indexPath.section * 4)];
+        NSString *imagePath = [mAlbumListService.mDocumentRootPath stringByAppendingPathComponent:subimagePath];
+        UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.frame.size.height, cell.frame.size.width)];
+        imageView.image = image;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        // Configure the cell
+        [cell.contentView addSubview:imageView];
+    }
     return cell;
 }
 

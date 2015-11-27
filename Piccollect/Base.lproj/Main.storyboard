@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <scenes>
@@ -292,7 +293,7 @@
     <resources>
         <image name="first" width="22" height="24"/>
         <image name="googleLogo" width="562" height="562"/>
-        <image name="prototypeImage" width="600" height="600"/>
+        <image name="prototypeImage" width="130" height="116"/>
         <image name="second" width="36" height="36"/>
         <image name="third" width="26" height="26"/>
     </resources>

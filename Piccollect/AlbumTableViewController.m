@@ -7,6 +7,7 @@
 //
 
 #import "AlbumTableViewController.h"
+#import "AlbumCollectionViewController.h"
 #import "AlbumListService.h"
 #import "Album.h"
 
@@ -44,6 +45,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [self initAlbumList];
+    //[mAlbumList initPhotoFileDebug];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -73,6 +75,7 @@
     Album *thisAlbum = [mAlbumList albumInListAtIndex:indexPath.row];
     [titleLabel setText:thisAlbum.mAlbumName];
     [subtitleLabel setText:thisAlbum.mAlbumKey];
+    topImageView.image = [[UIImage alloc] initWithContentsOfFile:[mAlbumList topPhotoInAlbum:thisAlbum]];
     
     return cell;
 }
@@ -111,14 +114,15 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    AlbumCollectionViewController *collectionViewController = [segue destinationViewController];
+    collectionViewController.mAlbum = [mAlbumList albumInListAtIndex:0];
+    collectionViewController.mAlbumListService = mAlbumList;
 }
-*/
+
 
 @end

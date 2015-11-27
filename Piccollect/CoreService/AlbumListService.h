@@ -7,12 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#import <UIKit/UIKit.h>
 
 @class Album;
+@import AssetsLibrary;
 
 @interface AlbumListService : NSObject {
     // Local variable, it cannot be accessed outside this method
     NSMutableArray *mAlbum;
+    
+    // For debug
+    ALAssetsLibrary *library;
+    NSArray *imageArray;
+    NSMutableArray *mutableArray;
 }
 
 // Album list keyword
@@ -22,16 +30,54 @@
 #define ALBUM_KEY_KEY       @"albumKey"
 #define ALBUM_KEY_CDATE     @"createDate"
 #define ALBUM_KEY_ORDER     @"order"
+#define ALBUM_PHOTO_LIST_NAME   @"albumImage"
+
+/*
+ * Properties
+ */
+// Album photos list path and list body
+@property (nonatomic, copy) NSString *mAlbumPhotoPath;
+@property (nonatomic, retain) NSMutableDictionary *mAlbumPhotoList;
+@property (nonatomic) BOOL mValidate; //YES, if album photo is fully initialized
 
 // Album list path and list body
 @property (nonatomic, copy) NSString *mAlbumListPath;
 @property (nonatomic, retain) NSMutableDictionary *mAlbumList;
 @property (nonatomic) int mCount;
+
 // Photos document path
 @property (nonatomic, retain) NSString *mDocumentRootPath;
 
+/*
+ * Intial functions
+ */
+
+// Initial phase, only run once when view controller presents
 - (int) initAlbumList;
-- (void) initAlbumByList;
+- (int) initAlbumPhotosList;
+- (void) initAlbums;
+
+/* 
+ * Utilities for interaction with users
+ */
+
+// Photo functions
+- (int) addPhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key;
+- (int) removePhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key;
+- (NSArray *) photosInAlbum: (Album *) album;
+- (NSArray *) photosInAlbumWithKey: (NSString *) key;
+- (NSString *) topPhotoInAlbum: (Album *) album;
+
+// Album functions
 - (Album *) albumInListAtIndex: (NSInteger)idx;
+- (int) createAlbumWithName: (NSString *) name;
+- (int) editAlbumWithName: (NSString *) name order: (NSInteger *) order;
+- (int) removeAlbumWithKey: (NSString *) key deletePhotos: (BOOL) deletePhotos;
+
+/*
+ * Debug functions
+ */
+- (void) initPhotoFileDebug;
+- (void) allPhotosCollected:(NSArray*)imgArray;
 
 @end
