@@ -57,11 +57,13 @@
 // Initial phase, only run once when view controller presents
 - (int) initAlbumList;
 - (int) initAlbumPhotosList;
-- (void) initAlbums;
+- (void) initAlbumsWithRefresh: (BOOL) needRefresh;
 
 /* 
  * Utilities for interaction with users
  */
+// Utilities
+- (void) refresh;
 
 // Photo functions
 - (int) addPhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key;
@@ -73,7 +75,7 @@
 // Album functions
 - (Album *) albumInListAtIndex: (NSInteger)idx;
 - (int) createAlbumWithName: (NSString *) name;
-- (int) editAlbumWithName: (NSString *) name order: (NSInteger *) order;
+- (int) editAlbumWithKey: (NSString *) key order: (NSInteger *) order;
 - (int) removeAlbumWithKey: (NSString *) key deletePhotos: (BOOL) deletePhotos;
 
 /*

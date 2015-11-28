@@ -34,14 +34,14 @@
                                                     <animations/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Default Album" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z3c-7M-IYj">
-                                                    <rect key="frame" x="111" y="33" width="256" height="21"/>
+                                                    <rect key="frame" x="122" y="33" width="245" height="21"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y1X-Sc-Md2">
-                                                    <rect key="frame" x="112" y="57" width="256" height="21"/>
+                                                    <rect key="frame" x="122" y="57" width="246" height="21"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -66,9 +66,19 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="我的相簿" id="eVc-WX-bR8">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="zxP-xu-zxy"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="zxP-xu-zxy">
+                            <connections>
+                                <action selector="addNewAlbum:" destination="9pv-A4-QxB" id="Ib3-DO-u8Q"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="編輯" id="Iay-am-TlX">
+                            <connections>
+                                <action selector="editTableVIew:" destination="9pv-A4-QxB" id="iW2-a8-h9F"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="mEditButtonIB" destination="Iay-am-TlX" id="fkB-CI-qNz"/>
                         <outlet property="mTableViewIB" destination="Zdu-OB-ddP" id="cJC-v9-bO6"/>
                     </connections>
                 </viewController>
@@ -296,7 +306,7 @@
     <resources>
         <image name="first" width="22" height="24"/>
         <image name="googleLogo" width="562" height="562"/>
-        <image name="prototypeImage" width="130" height="116"/>
+        <image name="prototypeImage" width="75" height="75"/>
         <image name="second" width="36" height="36"/>
         <image name="third" width="26" height="26"/>
     </resources>

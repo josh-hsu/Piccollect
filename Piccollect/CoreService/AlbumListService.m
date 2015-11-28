@@ -57,7 +57,9 @@
     mAlbumListPath = [mDocumentRootPath stringByAppendingPathComponent:ALBUM_LIST_FILE_NAME];
     
     // If we cannot find list in document folder, copy default list to document
+    //if (true) { /* For debug, put golden list back */
     if (![[NSFileManager defaultManager] fileExistsAtPath:mAlbumListPath]) {
+        if (LOCAL_DEBUG) NSLog(@"Load default");
         NSString *localListPath = [[NSBundle mainBundle] pathForResource:ALBUM_LIST_NAME ofType:@"plist"];
         [[NSFileManager defaultManager] copyItemAtPath:localListPath toPath:mAlbumListPath error:&errorDesc];
     }
@@ -74,7 +76,7 @@
     mCount = (int)[mAlbumList count];
     
     [self initAlbumPhotosList];
-    [self initAlbums];
+    [self initAlbumsWithRefresh:NO];
 
     return 0;
 }
@@ -93,6 +95,7 @@
     mAlbumPhotoPath = [mDocumentRootPath stringByAppendingPathComponent:ALBUM_PHOTO_LIST_FILE_NAME];
     
     // If we cannot find list in document folder, copy default list to document
+    //if (true) { /* For debug, copy back golden list */
     if (![[NSFileManager defaultManager] fileExistsAtPath:mAlbumPhotoPath]) {
         NSString *localListPath = [[NSBundle mainBundle] pathForResource:ALBUM_PHOTO_LIST_NAME ofType:@"plist"];
         [[NSFileManager defaultManager] copyItemAtPath:localListPath toPath:mAlbumPhotoPath error:&errorDesc];
@@ -110,12 +113,12 @@
     return 0;
 }
 
-- (void) initAlbums {
+- (void) initAlbumsWithRefresh: (BOOL) needRefresh {
     if (!mAlbumList) {
         NSLog(@"BUG: There is no album list presented.");
     }
     
-    if (!mAlbum) {
+    if (!mAlbum || needRefresh) {
         mAlbum = [[NSMutableArray alloc] init];
     }
     
@@ -148,8 +151,22 @@
     
 }
 
+- (void) refresh {
+    mCount = (int)[mAlbumList count];
+    
+    [self initAlbumPhotosList];
+    [self initAlbumsWithRefresh:YES];
+}
+
 /*
  * Album functions
+ */
+
+/*
+ * Get album in album list for specific index
+ * this is called from a table view, so it's related to the order
+ * of how it displayed on screen.
+ * return nil if no album
  */
 - (Album *) albumInListAtIndex: (NSInteger)idx {
     if (idx >= mCount)
@@ -158,15 +175,51 @@
         return [mAlbum objectAtIndex:idx];
 }
 
+/*
+ * Create an album with user-specific name
+ * And yes, we accept duplicate name because we use identity key
+ * to identify album.
+ */
 - (int) createAlbumWithName: (NSString *) name {
+    NSNumber *serial = [[NSNumber alloc] initWithInt: 2];
+    NSString *rootName = [NSString stringWithFormat:@"%d", [serial intValue]];
+    NSDate *today = [[NSDate alloc] initWithTimeIntervalSinceNow:0];
+    NSString *key = @"9b3ywa";
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithObjectsAndKeys: name, ALBUM_KEY_NAME, key, ALBUM_KEY_KEY, today, ALBUM_KEY_CDATE, serial, ALBUM_KEY_ORDER, nil];
+    [mAlbumList setObject:data forKey:rootName];
+    [mAlbumList writeToFile:mAlbumListPath atomically:YES];
+    [self refresh];
+    
     return 0;
 }
 
-- (int) editAlbumWithName: (NSString *) name order: (NSInteger *) order {
+- (int) editAlbumWithKey: (NSString *) key order: (NSInteger *) order {
     return 0;
 }
 
 - (int) removeAlbumWithKey: (NSString *) key deletePhotos: (BOOL) deletePhotos {
+    NSString *deleteTarget = @"";
+
+    for (unsigned i = 0; i < mCount; i++) {
+        NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", (long)i];
+        NSDictionary *eachPerson = [mAlbumList objectForKey:rootKey];
+        NSString *eachKey   = [eachPerson objectForKey:ALBUM_KEY_KEY];
+        
+        if ([eachKey isEqualToString:key]) {
+            NSLog(@"Found it");
+            deleteTarget = rootKey;
+        }
+    }
+    
+    if (![deleteTarget isEqualToString:@""]) {
+        [mAlbumList removeObjectForKey:deleteTarget];
+    } else {
+        NSLog(@"BUG: cannot find album key to delete!");
+    }
+    
+    //[mAlbumList setObject:data forKey:rootName];
+    [mAlbumList writeToFile:mAlbumListPath atomically:YES];
+    [self refresh];
     return 0;
 }
 
@@ -206,6 +259,7 @@
         ret = [[UIImage alloc] initWithContentsOfFile:firstPhotoFilePath];
     } else {
         NSLog(@"There is no photo in this album, give it a default top photo");
+        ret = [UIImage imageNamed:@"prototypeImage"];
     }
     
     return ret;

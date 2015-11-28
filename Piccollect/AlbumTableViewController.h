@@ -15,8 +15,9 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *mTableViewIB;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *mEditButtonIB;
 @property (strong, nonatomic) AlbumListService *mAlbumList;
 
-- (void) initAlbumList;
+- (void) initAlbumList; 
 
 @end
