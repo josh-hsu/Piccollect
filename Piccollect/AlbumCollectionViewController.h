@@ -11,6 +11,8 @@
 @class Album, AlbumListService;
 @interface AlbumCollectionViewController : UICollectionViewController
 
+@property (strong, nonatomic) IBOutlet UICollectionView *mCollectionView;
+
 @property (nonatomic, retain) Album *mAlbum;
 @property (nonatomic, retain) AlbumListService *mAlbumListService;
 

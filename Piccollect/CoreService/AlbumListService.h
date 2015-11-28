@@ -64,6 +64,7 @@
  */
 // Utilities
 - (void) refresh;
+- (NSString *) randomStringWithLength: (int) len;
 
 // Photo functions
 - (int) addPhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key;
@@ -74,6 +75,7 @@
 
 // Album functions
 - (Album *) albumInListAtIndex: (NSInteger)idx;
+- (void) reorderAlbumId: (int) idx;
 - (int) createAlbumWithName: (NSString *) name;
 - (int) editAlbumWithKey: (NSString *) key order: (NSInteger *) order;
 - (int) removeAlbumWithKey: (NSString *) key deletePhotos: (BOOL) deletePhotos;

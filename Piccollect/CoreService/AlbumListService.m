@@ -181,10 +181,10 @@
  * to identify album.
  */
 - (int) createAlbumWithName: (NSString *) name {
-    NSNumber *serial = [[NSNumber alloc] initWithInt: 2];
+    NSNumber *serial = [[NSNumber alloc] initWithInt: mCount];
     NSString *rootName = [NSString stringWithFormat:@"%d", [serial intValue]];
     NSDate *today = [[NSDate alloc] initWithTimeIntervalSinceNow:0];
-    NSString *key = @"9b3ywa";
+    NSString *key = [self randomStringWithLength:8];
     NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithObjectsAndKeys: name, ALBUM_KEY_NAME, key, ALBUM_KEY_KEY, today, ALBUM_KEY_CDATE, serial, ALBUM_KEY_ORDER, nil];
     [mAlbumList setObject:data forKey:rootName];
     [mAlbumList writeToFile:mAlbumListPath atomically:YES];
@@ -197,8 +197,28 @@
     return 0;
 }
 
+/*
+ * When remove an album, we should reorder the list
+ * In this moment, the mCount is still the value before album deleted
+ *
+ * idx => 5   mCount => 10 [0, 1, 2, ..., 9]
+ * we should move 6, 7, 8, 9 to 5, 6, 7, 8
+ */
+- (void) reorderAlbumId: (int) idx {
+    int index = idx;
+    for (unsigned i = index + 1; i < mCount; i++) {
+        NSLog(@"i = %d, mCount = %d", i, mCount);
+        NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", (long)i];
+        NSString *targetKey = [[NSString alloc] initWithFormat:@"%ld", (long)i-1];
+        NSDictionary *eachPerson = [mAlbumList objectForKey:rootKey];
+        [mAlbumList removeObjectForKey:rootKey];
+        [mAlbumList setObject:eachPerson forKey:targetKey];
+    }
+}
+
 - (int) removeAlbumWithKey: (NSString *) key deletePhotos: (BOOL) deletePhotos {
     NSString *deleteTarget = @"";
+    int deleteIdx = -1;
 
     for (unsigned i = 0; i < mCount; i++) {
         NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", (long)i];
@@ -208,13 +228,16 @@
         if ([eachKey isEqualToString:key]) {
             NSLog(@"Found it");
             deleteTarget = rootKey;
+            deleteIdx = i;
         }
     }
     
     if (![deleteTarget isEqualToString:@""]) {
         [mAlbumList removeObjectForKey:deleteTarget];
+        [self reorderAlbumId:deleteIdx];
     } else {
         NSLog(@"BUG: cannot find album key to delete!");
+        return -1;
     }
     
     //[mAlbumList setObject:data forKey:rootName];
@@ -334,6 +357,18 @@
         }
         j++;
     }
+}
+
+- (NSString *) randomStringWithLength: (int) len {
+    NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    NSMutableString *randomString = [NSMutableString stringWithCapacity: len];
+    
+    for (int i = 0; i < len; i++) {
+        NSUInteger index = arc4random_uniform((unsigned)[letters length]);
+        [randomString appendFormat: @"%C", [letters characterAtIndex: index]];
+    }
+    
+    return randomString;
 }
 
 @end

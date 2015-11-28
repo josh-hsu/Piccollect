@@ -17,6 +17,7 @@
 @implementation AlbumCollectionViewController
 
 @synthesize mAlbum, mAlbumListService;
+@synthesize mCollectionView;
 
 static NSString * const reuseIdentifier = @"Cell";
 
@@ -31,6 +32,17 @@ static NSString * const reuseIdentifier = @"Cell";
     
     // Do any additional setup after loading the view.
     self.title = mAlbum.mAlbumName;
+    
+    // If no photo to show, tell user to add some
+    if ([mAlbum.mAlbumPhotos count] == 0) {
+        CGRect totalRect = mCollectionView.frame;
+        CGFloat y = (totalRect.size.height - 140.0)/2;
+        UILabel *aLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, y, 300, 40)];
+        aLabel.text = @"沒有照片或影片";
+        aLabel.textColor = [UIColor grayColor];
+        aLabel.font = [UIFont systemFontOfSize:25.0];
+        [mCollectionView addSubview:aLabel];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

@@ -97,6 +97,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         Album *thisAlbum = [mAlbumList albumInListAtIndex:indexPath.row];
+        // TODO: Show a popup menu for user to comfirm deleting
         [mAlbumList removeAlbumWithKey:thisAlbum.mAlbumKey deletePhotos:NO];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
