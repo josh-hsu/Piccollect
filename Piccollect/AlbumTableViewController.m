@@ -26,12 +26,10 @@
     mAlbumList = [[AlbumListService alloc] init];
     
     if (mAlbumList != nil) {
-        // Initial document path for storing photos
         NSLog(@"Loading album list from service, total: %d", mAlbumList.mCount);
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSLog(@"Document path: %@", documentsDirectory);
-        mAlbumList.mDocumentRootPath = documentsDirectory;
+    } else {
+        NSLog(@"Initial AlbumListService failed, this is a serious BUG");
+        abort();
     }
 }
 
@@ -46,7 +44,15 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [self initAlbumList];
-    [mAlbumList initPhotoFileDebug];
+    //[mAlbumList initPhotoFileDebug];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    // Because the selected row will not reset after user hit back button and return here
+    [mTableViewIB deselectRowAtIndexPath:[mTableViewIB indexPathForSelectedRow] animated:YES];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,7 +82,7 @@
     Album *thisAlbum = [mAlbumList albumInListAtIndex:indexPath.row];
     [titleLabel setText:thisAlbum.mAlbumName];
     [subtitleLabel setText:thisAlbum.mAlbumKey];
-    topImageView.image = [[UIImage alloc] initWithContentsOfFile:[mAlbumList topPhotoInAlbum:thisAlbum]];
+    topImageView.image = [mAlbumList topPhotoInAlbum:thisAlbum];
     
     return cell;
 }

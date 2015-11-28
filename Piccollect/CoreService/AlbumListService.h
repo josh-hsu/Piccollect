@@ -25,12 +25,14 @@
 
 // Album list keyword
 #define ALBUM_LIST_NAME     @"albums"
+#define ALBUM_LIST_FILE_NAME     @"albums.plist"
 #define ALBUM_LIST_FOLDER   @"Lists"
 #define ALBUM_KEY_NAME      @"albumName"
 #define ALBUM_KEY_KEY       @"albumKey"
 #define ALBUM_KEY_CDATE     @"createDate"
 #define ALBUM_KEY_ORDER     @"order"
 #define ALBUM_PHOTO_LIST_NAME   @"albumImage"
+#define ALBUM_PHOTO_LIST_FILE_NAME   @"albumImage.plist"
 
 /*
  * Properties
@@ -66,7 +68,7 @@
 - (int) removePhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key;
 - (NSArray *) photosInAlbum: (Album *) album;
 - (NSArray *) photosInAlbumWithKey: (NSString *) key;
-- (NSString *) topPhotoInAlbum: (Album *) album;
+- (UIImage *) topPhotoInAlbum: (Album *) album;
 
 // Album functions
 - (Album *) albumInListAtIndex: (NSInteger)idx;

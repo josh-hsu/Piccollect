@@ -37,13 +37,29 @@
     return nil;
 }
 
+/*
+ * initAlbumList
+ *
+ * This is the main entry of AlbumListService
+ * We should deal with every little details to prevent aborting
+ */
 - (int) initAlbumList {
     NSError *errorDesc;
     NSPropertyListFormat format;
     
-    // 初始化檔案路徑
+    // Initial document path for storing photos
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    if(LOCAL_DEBUG) NSLog(@"Document path: %@", documentsDirectory);
+    mDocumentRootPath = documentsDirectory;
+    
+    // Find the new albums.plist inside the document folder
+    mAlbumListPath = [mDocumentRootPath stringByAppendingPathComponent:ALBUM_LIST_FILE_NAME];
+    
+    // If we cannot find list in document folder, copy default list to document
     if (![[NSFileManager defaultManager] fileExistsAtPath:mAlbumListPath]) {
-        mAlbumListPath = [[NSBundle mainBundle] pathForResource:ALBUM_LIST_NAME ofType:@"plist"];
+        NSString *localListPath = [[NSBundle mainBundle] pathForResource:ALBUM_LIST_NAME ofType:@"plist"];
+        [[NSFileManager defaultManager] copyItemAtPath:localListPath toPath:mAlbumListPath error:&errorDesc];
     }
     
     NSData *plistXML = [[NSFileManager defaultManager] contentsAtPath:mAlbumListPath];
@@ -63,9 +79,40 @@
     return 0;
 }
 
+
+/*
+ * This function initial albumImage.plist
+ * Notice that if we didn't have key in the albumImage.plist, this is not
+ * an error, it's just there is no photo in there and need to be set an empty one
+ */
+- (int)initAlbumPhotosList {
+    NSError *errorDesc;
+    NSPropertyListFormat format;
+    
+    // Find the new albumImage.plist inside the document folder
+    mAlbumPhotoPath = [mDocumentRootPath stringByAppendingPathComponent:ALBUM_PHOTO_LIST_FILE_NAME];
+    
+    // If we cannot find list in document folder, copy default list to document
+    if (![[NSFileManager defaultManager] fileExistsAtPath:mAlbumPhotoPath]) {
+        NSString *localListPath = [[NSBundle mainBundle] pathForResource:ALBUM_PHOTO_LIST_NAME ofType:@"plist"];
+        [[NSFileManager defaultManager] copyItemAtPath:localListPath toPath:mAlbumPhotoPath error:&errorDesc];
+    }
+    
+    NSData *plistXML = [[NSFileManager defaultManager] contentsAtPath:mAlbumPhotoPath];
+    mAlbumPhotoList = (NSMutableDictionary *) [NSPropertyListSerialization propertyListWithData:plistXML
+                                                                                        options:NSPropertyListMutableContainersAndLeaves format:&format error:&errorDesc];
+    
+    if (!mAlbumPhotoList) {
+        NSLog(@"Error reading plist: %@, format: %lu", errorDesc, (unsigned long)format);
+        return -1;
+    }
+    
+    return 0;
+}
+
 - (void) initAlbums {
     if (!mAlbumList) {
-        NSLog(@"There is no album list presented.");
+        NSLog(@"BUG: There is no album list presented.");
     }
     
     if (!mAlbum) {
@@ -99,32 +146,6 @@
     
     mValidate = YES;
     
-}
-
-/*
- * This function initial albumImage.plist
- * Notice that if we didn't have key in the albumImage.plist, this is not
- * an error, it's just there is no photo in there and need to be set an empty one
- */
-- (int)initAlbumPhotosList {
-    NSError *errorDesc;
-    NSPropertyListFormat format;
-    
-    // 初始化檔案路徑
-    if (![[NSFileManager defaultManager] fileExistsAtPath:mAlbumPhotoPath]) {
-        mAlbumPhotoPath = [[NSBundle mainBundle] pathForResource:ALBUM_PHOTO_LIST_NAME ofType:@"plist"];
-    }
-    
-    NSData *plistXML = [[NSFileManager defaultManager] contentsAtPath:mAlbumPhotoPath];
-    mAlbumPhotoList = (NSMutableDictionary *) [NSPropertyListSerialization propertyListWithData:plistXML
-                                                                                        options:NSPropertyListMutableContainersAndLeaves format:&format error:&errorDesc];
-    
-    if (!mAlbumPhotoList) {
-        NSLog(@"Error reading plist: %@, format: %lu", errorDesc, (unsigned long)format);
-        return -1;
-    }
-    
-    return 0;
 }
 
 /*
@@ -168,20 +189,26 @@
     return nil;
 }
 
-- (NSString *) topPhotoInAlbum: (Album *) album {
+- (UIImage *) topPhotoInAlbum: (Album *) album {
     NSString* firstPhotoFileName;
     NSString* firstPhotoFilePath;
+    UIImage* ret;
     
     if (!mValidate) {
         NSLog(@"BUG: try to get photo before it validate");
         return nil;
     }
     
-    firstPhotoFileName = [album.mAlbumPhotos objectAtIndex:0];
-    firstPhotoFilePath = [[NSString alloc] initWithFormat:@"%@/%@", mDocumentRootPath, firstPhotoFileName];
-    NSLog(@"First photo path is: %@", firstPhotoFilePath);
+    if ([album.mAlbumPhotos count] > 0) {
+        firstPhotoFileName = [album.mAlbumPhotos objectAtIndex:0];
+        firstPhotoFilePath = [[NSString alloc] initWithFormat:@"%@/%@", mDocumentRootPath, firstPhotoFileName];
+        NSLog(@"First photo path is: %@", firstPhotoFilePath);
+        ret = [[UIImage alloc] initWithContentsOfFile:firstPhotoFilePath];
+    } else {
+        NSLog(@"There is no photo in this album, give it a default top photo");
+    }
     
-    return firstPhotoFilePath;
+    return ret;
 }
 
 /*

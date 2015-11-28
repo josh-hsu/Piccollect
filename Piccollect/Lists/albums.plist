@@ -5,7 +5,7 @@
 	<key>0</key>
 	<dict>
 		<key>albumName</key>
-		<string>Default Album</string>
+		<string>未分類</string>
 		<key>albumKey</key>
 		<string>at9jkn</string>
 		<key>createDate</key>
@@ -13,16 +13,16 @@
 		<key>order</key>
 		<integer>0</integer>
 	</dict>
-    <key>1</key>
-    <dict>
-        <key>albumName</key>
-        <string>Tumblr</string>
-        <key>albumKey</key>
-        <string>c20uxz</string>
-        <key>createDate</key>
-        <date>2015-11-22T06:54:10Z</date>
-        <key>order</key>
-        <integer>1</integer>
-    </dict>
+	<key>1</key>
+	<dict>
+		<key>albumName</key>
+		<string>Tumblr</string>
+		<key>albumKey</key>
+		<string>c20uxz</string>
+		<key>createDate</key>
+		<date>2015-11-22T06:54:10Z</date>
+		<key>order</key>
+		<integer>1</integer>
+	</dict>
 </dict>
 </plist>
