@@ -23,6 +23,7 @@
 @synthesize mCount;
 @synthesize mDocumentRootPath;
 @synthesize mAlbumPhotoList, mAlbumPhotoPath, mValidate;
+#define LOCAL_DEBUG     YES
 
 - (id)init {
     int ret = -1;
@@ -92,7 +93,6 @@
             //TODO: insert new line in acutal list
         }
         thisAlbum.mAlbumPhotos = eachAlbumPhoto.copy;
-        NSLog(@"DEBUG %@", [thisAlbum.mAlbumPhotos objectAtIndex:0]);
         
         [mAlbum addObject:thisAlbum];
     }
@@ -191,64 +191,67 @@
     [self getAllPictures];
 }
 
-static int count=0;
-
 - (void) getAllPictures {
-    imageArray=[[NSArray alloc] init];
-    mutableArray =[[NSMutableArray alloc]init];
+    imageArray = [[NSArray alloc] init];
+    mutableArray = [[NSMutableArray alloc]init];
     NSMutableArray* assetURLDictionaries = [[NSMutableArray alloc] init];
     
     library = [[ALAssetsLibrary alloc] init];
     
-    void (^assetEnumerator)( ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
-        if(result != nil) {
+    void (^assetEnumerator)(ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
+        static int count = 0;
+        if(result != nil && count < 13) {
             if([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
                 [assetURLDictionaries addObject:[result valueForProperty:ALAssetPropertyURLs]];
-                
-                NSURL *url= (NSURL*) [[result defaultRepresentation]url];
-                
+
+                NSURL *url = (NSURL*) [[result defaultRepresentation] url];
+
                 [library assetForURL:url
                          resultBlock:^(ALAsset *asset) {
-                             [mutableArray addObject:[UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]]];
-                             
-                             if ([mutableArray count]==6)
-                             {
-                                 imageArray=[[NSArray alloc] initWithArray:mutableArray];
+                             static int count = 0;
+                             [mutableArray addObject:[UIImage imageWithCGImage:[[asset defaultRepresentation]  fullScreenImage]]];
+
+                             if (count == 11) {
+                                 imageArray = [[NSArray alloc] initWithArray:mutableArray];
                                  [self allPhotosCollected:imageArray];
                              }
+                             count ++;
                          }
                         failureBlock:^(NSError *error){ NSLog(@"operation was not successfull!"); } ];
-                
             }
         }
+        count++;
     };
     
     NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
     
-    void (^ assetGroupEnumerator) ( ALAssetsGroup *, BOOL *)= ^(ALAssetsGroup *group, BOOL *stop) {
-        if(group != nil) {
+    void (^ assetGroupEnumerator) (ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) {
+        static BOOL first_group = NO;
+        if(group != nil && !first_group) {
             [group enumerateAssetsUsingBlock:assetEnumerator];
             [assetGroups addObject:group];
-            count=[group numberOfAssets];
+            //count = (int)[group numberOfAssets];
+            if(LOCAL_DEBUG) NSLog(@"group enumerator finished");
+            first_group = YES;
         }
     };
     
     assetGroups = [[NSMutableArray alloc] init];
     
-    [library enumerateGroupsWithTypes:ALAssetsGroupAll
-                           usingBlock:assetGroupEnumerator
-                         failureBlock:^(NSError *error) {NSLog(@"There is an error");}];
+    [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:assetGroupEnumerator
+                         failureBlock:^(NSError *error) { NSLog(@"There is an error"); }];
 }
 
 - (void) allPhotosCollected: (NSArray*)imgArray {
     // We can deal with those images in user's photo library here
+    NSLog(@"allPhotosCollected called %ld", [imgArray count]);
+    int j = 0;
     for (Album *thisAlbum in mAlbum) {
         for (int i = 0; i < thisAlbum.mAlbumPhotos.count; i++) {
             NSString *savePath = [mDocumentRootPath stringByAppendingPathComponent:[thisAlbum.mAlbumPhotos objectAtIndex:i]];
-            NSLog(@"Save to path %@", savePath);
-            [UIImagePNGRepresentation([imgArray objectAtIndex:i]) writeToFile:savePath atomically:YES];
+            [UIImagePNGRepresentation([imgArray objectAtIndex:i+j*6]) writeToFile:savePath atomically:YES];
         }
-        
+        j++;
     }
 }
 

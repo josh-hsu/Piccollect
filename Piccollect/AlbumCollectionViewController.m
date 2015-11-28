@@ -30,6 +30,7 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     // Do any additional setup after loading the view.
+    self.title = mAlbum.mAlbumName;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -61,6 +62,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"albumThumbCollectionCell" forIndexPath:indexPath];
     
+    // Only config the cell with photo available
     if ((indexPath.row + indexPath.section * 4) < [mAlbum.mAlbumPhotos count]) {
         NSString *subimagePath = [mAlbum.mAlbumPhotos objectAtIndex:(indexPath.row + indexPath.section * 4)];
         NSString *imagePath = [mAlbumListService.mDocumentRootPath stringByAppendingPathComponent:subimagePath];
@@ -68,7 +70,6 @@ static NSString * const reuseIdentifier = @"Cell";
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.frame.size.height, cell.frame.size.width)];
         imageView.image = image;
         imageView.contentMode = UIViewContentModeScaleAspectFill;
-        // Configure the cell
         [cell.contentView addSubview:imageView];
     }
     return cell;

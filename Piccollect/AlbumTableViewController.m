@@ -18,6 +18,7 @@
 @implementation AlbumTableViewController
 
 @synthesize mAlbumList;
+@synthesize mTableViewIB;
 
 #pragma mark - list access
 
@@ -45,7 +46,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [self initAlbumList];
-    //[mAlbumList initPhotoFileDebug];
+    [mAlbumList initPhotoFileDebug];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -120,7 +121,7 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     AlbumCollectionViewController *collectionViewController = [segue destinationViewController];
-    collectionViewController.mAlbum = [mAlbumList albumInListAtIndex:0];
+    collectionViewController.mAlbum = [mAlbumList albumInListAtIndex:[mTableViewIB indexPathForSelectedRow].row];
     collectionViewController.mAlbumListService = mAlbumList;
 }
 

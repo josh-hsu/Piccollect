@@ -10,8 +10,11 @@
 #import "Album.h"
 #import "AlbumListService.h"
 
-@interface AlbumTableViewController : UIViewController
+@interface AlbumTableViewController : UIViewController {
+    int rowUserSelected;
+}
 
+@property (weak, nonatomic) IBOutlet UITableView *mTableViewIB;
 @property (strong, nonatomic) AlbumListService *mAlbumList;
 
 - (void) initAlbumList;
