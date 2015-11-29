@@ -28,7 +28,7 @@
     [super viewDidLoad];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 	
-	[self.navigationItem setTitle:NSLocalizedString(@"Loading...", nil)];
+	[self.navigationItem setTitle:NSLocalizedString(@"讀取中...", nil)];
 
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self.parent action:@selector(cancelImagePicker)];
 	[self.navigationItem setRightBarButtonItem:cancelButton];
@@ -74,8 +74,8 @@
                     [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied", nil) message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil] show];
                   
                 } else {
-                    NSString *errorMessage = [NSString stringWithFormat:@"Album Error: %@ - %@", [error localizedDescription], [error localizedRecoverySuggestion]];
-                    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil] show];
+                    NSString *errorMessage = [NSString stringWithFormat:@"相簿錯誤: %@ - %@", [error localizedDescription], [error localizedRecoverySuggestion]];
+                    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"錯誤", nil) message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"完成", nil) otherButtonTitles:nil] show];
                 }
 
                 [self.navigationItem setTitle:nil];
@@ -106,7 +106,7 @@
 - (void)reloadTableView
 {
 	[self.tableView reloadData];
-	[self.navigationItem setTitle:NSLocalizedString(@"Select an Album", nil)];
+	[self.navigationItem setTitle:NSLocalizedString(@"請選擇相簿", nil)];
 }
 
 - (BOOL)shouldSelectAsset:(ELCAsset *)asset previousCount:(NSUInteger)previousCount

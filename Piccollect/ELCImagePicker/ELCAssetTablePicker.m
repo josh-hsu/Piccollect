@@ -45,7 +45,7 @@
     } else {
         UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
         [self.navigationItem setRightBarButtonItem:doneButtonItem];
-        [self.navigationItem setTitle:NSLocalizedString(@"Loading...", nil)];
+        [self.navigationItem setTitle:NSLocalizedString(@"讀取中...", nil)];
     }
 
 	[self performSelectorInBackground:@selector(preparePhotos) withObject:nil];
@@ -119,7 +119,7 @@
                                                       animated:NO];
             }
             
-            [self.navigationItem setTitle:self.singleSelection ? NSLocalizedString(@"Pick Photo", nil) : NSLocalizedString(@"Pick Photos", nil)];
+            [self.navigationItem setTitle:self.singleSelection ? NSLocalizedString(@"選擇相片", nil) : NSLocalizedString(@"選擇相片", nil)];
         });
     }
 }
@@ -248,7 +248,7 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"取消";
         
     ELCAssetCell *cell = (ELCAssetCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
