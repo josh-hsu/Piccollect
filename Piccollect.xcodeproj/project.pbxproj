@@ -22,6 +22,7 @@
 		03C0C7561C00A6F400EBA2D4 /* AlbumTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C0C7551C00A6F400EBA2D4 /* AlbumTableViewController.m */; };
 		03C0C7591C00A72B00EBA2D4 /* SocialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C0C7581C00A72B00EBA2D4 /* SocialViewController.m */; };
 		03D8EC881C08AA8700BA825E /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D8EC871C08AA8700BA825E /* CoreData.framework */; };
+		03F73F4A1C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F73F491C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,8 @@
 		03D8EC831C08A99000BA825E /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		03D8EC851C08A9D500BA825E /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		03D8EC871C08AA8700BA825E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		03F73F481C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumPhotoCollectionViewController.h; sourceTree = "<group>"; };
+		03F73F491C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumPhotoCollectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +187,8 @@
 				03C0C7551C00A6F400EBA2D4 /* AlbumTableViewController.m */,
 				03BCA6121C01FC98009BD8FB /* AlbumCollectionViewController.h */,
 				03BCA6131C01FC98009BD8FB /* AlbumCollectionViewController.m */,
+				03F73F481C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.h */,
+				03F73F491C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -346,6 +351,7 @@
 				03324CE61C005CBD000618F0 /* AppDelegate.m in Sources */,
 				03324CE31C005CBD000618F0 /* main.m in Sources */,
 				03BCA60F1C019FE4009BD8FB /* Album.m in Sources */,
+				03F73F4A1C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.m in Sources */,
 				03C0C7561C00A6F400EBA2D4 /* AlbumTableViewController.m in Sources */,
 				03C0C7591C00A72B00EBA2D4 /* SocialViewController.m in Sources */,
 			);

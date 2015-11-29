@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
+#import "Album.h"
 
-@class Album;
 @import AssetsLibrary;
 
 @interface AlbumListService : NSObject {

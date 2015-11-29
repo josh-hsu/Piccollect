@@ -7,8 +7,8 @@
 //
 
 #import "AlbumCollectionViewController.h"
+#import "AlbumPhotoCollectionViewController.h"
 #import "AlbumListService.h"
-#import "Album.h"
 
 @interface AlbumCollectionViewController ()
 
@@ -50,15 +50,18 @@ static NSString * const reuseIdentifier = @"Cell";
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    NSIndexPath *hitPath = [[mCollectionView indexPathsForSelectedItems] objectAtIndex:0];
+    AlbumPhotoCollectionViewController *collectionViewController = [segue destinationViewController];
+    collectionViewController.mAlbum = mAlbum;
+    collectionViewController.mPage = (int)(hitPath.row + 4 * hitPath.section);
+    collectionViewController.mAlbumListService = mAlbumListService;
 }
-*/
+
 
 #pragma mark <UICollectionViewDataSource>
 
