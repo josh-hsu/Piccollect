@@ -9,6 +9,7 @@
 #import "AlbumCollectionViewController.h"
 #import "AlbumPhotoCollectionViewController.h"
 #import "AlbumListService.h"
+#import "ELCImagePicker/ELCImagePickerHeader.h"
 
 @interface AlbumCollectionViewController ()
 
@@ -131,6 +132,38 @@ static NSString * const reuseIdentifier = @"Cell";
     minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     return 1.0;
 }
+
+#pragma mark - IBAction
+
+- (IBAction)addPhotoInLibrary:(id)sender {
+    ELCImagePickerController *elcPicker = [[ELCImagePickerController alloc] initImagePicker];
+    
+    elcPicker.maximumImagesCount = 100; //Set the maximum number of images to select to 100
+    elcPicker.returnsOriginalImage = YES; //Only return the fullScreenImage, not the fullResolutionImage
+    elcPicker.returnsImage = YES; //Return UIimage if YES. If NO, only return asset location information
+    elcPicker.onOrder = YES; //For multiple image selection, display and return order of selected images
+    //elcPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie]; //Supports image and movie types
+    
+    elcPicker.imagePickerDelegate = self;
+    
+    [self presentViewController:elcPicker animated:YES completion:nil];
+}
+
+#pragma mark ELCImagePickerControllerDelegate Methods
+
+- (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    //NSMutableArray *images = [NSMutableArray arrayWithCapacity:[info count]];
+
+}
+
+- (void)elcImagePickerControllerDidCancel:(ELCImagePickerController *)picker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 
 @end
