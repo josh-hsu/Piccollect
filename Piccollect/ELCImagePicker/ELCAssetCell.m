@@ -20,6 +20,10 @@
 
 @implementation ELCAssetCell
 
+#define CELL_WIDTH        93
+#define CELL_HEIGHT       93
+#define CELL_BORDER_LEN   1
+
 //Using auto synthesizers
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -72,6 +76,8 @@
                 overlayImage = [UIImage imageNamed:@"Overlay.png"];
             }
             ELCOverlayImageView *overlayView = [[ELCOverlayImageView alloc] initWithImage:overlayImage];
+            //Josh: Fix overlay image present unsized
+            overlayView.contentMode = UIViewContentModeScaleToFill;
             [_overlayViewArray addObject:overlayView];
             overlayView.hidden = asset.selected ? NO : YES;
             overlayView.labIndex.text = [NSString stringWithFormat:@"%d", asset.index + 1];
@@ -83,16 +89,16 @@
 {
     CGPoint point = [tapRecognizer locationInView:self];
     int c = (int32_t)self.rowAssets.count;
-    CGFloat totalWidth = c * 75 + (c - 1) * 4;
+    CGFloat totalWidth = c * CELL_WIDTH + (c - 1) * CELL_BORDER_LEN;
     CGFloat startX;
     
     if (self.alignmentLeft) {
-        startX = 4;
+        startX = CELL_BORDER_LEN;
     }else {
         startX = (self.bounds.size.width - totalWidth) / 2;
     }
     
-	CGRect frame = CGRectMake(startX, 2, 75, 75);
+	CGRect frame = CGRectMake(startX, CELL_BORDER_LEN, CELL_WIDTH, CELL_HEIGHT);
 	
 	for (int i = 0; i < [_rowAssets count]; ++i) {
         if (CGRectContainsPoint(frame, point)) {
@@ -112,23 +118,23 @@
             }
             break;
         }
-        frame.origin.x = frame.origin.x + frame.size.width + 4;
+        frame.origin.x = frame.origin.x + frame.size.width + CELL_BORDER_LEN;
     }
 }
 
 - (void)layoutSubviews
 {
     int c = (int32_t)self.rowAssets.count;
-    CGFloat totalWidth = c * 75 + (c - 1) * 4;
+    CGFloat totalWidth = c * CELL_WIDTH + (c - 1) * CELL_BORDER_LEN;
     CGFloat startX;
     
     if (self.alignmentLeft) {
-        startX = 4;
+        startX = CELL_BORDER_LEN;
     }else {
         startX = (self.bounds.size.width - totalWidth) / 2;
     }
     
-	CGRect frame = CGRectMake(startX, 2, 75, 75);
+	CGRect frame = CGRectMake(startX, CELL_BORDER_LEN, CELL_WIDTH, CELL_HEIGHT);
 	
 	for (int i = 0; i < [_rowAssets count]; ++i) {
 		UIImageView *imageView = [_imageViewArray objectAtIndex:i];
@@ -139,7 +145,7 @@
         [overlayView setFrame:frame];
         [self addSubview:overlayView];
 		
-		frame.origin.x = frame.origin.x + frame.size.width + 4;
+		frame.origin.x = frame.origin.x + frame.size.width + CELL_BORDER_LEN;
 	}
 }
 

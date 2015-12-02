@@ -263,7 +263,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return 79;
+	return 94;
 }
 
 - (int)totalSelectedAssets
