@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>next</key>
+	<integer>2</integer>
 	<key>0</key>
 	<dict>
 		<key>albumName</key>
@@ -11,6 +13,10 @@
 		<key>createDate</key>
 		<date>2015-11-22T06:54:26Z</date>
 		<key>order</key>
+		<integer>0</integer>
+		<key>increase</key>
+		<string>00006</string>
+		<key>serial</key>
 		<integer>0</integer>
 	</dict>
 	<key>1</key>
@@ -22,6 +28,10 @@
 		<key>createDate</key>
 		<date>2015-11-22T06:54:10Z</date>
 		<key>order</key>
+		<integer>1</integer>
+		<key>increase</key>
+		<string>00006</string>
+		<key>serial</key>
 		<integer>1</integer>
 	</dict>
 </dict>

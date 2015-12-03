@@ -73,7 +73,8 @@
         return -1;
     }
 
-    mCount = (int)[mAlbumList count];
+    mCount = (int)[mAlbumList count] - 1; //Because we have a "next" field on the top
+    NSLog(@"mCount = %d", mCount);
     
     [self initAlbumPhotosList];
     [self initAlbumsWithRefresh:NO];
@@ -122,17 +123,24 @@
         mAlbum = [[NSMutableArray alloc] init];
     }
     
+    NSNumber *nextSerial  = [mAlbumList objectForKey:ALBUM_KEY_NEXT];
+    self.mNextAlbumSerial = [nextSerial intValue];
+    
     for (unsigned i = 0; i < mCount; i++) {
         NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", (long)i];
         NSDictionary *eachPerson = [mAlbumList objectForKey:rootKey];
         
-        NSString *name  = [eachPerson objectForKey:ALBUM_KEY_NAME];
-        NSString *key   = [eachPerson objectForKey:ALBUM_KEY_KEY];
-        NSDate   *cdate = [eachPerson objectForKey:ALBUM_KEY_CDATE];
-        NSNumber *order = [eachPerson objectForKey:ALBUM_KEY_ORDER];
+        NSString *name   = [eachPerson objectForKey:ALBUM_KEY_NAME];
+        NSString *key    = [eachPerson objectForKey:ALBUM_KEY_KEY];
+        NSDate   *cdate  = [eachPerson objectForKey:ALBUM_KEY_CDATE];
+        NSNumber *order  = [eachPerson objectForKey:ALBUM_KEY_ORDER];
+        NSString *incr   = [eachPerson objectForKey:ALBUM_KEY_INCR];
+        NSNumber *serial = [eachPerson objectForKey:ALBUM_KEY_SERIAL];
+        
+        NSLog(@"INCR %@", incr);
         
         Album *thisAlbum = [Album alloc];
-        [thisAlbum initWithName:name key:key date:cdate order:order];
+        [thisAlbum initWithName:name key:key date:cdate order:order incr:incr serial:serial];
         
         // Initial its album photos
         NSDictionary *eachAlbumPhoto = [mAlbumPhotoList objectForKey:key];
@@ -162,6 +170,7 @@
  * Album functions
  */
 
+
 /*
  * Get album in album list for specific index
  * this is called from a table view, so it's related to the order
@@ -179,13 +188,17 @@
  * Create an album with user-specific name
  * And yes, we accept duplicate name because we use identity key
  * to identify album.
+ * the root serial should be strictly increasing with increment of 1
+ * the content of album setting will not change after adding or removing
+ * an album
  */
 - (int) createAlbumWithName: (NSString *) name {
-    NSNumber *serial = [[NSNumber alloc] initWithInt: mCount];
-    NSString *rootName = [NSString stringWithFormat:@"%d", [serial intValue]];
+    //
+    NSNumber *root_serial = [[NSNumber alloc] initWithInt: mCount];
+    NSString *rootName = [NSString stringWithFormat:@"%d", [root_serial intValue]];
     NSDate *today = [[NSDate alloc] initWithTimeIntervalSinceNow:0];
     NSString *key = [self randomStringWithLength:8];
-    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithObjectsAndKeys: name, ALBUM_KEY_NAME, key, ALBUM_KEY_KEY, today, ALBUM_KEY_CDATE, serial, ALBUM_KEY_ORDER, nil];
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithObjectsAndKeys: name, ALBUM_KEY_NAME, key, ALBUM_KEY_KEY, today, ALBUM_KEY_CDATE, root_serial, ALBUM_KEY_ORDER, @"00000", ALBUM_KEY_INCR, nil];
     [mAlbumList setObject:data forKey:rootName];
     [mAlbumList writeToFile:mAlbumListPath atomically:YES];
     [self refresh];
@@ -194,6 +207,41 @@
 }
 
 - (int) editAlbumWithKey: (NSString *) key order: (NSInteger *) order {
+    return 0;
+}
+
+- (int) increaseAlbum: (Album *) album {
+    NSString *rootName = [NSString stringWithFormat:@"%d", [self albumIndexWithKey:album.mAlbumKey]];
+    int intincr = [album.mIncrease intValue];
+    NSLog(@"pasing before incr: %d", intincr);
+    
+    intincr += 1;
+    if (intincr > 99999) {
+        NSLog(@"Too many photos! cannot add more.");
+        return -9;
+    }
+    
+    // Deal with trailing
+    int m1 = (int) intincr / 10000;
+    intincr = intincr % 10000;
+    int m2 = (int) intincr / 1000;
+    intincr = intincr % 1000;
+    int m3 = (int) intincr / 100;
+    intincr = intincr % 100;
+    int m4= (int) intincr / 10;
+    intincr = intincr % 10;
+    int m5= (int) intincr;
+    
+    NSString *newIncr = [NSString stringWithFormat:@"%d%d%d%d%d",m1,m2,m3,m4,m5];
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                 album.mAlbumName, ALBUM_KEY_NAME,
+                                 album.mAlbumKey, ALBUM_KEY_KEY,
+                                 album.mCreateDate, ALBUM_KEY_CDATE,
+                                 album.mSerial, ALBUM_KEY_ORDER,
+                                 newIncr, ALBUM_KEY_INCR,
+                                 nil];
+    [mAlbumList setObject:data forKey:rootName];
+    [mAlbumList writeToFile:mAlbumListPath atomically:YES];
     return 0;
 }
 
@@ -246,10 +294,70 @@
     return 0;
 }
 
+- (Album *) albumWithKey: (NSString *) key {
+    int targetIdx = -1;
+    
+    for (unsigned i = 0; i < mCount; i++) {
+        NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", (long)i];
+        NSDictionary *eachPerson = [mAlbumList objectForKey:rootKey];
+        NSString *eachKey   = [eachPerson objectForKey:ALBUM_KEY_KEY];
+        
+        if ([eachKey isEqualToString:key]) {
+            targetIdx = i;
+        }
+    }
+    
+    if (targetIdx != -1)
+        return [mAlbum objectAtIndex:targetIdx];
+    else
+        return nil;
+}
+
+- (int) albumIndexWithKey: (NSString *) key {
+    int targetIdx = -1;
+    
+    for (unsigned i = 0; i < mCount; i++) {
+        NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", (long)i];
+        NSDictionary *eachPerson = [mAlbumList objectForKey:rootKey];
+        NSString *eachKey   = [eachPerson objectForKey:ALBUM_KEY_KEY];
+        
+        if ([eachKey isEqualToString:key]) {
+            targetIdx = i;
+        }
+    }
+    
+    if (targetIdx != -1)
+        return targetIdx;
+    else
+        return 0;
+}
+
 /*
  * Photos functions
  */
 - (int) addPhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key {
+    return 0;
+}
+
+- (int) addPhotoWithImage: (UIImage *) img toAlbum: (Album *) thisAlbum {
+    // Save the image to database
+    NSString *imageFileName = [self generateNewPhotoFileNameWithAlbum: thisAlbum];
+    NSString *savePath = [mDocumentRootPath stringByAppendingPathComponent: imageFileName];
+    [UIImagePNGRepresentation(img) writeToFile:savePath atomically:YES];
+    NSLog(@"New image %@ saved.", imageFileName);
+    
+    // Update list
+    NSMutableArray *photoList = [mAlbumPhotoList objectForKey:thisAlbum.mAlbumKey];
+    [photoList addObject:imageFileName];
+    [mAlbumPhotoList setObject:photoList forKey:thisAlbum.mAlbumKey];
+    [mAlbumPhotoList writeToFile:mAlbumPhotoPath atomically:YES];
+    
+    // Increase the incr
+    [self increaseAlbum:thisAlbum];
+    
+    // Update runtime list
+    //[thisAlbum.mAlbumPhotos addObject:imageFileName];
+    
     return 0;
 }
 
@@ -369,6 +477,18 @@
     }
     
     return randomString;
+}
+
+- (NSString *) generateNewPhotoFileNameWithAlbum: (Album*) thisAlbum {
+    if (thisAlbum == nil) {
+        return @"";
+    }
+    
+    int serial = [thisAlbum.mSerial intValue];
+    NSString *incr = thisAlbum.mIncrease;
+    NSString *ret = [NSString stringWithFormat:@"IMG_%d%@", serial, incr];
+    
+    return ret;
 }
 
 @end

@@ -9,8 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface Album : NSObject {
-    // Local variable, it cannot be accessed outside this method
-    NSMutableArray *mAlbumPhotos;
+
 }
 
 // Album property
@@ -18,8 +17,10 @@
 @property (nonatomic) NSString *mAlbumKey;
 @property (nonatomic) NSDate *mCreateDate;
 @property (nonatomic) NSNumber *mOrder;
-@property (nonatomic, retain) NSArray *mAlbumPhotos;
+@property (nonatomic) NSString *mIncrease;
+@property (nonatomic) NSNumber *mSerial;
+@property (nonatomic, copy) NSMutableArray *mAlbumPhotos;
 
-- (void)initWithName:(NSString*) Name key:(NSString*)key date:(NSDate*)date order:(NSNumber*)order;
+- (void)initWithName:(NSString*) Name key:(NSString*)key date:(NSDate*)date order:(NSNumber*)order incr:(NSString*) incr serial:(NSNumber*) serial;
 
 @end

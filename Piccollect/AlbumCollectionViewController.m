@@ -151,12 +151,51 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark ELCImagePickerControllerDelegate Methods
 
+/*
+ * display image picker controller for user to select
+ * TODO: Note that user might select too many images that will make our saving process hanging
+ *       Maybe we should consider saving it in a thread style
+ */
 - (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info
 {
+    int ret = 0;
+    
     [self dismissViewControllerAnimated:YES completion:nil];
     
-    //NSMutableArray *images = [NSMutableArray arrayWithCapacity:[info count]];
-
+    for (NSDictionary *dict in info) {
+        if ([dict objectForKey:UIImagePickerControllerMediaType] == ALAssetTypePhoto){
+            if ([dict objectForKey:UIImagePickerControllerOriginalImage]){
+                UIImage* image = [dict objectForKey:UIImagePickerControllerOriginalImage];
+                
+                // Save it to album
+                ret = [mAlbumListService addPhotoWithImage:image toAlbum:mAlbum];
+                
+                if (ret) {
+                    NSLog(@"Save image to album failed, return %d", ret);
+                }
+            } else {
+                NSLog(@"UIImagePickerControllerReferenceURL = %@", dict);
+            }
+        } else if ([dict objectForKey:UIImagePickerControllerMediaType] == ALAssetTypeVideo){
+            if ([dict objectForKey:UIImagePickerControllerOriginalImage]){
+                UIImage* image = [dict objectForKey:UIImagePickerControllerOriginalImage];
+                
+                // Save it to album
+                ret = [mAlbumListService addPhotoWithImage:image toAlbum:mAlbum];
+                
+                if (ret) {
+                    NSLog(@"Save image to album failed, return %d", ret);
+                }
+            } else {
+                NSLog(@"UIImagePickerControllerReferenceURL = %@", dict);
+            }
+        } else {
+            NSLog(@"Uknown asset type");
+        }
+    }
+    
+    // Done with saving, refresh it
+    [self.mCollectionView reloadData];
 }
 
 - (void)elcImagePickerControllerDidCancel:(ELCImagePickerController *)picker

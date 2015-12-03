@@ -25,14 +25,17 @@
 
 // Album list keyword
 #define ALBUM_LIST_NAME     @"albums"
-#define ALBUM_LIST_FILE_NAME     @"albums.plist"
 #define ALBUM_LIST_FOLDER   @"Lists"
 #define ALBUM_KEY_NAME      @"albumName"
 #define ALBUM_KEY_KEY       @"albumKey"
 #define ALBUM_KEY_CDATE     @"createDate"
 #define ALBUM_KEY_ORDER     @"order"
-#define ALBUM_PHOTO_LIST_NAME   @"albumImage"
+#define ALBUM_KEY_INCR      @"increase"
+#define ALBUM_KEY_SERIAL    @"serial"
+#define ALBUM_PHOTO_LIST_NAME        @"albumImage"
+#define ALBUM_LIST_FILE_NAME         @"albums.plist"
 #define ALBUM_PHOTO_LIST_FILE_NAME   @"albumImage.plist"
+#define ALBUM_KEY_NEXT      @"next"
 
 /*
  * Properties
@@ -46,6 +49,7 @@
 @property (nonatomic, copy) NSString *mAlbumListPath;
 @property (nonatomic, retain) NSMutableDictionary *mAlbumList;
 @property (nonatomic) int mCount;
+@property (nonatomic) int mNextAlbumSerial;
 
 // Photos document path
 @property (nonatomic, retain) NSString *mDocumentRootPath;
@@ -69,6 +73,7 @@
 // Photo functions
 - (int) addPhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key;
 - (int) removePhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key;
+- (int) addPhotoWithImage: (UIImage *) img toAlbum: (Album *) thisAlbum;
 - (NSArray *) photosInAlbum: (Album *) album;
 - (NSArray *) photosInAlbumWithKey: (NSString *) key;
 - (UIImage *) topPhotoInAlbum: (Album *) album;
