@@ -139,7 +139,12 @@
                                   alertControllerWithTitle:@"新增相簿"
                                   message:@"請輸入名稱"
                                   preferredStyle:UIAlertControllerStyleAlert];
-    
+
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+
     UIAlertAction* ok = [UIAlertAction actionWithTitle:@"完成" style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction * action) {
                                                    NSString *userInput = [alert.textFields objectAtIndex:0].text;
@@ -149,13 +154,9 @@
                                                        [self.mTableViewIB reloadData];
                                                    }
                                                }];
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       [alert dismissViewControllerAnimated:YES completion:nil];
-                                                   }];
-    
-    [alert addAction:ok];
+
     [alert addAction:cancel];
+    [alert addAction:ok];
     
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"標題";

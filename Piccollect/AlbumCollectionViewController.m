@@ -168,6 +168,7 @@ static NSString * const reuseIdentifier = @"Cell";
                 UIImage* image = [dict objectForKey:UIImagePickerControllerOriginalImage];
                 
                 // Save it to album
+                NSLog(@"CollectionView: Add a photo");
                 ret = [mAlbumListService addPhotoWithImage:image toAlbum:mAlbum];
                 
                 if (ret) {

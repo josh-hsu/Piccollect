@@ -19,7 +19,7 @@
 @property (nonatomic) NSNumber *mOrder;
 @property (nonatomic) NSString *mIncrease;
 @property (nonatomic) NSNumber *mSerial;
-@property (nonatomic, copy) NSMutableArray *mAlbumPhotos;
+@property (nonatomic, retain) NSMutableArray *mAlbumPhotos;
 
 - (void)initWithName:(NSString*) Name key:(NSString*)key date:(NSDate*)date order:(NSNumber*)order incr:(NSString*) incr serial:(NSNumber*) serial;
 

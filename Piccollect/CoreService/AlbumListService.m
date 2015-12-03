@@ -137,7 +137,7 @@
         NSString *incr   = [eachPerson objectForKey:ALBUM_KEY_INCR];
         NSNumber *serial = [eachPerson objectForKey:ALBUM_KEY_SERIAL];
         
-        NSLog(@"INCR %@", incr);
+        NSLog(@"init: this album %d with INCR %@", i, incr);
         
         Album *thisAlbum = [Album alloc];
         [thisAlbum initWithName:name key:key date:cdate order:order incr:incr serial:serial];
@@ -160,7 +160,7 @@
 }
 
 - (void) refresh {
-    mCount = (int)[mAlbumList count];
+    mCount = (int)[mAlbumList count] - 1;
     
     [self initAlbumPhotosList];
     [self initAlbumsWithRefresh:YES];
@@ -210,10 +210,13 @@
     return 0;
 }
 
+/*
+ * We need to update Increase (for the next photo file name)
+ * both on file and on runtime
+ */
 - (int) increaseAlbum: (Album *) album {
     NSString *rootName = [NSString stringWithFormat:@"%d", [self albumIndexWithKey:album.mAlbumKey]];
     int intincr = [album.mIncrease intValue];
-    NSLog(@"pasing before incr: %d", intincr);
     
     intincr += 1;
     if (intincr > 99999) {
@@ -232,7 +235,9 @@
     intincr = intincr % 10;
     int m5= (int) intincr;
     
+    // Save it to file
     NSString *newIncr = [NSString stringWithFormat:@"%d%d%d%d%d",m1,m2,m3,m4,m5];
+    NSLog(@"increaseAlbum: new increase is %@", newIncr);
     NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                  album.mAlbumName, ALBUM_KEY_NAME,
                                  album.mAlbumKey, ALBUM_KEY_KEY,
@@ -242,6 +247,10 @@
                                  nil];
     [mAlbumList setObject:data forKey:rootName];
     [mAlbumList writeToFile:mAlbumListPath atomically:YES];
+    
+    // Change on runtime
+    album.mIncrease = newIncr;
+    
     return 0;
 }
 
@@ -357,6 +366,7 @@
     
     // Update runtime list
     //[thisAlbum.mAlbumPhotos addObject:imageFileName];
+    [self refresh]; //TODO: this is a workaround, very time consuming
     
     return 0;
 }
