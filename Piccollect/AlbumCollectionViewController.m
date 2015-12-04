@@ -67,7 +67,8 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return [mAlbum.mAlbumPhotos count]/4 + ([mAlbum.mAlbumPhotos count]%4 ? 1 : 0);
+    long photoCount = [mAlbum.mAlbumPhotos count];
+    return photoCount/4 + (photoCount%4 ? 1 : 0);
 }
 
 
@@ -86,6 +87,12 @@ static NSString * const reuseIdentifier = @"Cell";
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.frame.size.height, cell.frame.size.width)];
         imageView.image = image;
         imageView.contentMode = UIViewContentModeScaleAspectFill;
+        [cell.contentView addSubview:imageView];
+    } else {
+        // In this case, the subview of this cell might be dirty
+        // TODO: this is a workaround
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.frame.size.height, cell.frame.size.width)];
+        imageView.backgroundColor = [UIColor whiteColor];
         [cell.contentView addSubview:imageView];
     }
     return cell;

@@ -143,14 +143,17 @@
         [thisAlbum initWithName:name key:key date:cdate order:order incr:incr serial:serial];
         
         // Initial its album photos
-        NSDictionary *eachAlbumPhoto = [mAlbumPhotoList objectForKey:key];
+        NSMutableArray *eachAlbumPhoto = [mAlbumPhotoList objectForKey:key];
         
         // If the album's photo is not in list, fudge it.
         if (eachAlbumPhoto == nil) {
-            eachAlbumPhoto = [[NSDictionary alloc] init];
+            eachAlbumPhoto = [[NSMutableArray alloc] init];
             //TODO: insert new line in acutal list
         }
-        thisAlbum.mAlbumPhotos = eachAlbumPhoto.copy;
+        
+        // Fill the photos index
+        thisAlbum.mAlbumPhotos = eachAlbumPhoto;
+        NSLog(@"Initial album photo: %ld", [thisAlbum.mAlbumPhotos count]);
         
         [mAlbum addObject:thisAlbum];
     }
@@ -166,8 +169,9 @@
     [self initAlbumsWithRefresh:YES];
 }
 
-/*
+/* ===================================
  * Album functions
+ * ===================================
  */
 
 
@@ -341,8 +345,11 @@
         return 0;
 }
 
-/*
+
+
+/* ===================================
  * Photos functions
+ * ===================================
  */
 - (int) addPhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key {
     return 0;
@@ -354,7 +361,7 @@
     NSString *savePath = [mDocumentRootPath stringByAppendingPathComponent: imageFileName];
     [UIImagePNGRepresentation(img) writeToFile:savePath atomically:YES];
     NSLog(@"New image %@ saved.", imageFileName);
-    
+
     // Update list
     NSMutableArray *photoList = [mAlbumPhotoList objectForKey:thisAlbum.mAlbumKey];
     [photoList addObject:imageFileName];
@@ -363,10 +370,13 @@
     
     // Increase the incr
     [self increaseAlbum:thisAlbum];
+    NSLog(@"Before add to array count is %ld", [thisAlbum.mAlbumPhotos count]);
     
     // Update runtime list
+    /* We don't need the following line, because the content of mAlbumPhotos is
+       reflected by mAlbumPhotoList
     //[thisAlbum.mAlbumPhotos addObject:imageFileName];
-    [self refresh]; //TODO: this is a workaround, very time consuming
+     */
     
     return 0;
 }
@@ -496,7 +506,7 @@
     
     int serial = [thisAlbum.mSerial intValue];
     NSString *incr = thisAlbum.mIncrease;
-    NSString *ret = [NSString stringWithFormat:@"IMG_%d%@", serial, incr];
+    NSString *ret = [NSString stringWithFormat:@"IMG_%d%@.png", serial, incr];
     
     return ret;
 }

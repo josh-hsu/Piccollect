@@ -36,10 +36,10 @@
 #pragma mark - View cycle
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-
     [self initAlbumList];
     //[mAlbumList initPhotoFileDebug]; /* Setting default photo from library automatically */
+    
+    [super viewDidLoad];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
