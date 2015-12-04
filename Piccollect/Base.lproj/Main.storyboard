@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--我的相簿-->
@@ -66,11 +67,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="我的相簿" id="eVc-WX-bR8">
-                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="zxP-xu-zxy">
-                            <connections>
-                                <action selector="addNewAlbum:" destination="9pv-A4-QxB" id="Ib3-DO-u8Q"/>
-                            </connections>
-                        </barButtonItem>
+                        <leftBarButtonItems>
+                            <barButtonItem systemItem="add" id="zxP-xu-zxy">
+                                <connections>
+                                    <action selector="addNewAlbum:" destination="9pv-A4-QxB" id="Ib3-DO-u8Q"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="compose" id="X1b-ax-emf">
+                                <connections>
+                                    <action selector="debugPrint:" destination="9pv-A4-QxB" id="7qM-FZ-nNi"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                         <barButtonItem key="rightBarButtonItem" title="編輯" id="Iay-am-TlX">
                             <connections>
                                 <action selector="editTableVIew:" destination="9pv-A4-QxB" id="iW2-a8-h9F"/>

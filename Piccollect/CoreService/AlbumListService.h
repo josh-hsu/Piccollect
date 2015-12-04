@@ -90,5 +90,6 @@
  */
 - (void) initPhotoFileDebug;
 - (void) allPhotosCollected:(NSArray*)imgArray;
+- (void) debugPrint;
 
 @end

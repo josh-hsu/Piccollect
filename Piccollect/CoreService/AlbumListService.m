@@ -202,7 +202,14 @@
     NSString *rootName = [NSString stringWithFormat:@"%d", [root_serial intValue]];
     NSDate *today = [[NSDate alloc] initWithTimeIntervalSinceNow:0];
     NSString *key = [self randomStringWithLength:8];
-    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithObjectsAndKeys: name, ALBUM_KEY_NAME, key, ALBUM_KEY_KEY, today, ALBUM_KEY_CDATE, root_serial, ALBUM_KEY_ORDER, @"00000", ALBUM_KEY_INCR, nil];
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                 name, ALBUM_KEY_NAME,
+                                 key, ALBUM_KEY_KEY,
+                                 today, ALBUM_KEY_CDATE,
+                                 root_serial, ALBUM_KEY_ORDER,
+                                 @"00000", ALBUM_KEY_INCR,
+                                 rootName, ALBUM_KEY_SERIAL,
+                                 nil];
     [mAlbumList setObject:data forKey:rootName];
     [mAlbumList writeToFile:mAlbumListPath atomically:YES];
     [self refresh];
@@ -246,8 +253,9 @@
                                  album.mAlbumName, ALBUM_KEY_NAME,
                                  album.mAlbumKey, ALBUM_KEY_KEY,
                                  album.mCreateDate, ALBUM_KEY_CDATE,
-                                 album.mSerial, ALBUM_KEY_ORDER,
                                  newIncr, ALBUM_KEY_INCR,
+                                 album.mOrder, ALBUM_KEY_ORDER,
+                                 album.mSerial, ALBUM_KEY_SERIAL,
                                  nil];
     [mAlbumList setObject:data forKey:rootName];
     [mAlbumList writeToFile:mAlbumListPath atomically:YES];
@@ -370,7 +378,6 @@
     
     // Increase the incr
     [self increaseAlbum:thisAlbum];
-    NSLog(@"Before add to array count is %ld", [thisAlbum.mAlbumPhotos count]);
     
     // Update runtime list
     /* We don't need the following line, because the content of mAlbumPhotos is
@@ -509,6 +516,11 @@
     NSString *ret = [NSString stringWithFormat:@"IMG_%d%@.png", serial, incr];
     
     return ret;
+}
+
+- (void) debugPrint {
+    NSLog(@"Album debug: %@", [mAlbumList description]);
+    NSLog(@"Photo debug: %@", [mAlbumPhotoList description]);
 }
 
 @end

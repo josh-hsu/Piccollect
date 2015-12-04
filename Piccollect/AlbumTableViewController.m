@@ -179,5 +179,9 @@
     }
 }
 
+- (IBAction)debugPrint:(id)sender {
+    [mAlbumList debugPrint];
+}
+
 
 @end
