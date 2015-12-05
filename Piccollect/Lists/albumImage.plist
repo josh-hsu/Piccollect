@@ -3,22 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>at9jkn</key>
-	<array>
-		<string>IMG_000000.png</string>
-		<string>IMG_000001.png</string>
-		<string>IMG_000002.png</string>
-		<string>IMG_000003.png</string>
-		<string>IMG_000004.png</string>
-		<string>IMG_000005.png</string>
-	</array>
-	<key>c20uxz</key>
-	<array>
-		<string>IMG_100000.png</string>
-		<string>IMG_100001.png</string>
-		<string>IMG_100002.png</string>
-		<string>IMG_100003.png</string>
-		<string>IMG_100004.png</string>
-		<string>IMG_100005.png</string>
-	</array>
+	<array/>
 </dict>
 </plist>

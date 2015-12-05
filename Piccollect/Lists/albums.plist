@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>next</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>0</key>
 	<dict>
 		<key>albumName</key>
@@ -15,24 +15,9 @@
 		<key>order</key>
 		<integer>0</integer>
 		<key>increase</key>
-		<string>00006</string>
+		<string>00000</string>
 		<key>serial</key>
 		<integer>0</integer>
-	</dict>
-	<key>1</key>
-	<dict>
-		<key>albumName</key>
-		<string>Tumblr</string>
-		<key>albumKey</key>
-		<string>c20uxz</string>
-		<key>createDate</key>
-		<date>2015-11-22T06:54:10Z</date>
-		<key>order</key>
-		<integer>1</integer>
-		<key>increase</key>
-		<string>00006</string>
-		<key>serial</key>
-		<integer>1</integer>
 	</dict>
 </dict>
 </plist>
