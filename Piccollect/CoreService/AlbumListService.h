@@ -15,7 +15,7 @@
 
 @interface AlbumListService : NSObject {
     // Local variable, it cannot be accessed outside this method
-    NSMutableArray *mAlbum;
+    NSMutableArray *mAlbums;
     
     // For debug
     ALAssetsLibrary *library;

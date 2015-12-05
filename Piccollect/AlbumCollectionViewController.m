@@ -68,6 +68,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     long photoCount = [mAlbum.mAlbumPhotos count];
+    NSLog(@"CollectionView: photo count = %ld", photoCount);
     return photoCount/4 + (photoCount%4 ? 1 : 0);
 }
 

@@ -119,8 +119,8 @@
         NSLog(@"BUG: There is no album list presented.");
     }
     
-    if (!mAlbum || needRefresh) {
-        mAlbum = [[NSMutableArray alloc] init];
+    if (!mAlbums || needRefresh) {
+        mAlbums = [[NSMutableArray alloc] init];
     }
     
     NSNumber *nextSerial  = [mAlbumList objectForKey:ALBUM_KEY_NEXT];
@@ -148,14 +148,14 @@
         // If the album's photo is not in list, fudge it.
         if (eachAlbumPhoto == nil) {
             eachAlbumPhoto = [[NSMutableArray alloc] init];
-            //TODO: insert new line in acutal list
+            [mAlbumPhotoList setObject:eachAlbumPhoto forKey:key];
         }
         
         // Fill the photos index
         thisAlbum.mAlbumPhotos = eachAlbumPhoto;
         NSLog(@"Initial album photo: %ld", [thisAlbum.mAlbumPhotos count]);
         
-        [mAlbum addObject:thisAlbum];
+        [mAlbums addObject:thisAlbum];
     }
     
     mValidate = YES;
@@ -169,6 +169,7 @@
     [self initAlbumsWithRefresh:YES];
 }
 
+# pragma mark - Album functions
 /* ===================================
  * Album functions
  * ===================================
@@ -185,7 +186,7 @@
     if (idx >= mCount)
         return nil;
     else
-        return [mAlbum objectAtIndex:idx];
+        return [mAlbums objectAtIndex:idx];
 }
 
 /*
@@ -197,7 +198,7 @@
  * an album
  */
 - (int) createAlbumWithName: (NSString *) name {
-    //
+    // Adding to the album list
     NSNumber *root_serial = [[NSNumber alloc] initWithInt: mCount];
     NSString *rootName = [NSString stringWithFormat:@"%d", [root_serial intValue]];
     NSDate *today = [[NSDate alloc] initWithTimeIntervalSinceNow:0];
@@ -212,7 +213,20 @@
                                  nil];
     [mAlbumList setObject:data forKey:rootName];
     [mAlbumList writeToFile:mAlbumListPath atomically:YES];
-    [self refresh];
+    
+    // Update runtime
+    Album *thisAlbum = [Album alloc];
+    [thisAlbum initWithName:name key:key date:today order:root_serial incr:@"00000" serial:root_serial];
+    [mAlbums addObject:thisAlbum];
+    mCount++;
+    
+    // Adding default photos attribute
+    NSMutableArray *defaultPhotos = [[NSMutableArray alloc] init];
+    [mAlbumPhotoList setObject:defaultPhotos forKey:key];
+    [mAlbumPhotoList writeToFile:mAlbumPhotoPath atomically:YES];
+    
+    // Update runtime connectivity
+    thisAlbum.mAlbumPhotos = defaultPhotos;
     
     return 0;
 }
@@ -329,7 +343,7 @@
     }
     
     if (targetIdx != -1)
-        return [mAlbum objectAtIndex:targetIdx];
+        return [mAlbums objectAtIndex:targetIdx];
     else
         return nil;
 }
@@ -355,6 +369,7 @@
 
 
 
+#pragma mark - Photo functions
 /* ===================================
  * Photos functions
  * ===================================
@@ -380,10 +395,7 @@
     [self increaseAlbum:thisAlbum];
     
     // Update runtime list
-    /* We don't need the following line, because the content of mAlbumPhotos is
-       reflected by mAlbumPhotoList
     //[thisAlbum.mAlbumPhotos addObject:imageFileName];
-     */
     
     return 0;
 }
@@ -423,6 +435,8 @@
     return ret;
 }
 
+
+#pragma mark - Debug functions
 /*
  * Debug functions
  */
@@ -485,7 +499,7 @@
     // We can deal with those images in user's photo library here
     NSLog(@"allPhotosCollected called %ld", [imgArray count]);
     int j = 0;
-    for (Album *thisAlbum in mAlbum) {
+    for (Album *thisAlbum in mAlbums) {
         for (int i = 0; i < thisAlbum.mAlbumPhotos.count; i++) {
             NSString *savePath = [mDocumentRootPath stringByAppendingPathComponent:[thisAlbum.mAlbumPhotos objectAtIndex:i]];
             [UIImagePNGRepresentation([imgArray objectAtIndex:i+j*6]) writeToFile:savePath atomically:YES];
@@ -494,6 +508,8 @@
     }
 }
 
+
+#pragma mark - Utility functions
 - (NSString *) randomStringWithLength: (int) len {
     NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     NSMutableString *randomString = [NSMutableString stringWithCapacity: len];
