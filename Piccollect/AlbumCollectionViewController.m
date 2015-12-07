@@ -143,6 +143,11 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark - IBAction
 
+- (IBAction)editPhotoLibrary:(id)sender {
+    
+}
+
+
 - (IBAction)addPhotoInLibrary:(id)sender {
     ELCImagePickerController *elcPicker = [[ELCImagePickerController alloc] initImagePicker];
     

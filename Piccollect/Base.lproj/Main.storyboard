@@ -131,11 +131,18 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" title="Title" id="kxf-Bn-L33">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="hdU-yu-kMp">
-                            <connections>
-                                <action selector="addPhotoInLibrary:" destination="h6m-PB-AqY" id="5ue-Mm-WRU"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="hdU-yu-kMp">
+                                <connections>
+                                    <action selector="addPhotoInLibrary:" destination="h6m-PB-AqY" id="5ue-Mm-WRU"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="action" id="D9t-KQ-OVI">
+                                <connections>
+                                    <action selector="editPhotoLibrary:" destination="h6m-PB-AqY" id="cxu-Dw-xaj"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="mCollectionView" destination="CS3-dR-BSF" id="sGO-bM-xPQ"/>
@@ -254,7 +261,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
                             <tableViewSection headerTitle="帳號設定" id="UzZ-ih-hAr">
                                 <cells>
@@ -273,7 +280,7 @@
                                                     <rect key="frame" x="66" y="23" width="301" height="21"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="user@gmail.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZtH-Cg-UbK">
