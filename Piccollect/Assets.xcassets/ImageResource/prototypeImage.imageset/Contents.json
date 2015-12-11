@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icon.75.notebook.ring.blue-1.png",
+      "filename" : "empty-album-1.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icon.75.notebook.ring.blue.png",
+      "filename" : "empty-album.png",
       "scale" : "2x"
     },
     {

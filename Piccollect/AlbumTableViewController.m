@@ -203,13 +203,13 @@
     
     UIAlertAction* allAlbum = [UIAlertAction actionWithTitle:@"全部刪除" style:UIAlertActionStyleDestructive
                                                       handler:^(UIAlertAction * action) {
-                                                          [mAlbumList removeAlbumWithKey:thisAlbum.mAlbumKey deletePhotos:YES];
+                                                          [mAlbumList removeAlbumWithKey:thisAlbum.mAlbumKey mergeBack:NO];
                                                           [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
                                                       }];
     
     UIAlertAction* onlyAlbum = [UIAlertAction actionWithTitle:@"只刪除相簿" style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction * action) {
-                                                   [mAlbumList removeAlbumWithKey:thisAlbum.mAlbumKey deletePhotos:NO];
+                                                   [mAlbumList removeAlbumWithKey:thisAlbum.mAlbumKey mergeBack:YES];
                                                    [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
                                                }];
     

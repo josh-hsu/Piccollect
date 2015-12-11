@@ -27,7 +27,7 @@
 @synthesize mAlbumPhotoList, mAlbumPhotoPath, mValidate, mNextAlbumSerial;
 #define LOCAL_DEBUG           YES   //YES, turn on Log
 #define NUM_LIST_ATTRIBUTE    1     //number of attributes in albums.plist except serial such as "next"
-#define LENGTH_OF_SERIAL      8
+#define LENGTH_OF_SERIAL      8     //request serial code length for album
 
 - (id)init {
     int ret = -1;
@@ -309,7 +309,7 @@
     }
 }
 
-- (int) removeAlbumWithKey: (NSString *) key deletePhotos: (BOOL) deletePhotos {
+- (int) removeAlbumWithKey: (NSString *) key mergeBack: (BOOL) merge {
     NSString *deleteTarget = @"";
     int deleteIdx = -1;
 
@@ -326,7 +326,8 @@
     }
     
     if (![deleteTarget isEqualToString:@""]) {
-        if(LOCAL_DEBUG) NSLog(@"LOG: remove index %d with delete photo %@", deleteIdx, deletePhotos ? @"YES" : @"NO");
+        if(LOCAL_DEBUG) NSLog(@"LOG: remove index %d with merge back %@", deleteIdx, merge ? @"YES" : @"NO");
+        [self removeAllPhotosInAlbum:[self albumWithKey:key] mergeBackToDefaultAlbum:merge];
         [mAlbumList removeObjectForKey:deleteTarget];
         [self reorderAlbumId:deleteIdx];
     } else {
@@ -381,10 +382,12 @@
 
 
 #pragma mark - Photo functions
+
 /* ===================================
  * Photos functions
  * ===================================
  */
+
 - (int) addPhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key {
     return 0;
 }
@@ -411,6 +414,58 @@
     return 0;
 }
 
+/*
+ * This function is called only in the procedure of album deleting.
+ * Merge back to default album is also available in the merge option
+ */
+- (int) removeAllPhotosInAlbum: (Album *) thisAlbum mergeBackToDefaultAlbum: (BOOL) merge {
+
+    // Make sure we are not deleting default album
+    Album *defaultAlbum = [self albumInListAtIndex:0];
+    NSMutableArray *defaultPhotoList = [mAlbumPhotoList objectForKey:defaultAlbum.mAlbumKey];
+    if ([defaultAlbum.mAlbumKey isEqualToString:thisAlbum.mAlbumKey]) {
+        NSLog(@"BUG: removing default album!! this is not allowed");
+        return -3;
+    }
+
+    // Remove or merge back to default album
+    if (merge) {
+        // Initial file manager
+        NSError * err = NULL;
+        NSFileManager * fm = [[NSFileManager alloc] init];
+
+        // Batching rename for default
+        NSLog(@"this album key %@", thisAlbum.mAlbumKey);
+        for (NSString *oldPhotoName in thisAlbum.mAlbumPhotos) {
+            NSString *oldPath = [mDocumentRootPath stringByAppendingPathComponent: oldPhotoName];
+            NSString *newPhotoName = [self generateNewPhotoFileNameWithAlbum: defaultAlbum];
+            NSString *newPath = [mDocumentRootPath stringByAppendingPathComponent: newPhotoName];
+            
+            NSLog(@"Merge %@ to %@", oldPhotoName, newPhotoName);
+            BOOL result = [fm moveItemAtPath:oldPath toPath:newPath error:&err];
+            if(!result)
+                NSLog(@"Error moving photo file: %@", err);
+            
+            [defaultPhotoList addObject:newPhotoName];
+            // Increase the incr
+            [self increaseAlbum:defaultAlbum];
+            
+        }
+        
+        // Update list, update file in outside
+        [mAlbumPhotoList setObject:defaultPhotoList forKey:defaultAlbum.mAlbumKey];
+        
+    } else {
+        
+    }
+    
+    // Remove the key entry in albumImage.plist
+    [mAlbumPhotoList removeObjectForKey:thisAlbum.mAlbumKey];
+    [mAlbumPhotoList writeToFile:mAlbumPhotoPath atomically:YES];
+    
+    return 0;
+}
+
 - (int) removePhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key {
     return 0;
 }
@@ -423,18 +478,23 @@
     return nil;
 }
 
+/*
+ * return the lastest photo in the album
+ * If no photo in this album, it will return default prototypeImage
+ */
 - (UIImage *) topPhotoInAlbum: (Album *) album {
     NSString* firstPhotoFileName;
     NSString* firstPhotoFilePath;
     UIImage* ret;
+    long photoCountInAlbum = [album.mAlbumPhotos count];
     
     if (!mValidate) {
         NSLog(@"BUG: try to get photo before it validate");
         return nil;
     }
     
-    if ([album.mAlbumPhotos count] > 0) {
-        firstPhotoFileName = [album.mAlbumPhotos objectAtIndex:0];
+    if (photoCountInAlbum > 0) {
+        firstPhotoFileName = [album.mAlbumPhotos objectAtIndex:photoCountInAlbum - 1];
         firstPhotoFilePath = [[NSString alloc] initWithFormat:@"%@/%@", mDocumentRootPath, firstPhotoFileName];
         NSLog(@"First photo path is: %@", firstPhotoFilePath);
         ret = [[UIImage alloc] initWithContentsOfFile:firstPhotoFilePath];

@@ -73,6 +73,7 @@
 // Photo functions
 - (int) addPhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key;
 - (int) removePhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key;
+- (int) removeAllPhotosInAlbum: (Album *) thisAlbum mergeBackToDefaultAlbum: (BOOL) merge ;
 - (int) addPhotoWithImage: (UIImage *) img toAlbum: (Album *) thisAlbum;
 - (NSArray *) photosInAlbum: (Album *) album;
 - (NSArray *) photosInAlbumWithKey: (NSString *) key;
@@ -83,7 +84,7 @@
 - (void) reorderAlbumId: (int) idx;
 - (int) createAlbumWithName: (NSString *) name;
 - (int) editAlbumWithKey: (NSString *) key order: (NSInteger *) order;
-- (int) removeAlbumWithKey: (NSString *) key deletePhotos: (BOOL) deletePhotos;
+- (int) removeAlbumWithKey: (NSString *) key mergeBack: (BOOL) merge;
 
 /*
  * Debug functions
