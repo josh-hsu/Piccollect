@@ -427,7 +427,7 @@
     <resources>
         <image name="first" width="22" height="24"/>
         <image name="googleLogo" width="562" height="562"/>
-        <image name="prototypeImage" width="75" height="75"/>
+        <image name="prototypeImage" width="206" height="206"/>
         <image name="second" width="36" height="36"/>
         <image name="third" width="26" height="26"/>
     </resources>
