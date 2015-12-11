@@ -10,8 +10,10 @@
 //  safe and sound.
 //
 //  Created by Josh on 2015/11/22.
-//  Copyright © 2015年 Mu Mu Corp. All rights reserved.
+//  Copyright © 2015 Mu Mu Corp. All rights reserved.
 //
+
+// TODO: Need code refinement
 
 #import "AlbumListService.h"
 #import "Album.h"
@@ -23,7 +25,9 @@
 @synthesize mCount;
 @synthesize mDocumentRootPath;
 @synthesize mAlbumPhotoList, mAlbumPhotoPath, mValidate, mNextAlbumSerial;
-#define LOCAL_DEBUG     YES
+#define LOCAL_DEBUG           YES   //YES, turn on Log
+#define NUM_LIST_ATTRIBUTE    1     //number of attributes in albums.plist except serial such as "next"
+#define LENGTH_OF_SERIAL      8
 
 - (id)init {
     int ret = -1;
@@ -73,7 +77,7 @@
         return -1;
     }
 
-    mCount = (int)[mAlbumList count] - 1; //Because we have a "next" field on the top
+    mCount = (int)[mAlbumList count] - NUM_LIST_ATTRIBUTE; //Because we have a "next" field on the top
     NSLog(@"mCount = %d", mCount);
     
     [self initAlbumPhotosList];
@@ -163,7 +167,7 @@
 }
 
 - (void) refresh {
-    mCount = (int)[mAlbumList count] - 1;
+    mCount = (int)[mAlbumList count] - NUM_LIST_ATTRIBUTE;
     
     [self initAlbumPhotosList];
     [self initAlbumsWithRefresh:YES];
@@ -202,9 +206,9 @@
     NSNumber *root_serial = [[NSNumber alloc] initWithInt: mCount];
     NSString *rootName = [NSString stringWithFormat:@"%d", [root_serial intValue]];
     NSDate *today = [[NSDate alloc] initWithTimeIntervalSinceNow:0];
-    NSString *key = [self randomStringWithLength:8];
+    NSString *key = [self randomStringWithLength:LENGTH_OF_SERIAL];
     // Create data
-    NSLog(@"LOG: create album with serial %d", mNextAlbumSerial);
+    if(LOCAL_DEBUG) NSLog(@"LOG: create album with serial %d", mNextAlbumSerial);
     NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                  name, ALBUM_KEY_NAME,
                                  key, ALBUM_KEY_KEY,
@@ -322,7 +326,7 @@
     }
     
     if (![deleteTarget isEqualToString:@""]) {
-        NSLog(@"LOG: remove index %d with delete photo %@", deleteIdx, deletePhotos ? @"YES" : @"NO");
+        if(LOCAL_DEBUG) NSLog(@"LOG: remove index %d with delete photo %@", deleteIdx, deletePhotos ? @"YES" : @"NO");
         [mAlbumList removeObjectForKey:deleteTarget];
         [self reorderAlbumId:deleteIdx];
     } else {
