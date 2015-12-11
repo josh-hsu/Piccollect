@@ -97,10 +97,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        Album *thisAlbum = [mAlbumList albumInListAtIndex:indexPath.row];
-        // TODO: Show a popup menu for user to comfirm deleting
-        [mAlbumList removeAlbumWithKey:thisAlbum.mAlbumKey deletePhotos:NO];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self confirmRemoveOfAlbumInTableview:tableView inIndexPaths:@[indexPath]];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
@@ -182,6 +179,46 @@
 
 - (IBAction)debugPrint:(id)sender {
     [mAlbumList debugPrint];
+}
+
+# pragma mark - Album other functions
+
+- (void)confirmRemoveOfAlbumInTableview: (UITableView *) tableView inIndexPaths: (NSArray<NSIndexPath *> *) indexPaths {
+    
+    Album *thisAlbum = [mAlbumList albumInListAtIndex:[indexPaths objectAtIndex:0].row];
+    if (thisAlbum == NULL) {
+        NSLog(@"BUG: remove album with null pointer");
+        return;
+    }
+    
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"刪除相簿"
+                                  message:@"需要連同照片一同刪除嗎？\n若只刪除相簿，其他相片將自動轉存至預設相簿"
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+    
+    UIAlertAction* allAlbum = [UIAlertAction actionWithTitle:@"全部刪除" style:UIAlertActionStyleDestructive
+                                                      handler:^(UIAlertAction * action) {
+                                                          [mAlbumList removeAlbumWithKey:thisAlbum.mAlbumKey deletePhotos:YES];
+                                                          [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+                                                      }];
+    
+    UIAlertAction* onlyAlbum = [UIAlertAction actionWithTitle:@"只刪除相簿" style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action) {
+                                                   [mAlbumList removeAlbumWithKey:thisAlbum.mAlbumKey deletePhotos:NO];
+                                                   [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+                                               }];
+    
+    [alert addAction:cancel];
+    [alert addAction:allAlbum];
+    [alert addAction:onlyAlbum];
+
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 

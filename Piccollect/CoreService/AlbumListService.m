@@ -22,7 +22,7 @@
 @synthesize mAlbumList;
 @synthesize mCount;
 @synthesize mDocumentRootPath;
-@synthesize mAlbumPhotoList, mAlbumPhotoPath, mValidate;
+@synthesize mAlbumPhotoList, mAlbumPhotoPath, mValidate, mNextAlbumSerial;
 #define LOCAL_DEBUG     YES
 
 - (id)init {
@@ -203,22 +203,28 @@
     NSString *rootName = [NSString stringWithFormat:@"%d", [root_serial intValue]];
     NSDate *today = [[NSDate alloc] initWithTimeIntervalSinceNow:0];
     NSString *key = [self randomStringWithLength:8];
+    // Create data
+    NSLog(@"LOG: create album with serial %d", mNextAlbumSerial);
     NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                  name, ALBUM_KEY_NAME,
                                  key, ALBUM_KEY_KEY,
                                  today, ALBUM_KEY_CDATE,
                                  root_serial, ALBUM_KEY_ORDER,
                                  @"00000", ALBUM_KEY_INCR,
-                                 rootName, ALBUM_KEY_SERIAL,
+                                 [[NSNumber alloc] initWithInt:mNextAlbumSerial], ALBUM_KEY_SERIAL,
                                  nil];
+    
+    // Save list back to file
     [mAlbumList setObject:data forKey:rootName];
+    [mAlbumList setObject:[[NSNumber alloc] initWithInt:mNextAlbumSerial + 1] forKey:ALBUM_KEY_NEXT];
     [mAlbumList writeToFile:mAlbumListPath atomically:YES];
     
     // Update runtime
     Album *thisAlbum = [Album alloc];
-    [thisAlbum initWithName:name key:key date:today order:root_serial incr:@"00000" serial:root_serial];
+    [thisAlbum initWithName:name key:key date:today order:root_serial incr:@"00000" serial:[[NSNumber alloc] initWithInt:mNextAlbumSerial]];
     [mAlbums addObject:thisAlbum];
     mCount++;
+    mNextAlbumSerial++;
     
     // Adding default photos attribute
     NSMutableArray *defaultPhotos = [[NSMutableArray alloc] init];
@@ -316,6 +322,7 @@
     }
     
     if (![deleteTarget isEqualToString:@""]) {
+        NSLog(@"LOG: remove index %d with delete photo %@", deleteIdx, deletePhotos ? @"YES" : @"NO");
         [mAlbumList removeObjectForKey:deleteTarget];
         [self reorderAlbumId:deleteIdx];
     } else {
@@ -325,7 +332,7 @@
     
     //[mAlbumList setObject:data forKey:rootName];
     [mAlbumList writeToFile:mAlbumListPath atomically:YES];
-    [self refresh];
+    [self refresh]; //TODO: need to remove refresh lazy code
     return 0;
 }
 
