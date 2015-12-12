@@ -438,7 +438,7 @@
             NSString *newPhotoName = [self generateNewPhotoFileNameWithAlbum: defaultAlbum];
             NSString *newPath = [mDocumentRootPath stringByAppendingPathComponent: newPhotoName];
             
-            NSLog(@"Merge %@ to %@", oldPhotoName, newPhotoName);
+            if (LOCAL_DEBUG) NSLog(@"Merge %@ to %@", oldPhotoName, newPhotoName);
             BOOL result = [fm moveItemAtPath:oldPath toPath:newPath error:&err];
             if(!result)
                 NSLog(@"BUG: Error moving photo file: %@", err);
@@ -447,18 +447,18 @@
             // Increase the incr
             [self increaseAlbum:defaultAlbum];
         } else {
-            NSLog(@"Delete %@", oldPhotoName);
+            if (LOCAL_DEBUG) NSLog(@"Delete %@", oldPhotoName);
             BOOL result = [fm removeItemAtPath:oldPath error:&err];
             if(!result)
                 NSLog(@"BUG: Error deleting photo file: %@", err);
         }
     }
-    
+
     // Update list
     if (merge) {
         [mAlbumPhotoList setObject:defaultPhotoList forKey:defaultAlbum.mAlbumKey];
     }
-    
+
     // Remove the key entry in albumImage.plist
     [mAlbumPhotoList removeObjectForKey:thisAlbum.mAlbumKey];
     [mAlbumPhotoList writeToFile:mAlbumPhotoPath atomically:YES];
