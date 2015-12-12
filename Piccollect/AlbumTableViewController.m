@@ -77,7 +77,7 @@
     // Configure view content
     Album *thisAlbum = [mAlbumList albumInListAtIndex:indexPath.row];
     [titleLabel setText:thisAlbum.mAlbumName];
-    [subtitleLabel setText:thisAlbum.mAlbumKey];
+    [subtitleLabel setText:[NSString stringWithFormat:@"%ld", [thisAlbum.mAlbumPhotos count]]];
     topImageView.image = [mAlbumList topPhotoInAlbum:thisAlbum];
     
     return cell;
@@ -205,12 +205,14 @@
                                                       handler:^(UIAlertAction * action) {
                                                           [mAlbumList removeAlbumWithKey:thisAlbum.mAlbumKey mergeBack:NO];
                                                           [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+                                                          [tableView reloadData];
                                                       }];
     
     UIAlertAction* onlyAlbum = [UIAlertAction actionWithTitle:@"只刪除相簿" style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction * action) {
                                                    [mAlbumList removeAlbumWithKey:thisAlbum.mAlbumKey mergeBack:YES];
                                                    [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+                                                   [tableView reloadData];
                                                }];
     
     [alert addAction:cancel];

@@ -25,7 +25,7 @@
 @synthesize mCount;
 @synthesize mDocumentRootPath;
 @synthesize mAlbumPhotoList, mAlbumPhotoPath, mValidate, mNextAlbumSerial;
-#define LOCAL_DEBUG           YES   //YES, turn on Log
+#define LOCAL_DEBUG           NO    //YES, turn on Log
 #define NUM_LIST_ATTRIBUTE    1     //number of attributes in albums.plist except serial such as "next"
 #define LENGTH_OF_SERIAL      8     //request serial code length for album
 
@@ -408,9 +408,6 @@
     // Increase the incr
     [self increaseAlbum:thisAlbum];
     
-    // Update runtime list
-    //[thisAlbum.mAlbumPhotos addObject:imageFileName];
-    
     return 0;
 }
 
@@ -429,34 +426,37 @@
     }
 
     // Remove or merge back to default album
-    if (merge) {
-        // Initial file manager
-        NSError * err = NULL;
-        NSFileManager * fm = [[NSFileManager alloc] init];
+    // Initial file manager
+    NSError *err = NULL;
+    NSFileManager *fm = [[NSFileManager alloc] init];
 
-        // Batching rename for default
-        NSLog(@"this album key %@", thisAlbum.mAlbumKey);
-        for (NSString *oldPhotoName in thisAlbum.mAlbumPhotos) {
-            NSString *oldPath = [mDocumentRootPath stringByAppendingPathComponent: oldPhotoName];
+    for (NSString *oldPhotoName in thisAlbum.mAlbumPhotos) {
+        NSString *oldPath = [mDocumentRootPath stringByAppendingPathComponent: oldPhotoName];
+
+        if (merge) {
+            // Batching rename for default
             NSString *newPhotoName = [self generateNewPhotoFileNameWithAlbum: defaultAlbum];
             NSString *newPath = [mDocumentRootPath stringByAppendingPathComponent: newPhotoName];
             
             NSLog(@"Merge %@ to %@", oldPhotoName, newPhotoName);
             BOOL result = [fm moveItemAtPath:oldPath toPath:newPath error:&err];
             if(!result)
-                NSLog(@"Error moving photo file: %@", err);
+                NSLog(@"BUG: Error moving photo file: %@", err);
             
             [defaultPhotoList addObject:newPhotoName];
             // Increase the incr
             [self increaseAlbum:defaultAlbum];
-            
+        } else {
+            NSLog(@"Delete %@", oldPhotoName);
+            BOOL result = [fm removeItemAtPath:oldPath error:&err];
+            if(!result)
+                NSLog(@"BUG: Error deleting photo file: %@", err);
         }
-        
-        // Update list, update file in outside
+    }
+    
+    // Update list
+    if (merge) {
         [mAlbumPhotoList setObject:defaultPhotoList forKey:defaultAlbum.mAlbumKey];
-        
-    } else {
-        
     }
     
     // Remove the key entry in albumImage.plist
@@ -496,10 +496,10 @@
     if (photoCountInAlbum > 0) {
         firstPhotoFileName = [album.mAlbumPhotos objectAtIndex:photoCountInAlbum - 1];
         firstPhotoFilePath = [[NSString alloc] initWithFormat:@"%@/%@", mDocumentRootPath, firstPhotoFileName];
-        NSLog(@"First photo path is: %@", firstPhotoFilePath);
+        if (LOCAL_DEBUG) NSLog(@"First photo path is: %@", firstPhotoFilePath);
         ret = [[UIImage alloc] initWithContentsOfFile:firstPhotoFilePath];
     } else {
-        NSLog(@"There is no photo in this album, give it a default top photo");
+        if (LOCAL_DEBUG) NSLog(@"There is no photo in this album, give it a default top photo");
         ret = [UIImage imageNamed:@"prototypeImage"];
     }
     
@@ -541,7 +541,7 @@
                              }
                              count ++;
                          }
-                        failureBlock:^(NSError *error){ NSLog(@"operation was not successfull!"); } ];
+                        failureBlock:^(NSError *error){ NSLog(@"BUG: operation was not successfull!"); } ];
             }
         }
         count++;
