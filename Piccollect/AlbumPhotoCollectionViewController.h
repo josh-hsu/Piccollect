@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RMGalleryViewController.h"
 
 @class Album, AlbumListService;
-@interface AlbumPhotoCollectionViewController : UICollectionViewController
-
-@property (strong, nonatomic) IBOutlet UICollectionView *mCollectionView;
+@interface AlbumPhotoCollectionViewController : RMGalleryViewController
 
 @property (nonatomic, retain) Album *mAlbum;
 @property (nonatomic, retain) AlbumListService *mAlbumListService;

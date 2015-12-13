@@ -16,5 +16,8 @@
 
 @property (nonatomic, retain) Album *mAlbum;
 @property (nonatomic, retain) AlbumListService *mAlbumListService;
+@property (nonatomic) UIImageView *currentImageView;
+@property (nonatomic, retain) NSMutableArray *mImageViewArray;
+@property (nonatomic) UILabel *mNoPhotoLabel;
 
 @end
