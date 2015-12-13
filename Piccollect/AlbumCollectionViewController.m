@@ -19,7 +19,7 @@
 @implementation AlbumCollectionViewController
 
 @synthesize mAlbum, mAlbumListService, mImageViewArray;
-@synthesize mCollectionView, currentImageView, mNoPhotoLabel;
+@synthesize mCollectionView, mNoPhotoLabel;
 
 static NSString * const reuseIdentifier = @"Cell";
 
@@ -101,6 +101,9 @@ static NSString * const reuseIdentifier = @"Cell";
             tapGesture1.numberOfTapsRequired = 1;
             //[tapGesture1 setDelegate:self];
             [imageView addGestureRecognizer:tapGesture1];
+            
+            // Replace back
+            [mImageViewArray replaceObjectAtIndex:pageIndex withObject:imageView];
         }
         
         [cell.contentView addSubview:imageView];
@@ -257,12 +260,13 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
 
 - (UIImageView*)galleryTransition:(RMGalleryTransition*)transition transitionImageViewForIndex:(NSUInteger)index
 {
-    return self.currentImageView;
+    return [mImageViewArray objectAtIndex:index];
 }
 
 - (CGSize)galleryTransition:(RMGalleryTransition*)transition estimatedSizeForIndex:(NSUInteger)index
-{ // If the transition image is different than the one displayed in the gallery we need to provide its size
-    UIImageView *imageView = self.currentImageView;
+{
+    // If the transition image is different than the one displayed in the gallery we need to provide its size
+    UIImageView *imageView = [mImageViewArray objectAtIndex:index];
     const CGSize thumbnailSize = imageView.image.size;
     
     // In this example the final images are about 25 times bigger than the thumbnail
@@ -274,11 +278,10 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
 #pragma mark - Gesture Recongnizer
 
 
-- (void)thumbnailTapGestureRecognized:(id) sender
+- (void)thumbnailTapGestureRecognized:(id)sender
 {
     // Try to find which cell has been clicked
     UIImageView* iv = (UIImageView*)[sender view];
-    currentImageView = iv;
     UIView* cellView = iv;
     // Loop to find view
     while(cellView && ![cellView isKindOfClass:[UICollectionViewCell class]])
@@ -313,7 +316,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     [self presentViewController:viewControllerToPresent animated:YES completion:nil];
 }
 
-- (void)dismissGallery:(id) sender
+- (void)dismissGallery:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
