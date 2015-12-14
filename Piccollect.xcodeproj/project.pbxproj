@@ -181,8 +181,6 @@
 				03BCA60C1C019FA0009BD8FB /* Objects */,
 				03BCA6071C01939C009BD8FB /* CoreService */,
 				03BCA6081C0193BB009BD8FB /* ViewController */,
-				03324CE41C005CBD000618F0 /* AppDelegate.h */,
-				03324CE51C005CBD000618F0 /* AppDelegate.m */,
 				03324CED1C005CBD000618F0 /* Main.storyboard */,
 				03324CF01C005CBD000618F0 /* Assets.xcassets */,
 				03324CF21C005CBD000618F0 /* LaunchScreen.storyboard */,
@@ -222,6 +220,8 @@
 		03BCA6071C01939C009BD8FB /* CoreService */ = {
 			isa = PBXGroup;
 			children = (
+				03324CE41C005CBD000618F0 /* AppDelegate.h */,
+				03324CE51C005CBD000618F0 /* AppDelegate.m */,
 				03BCA6041C019387009BD8FB /* AlbumListService.h */,
 				03BCA6051C019387009BD8FB /* AlbumListService.m */,
 			);

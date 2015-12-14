@@ -84,6 +84,11 @@ static NSString * const reuseIdentifier = @"Cell";
     // Only config the cell with photo available
     if (pageIndex < [mAlbum.mAlbumPhotos count]) {
         
+        // If we add new photos, we need add more objects in mImageViewArray
+        if ([mAlbum.mAlbumPhotos count] > [mImageViewArray count]) {
+            [mImageViewArray addObject:[NSNull null]];
+        }
+        
         // replace the placeholder if necessary
         UIImageView *imageView = [mImageViewArray objectAtIndex:pageIndex];
         if ((NSNull *)imageView == [NSNull null])
