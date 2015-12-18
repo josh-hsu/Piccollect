@@ -22,6 +22,7 @@
 @synthesize mCollectionView, mNoPhotoLabel;
 
 static NSString * const reuseIdentifier = @"Cell";
+static CGSize mCellSize;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -80,6 +81,10 @@ static NSString * const reuseIdentifier = @"Cell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"albumThumbCollectionCell" forIndexPath:indexPath];
     long pageIndex = indexPath.row + indexPath.section * 4;
+    UIImageView *imageView;
+    
+    // Initial global variable for cell size
+    mCellSize = cell.frame.size;
     
     // Only config the cell with photo available
     if (pageIndex < [mAlbum.mAlbumPhotos count]) {
@@ -89,26 +94,10 @@ static NSString * const reuseIdentifier = @"Cell";
             [mImageViewArray addObject:[NSNull null]];
         }
         
-        // replace the placeholder if necessary
-        UIImageView *imageView = [mImageViewArray objectAtIndex:pageIndex];
-        if ((NSNull *)imageView == [NSNull null])
-        {
-            NSString *subimagePath = [mAlbum.mAlbumPhotos objectAtIndex:(indexPath.row + indexPath.section * 4)];
-            NSString *imagePath = [mAlbumListService.mDocumentRootPath stringByAppendingPathComponent:subimagePath];
-            UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
-            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.frame.size.height, cell.frame.size.width)];
-            imageView.image = image;
-            imageView.contentMode = UIViewContentModeScaleAspectFill;
-            
-            // Add tap recognizer
-            imageView.userInteractionEnabled = YES;
-            UITapGestureRecognizer *tapGesture1 = [[UITapGestureRecognizer alloc] initWithTarget:self  action:@selector(thumbnailTapGestureRecognized:)];
-            tapGesture1.numberOfTapsRequired = 1;
-            //[tapGesture1 setDelegate:self];
-            [imageView addGestureRecognizer:tapGesture1];
-            
-            // Replace back
-            [mImageViewArray replaceObjectAtIndex:pageIndex withObject:imageView];
+        imageView = [self getImageViewAtIndex:pageIndex];
+        if (imageView == nil) {
+            NSLog(@"BUG: Cannot get image view for cell at index %ld", pageIndex);
+            imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"prototypeImage"]];
         }
         
         [cell.contentView addSubview:imageView];
@@ -120,6 +109,32 @@ static NSString * const reuseIdentifier = @"Cell";
         [cell.contentView addSubview:imageView];
     }
     return cell;
+}
+
+- (UIImageView *) getImageViewAtIndex: (long) pageIndex {
+    // replace the placeholder if necessary
+    UIImageView *imageView = [mImageViewArray objectAtIndex:pageIndex];
+
+    if ((NSNull *)imageView == [NSNull null]) {
+        NSString *subimagePath = [mAlbum.mAlbumPhotos objectAtIndex:pageIndex];
+        NSString *imagePath = [mAlbumListService.mDocumentRootPath stringByAppendingPathComponent:subimagePath];
+        UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, mCellSize.height, mCellSize.width)];
+        imageView.image = image;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        
+        // Add tap recognizer
+        imageView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tapGesture1 = [[UITapGestureRecognizer alloc] initWithTarget:self  action:@selector(thumbnailTapGestureRecognized:)];
+        tapGesture1.numberOfTapsRequired = 1;
+        //[tapGesture1 setDelegate:self];
+        [imageView addGestureRecognizer:tapGesture1];
+        
+        // Replace back
+        [mImageViewArray replaceObjectAtIndex:pageIndex withObject:imageView];
+    }
+    
+    return imageView;
 }
 
 
@@ -265,7 +280,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
 
 - (UIImageView*)galleryTransition:(RMGalleryTransition*)transition transitionImageViewForIndex:(NSUInteger)index
 {
-    return [mImageViewArray objectAtIndex:index];
+    return [self getImageViewAtIndex:index];
 }
 
 - (CGSize)galleryTransition:(RMGalleryTransition*)transition estimatedSizeForIndex:(NSUInteger)index

@@ -10,8 +10,9 @@
 #import "AlbumCollectionViewController.h"
 #import "AlbumListService.h"
 #import "Album.h"
+#import "PasswordViewController.h"
 
-@interface AlbumTableViewController ()
+@interface AlbumTableViewController () <StartViewControllerDelegate>
 
 @end
 
@@ -38,12 +39,15 @@
 - (void)viewDidLoad {
     [self initAlbumList];
     //[mAlbumList initPhotoFileDebug]; /* Setting default photo from library automatically */
-    
+
     [super viewDidLoad];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    // Load password require scene (DEBUGGING)
+    //[self performSegueWithIdentifier:@"showPasswordViewSegue" sender:nil];
     
     // Because the selected row will not reset after user hit back button and return here
     [mTableViewIB deselectRowAtIndexPath:[mTableViewIB indexPathForSelectedRow] animated:YES];
@@ -124,9 +128,14 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    AlbumCollectionViewController *collectionViewController = [segue destinationViewController];
-    collectionViewController.mAlbum = [mAlbumList albumInListAtIndex:[mTableViewIB indexPathForSelectedRow].row];
-    collectionViewController.mAlbumListService = mAlbumList;
+    if ([[segue identifier] isEqualToString:@"showAlbumThumbSegue"]) {
+        AlbumCollectionViewController *collectionViewController = [segue destinationViewController];
+        collectionViewController.mAlbum = [mAlbumList albumInListAtIndex:[mTableViewIB indexPathForSelectedRow].row];
+        collectionViewController.mAlbumListService = mAlbumList;
+    } else if ([[segue identifier] isEqualToString:@"showPasswordViewSegue"]) {
+        PasswordViewController *addController = (PasswordViewController *)[segue destinationViewController];
+        addController.delegate = self;
+    }
 }
 
 #pragma mark - IBActions
@@ -221,6 +230,17 @@
 
     
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+#pragma mark - PasswordViewControllerDelegate
+//protocol : PasswordViewControllerDelegate implementation
+- (void)addSightingViewControllerDidCancel:(PasswordViewController *)controller{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)addSightingViewControllerDidFinish:(PasswordViewController *)controller{
+    NSLog(@"password correct");
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

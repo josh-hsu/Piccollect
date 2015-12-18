@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "Album.h"
 #import "AlbumListService.h"
+#import "PasswordViewController.h"
 
-@interface AlbumTableViewController : UIViewController {
+@interface AlbumTableViewController : UIViewController <StartViewControllerDelegate> {
     int rowUserSelected;
 }
 
