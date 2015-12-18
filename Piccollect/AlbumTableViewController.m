@@ -21,6 +21,8 @@
 @synthesize mAlbumList;
 @synthesize mTableViewIB, mEditButtonIB;
 
+static BOOL isAuthorized = NO;
+
 #pragma mark - list access
 
 - (void)initAlbumList {
@@ -47,7 +49,8 @@
     [super viewDidAppear:animated];
     
     // Load password require scene (DEBUGGING)
-    //[self performSegueWithIdentifier:@"showPasswordViewSegue" sender:nil];
+    if (!isAuthorized)
+        [self performSegueWithIdentifier:@"showPasswordViewSegue" sender:nil];
     
     // Because the selected row will not reset after user hit back button and return here
     [mTableViewIB deselectRowAtIndexPath:[mTableViewIB indexPathForSelectedRow] animated:YES];
@@ -79,11 +82,16 @@
     UILabel *subtitleLabel = [cell viewWithTag:3];
     
     // Configure view content
-    Album *thisAlbum = [mAlbumList albumInListAtIndex:indexPath.row];
-    [titleLabel setText:thisAlbum.mAlbumName];
-    [subtitleLabel setText:[NSString stringWithFormat:@"%ld", [thisAlbum.mAlbumPhotos count]]];
-    topImageView.image = [mAlbumList topPhotoInAlbum:thisAlbum];
-    
+    if (isAuthorized) {
+        Album *thisAlbum = [mAlbumList albumInListAtIndex:indexPath.row];
+        [titleLabel setText:thisAlbum.mAlbumName];
+        [subtitleLabel setText:[NSString stringWithFormat:@"%ld", [thisAlbum.mAlbumPhotos count]]];
+        topImageView.image = [mAlbumList topPhotoInAlbum:thisAlbum];
+    } else {
+        [titleLabel setText:@"等待驗證"];
+        [subtitleLabel setText:@""];
+        topImageView.image = [UIImage imageNamed:@"prototypeImage"];
+    }
     return cell;
 }
 
@@ -110,7 +118,7 @@
 // Editing album name in editing mode
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     if (tableView.isEditing)
-        NSLog(@"select editing row at indexpath %ld", indexPath.row);
+        [self confirmEditAlbumInTableview:tableView inIndexPaths:@[indexPath]];
     else
         [self performSegueWithIdentifier:@"showAlbumThumbSegue" sender:nil];
 }
@@ -240,6 +248,45 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+- (void)confirmEditAlbumInTableview: (UITableView *) tableView inIndexPaths: (NSArray<NSIndexPath *> *) indexPaths {
+    
+    Album *thisAlbum = [mAlbumList albumInListAtIndex:[indexPaths objectAtIndex:0].row];
+    if (thisAlbum == NULL) {
+        NSLog(@"BUG: remove album with null pointer");
+        return;
+    }
+    
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"編輯相簿"
+                                  message:@"請輸入名稱"
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+    
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:@"完成" style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action) {
+                                                   NSString *userInput = [alert.textFields objectAtIndex:0].text;
+                                                   if (![userInput isEqualToString:@""]) {
+                                                       NSLog(@"Get user's input %@", userInput);
+                                                       //[self.mAlbumList createAlbumWithName:userInput];
+                                                       [self.mAlbumList editAlbumNameWithKey:thisAlbum.mAlbumKey value:userInput];
+                                                       [self.mTableViewIB reloadData];
+                                                   }
+                                               }];
+    
+    [alert addAction:cancel];
+    [alert addAction:ok];
+    
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.text = thisAlbum.mAlbumName;
+    }];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 #pragma mark - PasswordViewControllerDelegate
 //protocol : PasswordViewControllerDelegate implementation
 - (void)addSightingViewControllerDidCancel:(PasswordViewController *)controller{
@@ -248,6 +295,7 @@
 
 - (void)addSightingViewControllerDidFinish:(PasswordViewController *)controller{
     NSLog(@"password correct");
+    isAuthorized = YES;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

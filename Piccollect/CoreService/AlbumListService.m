@@ -241,7 +241,29 @@
     return 0;
 }
 
-- (int) editAlbumWithKey: (NSString *) key value: (id) value {
+/*
+ * This function does not deal with data type process,
+ * make sure your key-value pair is valid.
+ */
+- (int) editAlbumNameWithKey: (NSString *) key value: (NSString *) value {
+    Album *album = [self albumWithKey:key];
+    NSString *rootName = [NSString stringWithFormat:@"%d", [self albumIndexWithKey:key]];
+    
+    // Save it to file
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                 value, ALBUM_KEY_NAME,
+                                 album.mAlbumKey, ALBUM_KEY_KEY,
+                                 album.mCreateDate, ALBUM_KEY_CDATE,
+                                 album.mIncrease, ALBUM_KEY_INCR,
+                                 album.mOrder, ALBUM_KEY_ORDER,
+                                 album.mSerial, ALBUM_KEY_SERIAL,
+                                 nil];
+    [mAlbumList setObject:data forKey:rootName];
+    [mAlbumList writeToFile:mAlbumListPath atomically:YES];
+    
+    // Refresh it
+    [self initAlbumsWithRefresh:YES];
+
     return 0;
 }
 
