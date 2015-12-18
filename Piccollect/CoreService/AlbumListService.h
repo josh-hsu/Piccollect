@@ -83,7 +83,7 @@
 - (Album *) albumInListAtIndex: (NSInteger)idx;
 - (void) reorderAlbumId: (int) idx;
 - (int) createAlbumWithName: (NSString *) name;
-- (int) editAlbumWithKey: (NSString *) key order: (NSInteger *) order;
+- (int) editAlbumWithKey: (NSString *) key value: (id) value;
 - (int) removeAlbumWithKey: (NSString *) key mergeBack: (BOOL) merge;
 
 /*

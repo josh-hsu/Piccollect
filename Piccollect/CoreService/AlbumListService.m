@@ -241,7 +241,7 @@
     return 0;
 }
 
-- (int) editAlbumWithKey: (NSString *) key order: (NSInteger *) order {
+- (int) editAlbumWithKey: (NSString *) key value: (id) value {
     return 0;
 }
 

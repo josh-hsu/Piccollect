@@ -107,6 +107,14 @@
     }   
 }
 
+// Editing album name in editing mode
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    if (tableView.isEditing)
+        NSLog(@"select editing row at indexpath %ld", indexPath.row);
+    else
+        [self performSegueWithIdentifier:@"showAlbumThumbSegue" sender:nil];
+}
+
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 }
