@@ -97,21 +97,6 @@ static NSString *const CellIdentifier = @"Cell";
     self.dataSource = self;
     [self registerClass:RMGalleryCell.class forCellWithReuseIdentifier:CellIdentifier];
     
-    // Apparently, UICollectionView or one of its subclasses acts as UIGestureRecognizerDelegate. We use this inner class to avoid conflicts.
-    _swipeDelegate = [[RMGalleryViewSwipeGRDelegate alloc] initWithGalleryView:self];
-    
-    _swipeLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeftGesture:)];
-    _swipeLeftGestureRecognizer.delegate = _swipeDelegate;
-    _swipeLeftGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-    [self addGestureRecognizer:_swipeLeftGestureRecognizer];
-    [self.panGestureRecognizer requireGestureRecognizerToFail:_swipeLeftGestureRecognizer];
-    
-    _swipeRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRightGesture:)];
-    _swipeRightGestureRecognizer.delegate = _swipeDelegate;
-    _swipeRightGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-    [self addGestureRecognizer:_swipeRightGestureRecognizer];
-    [self.panGestureRecognizer requireGestureRecognizerToFail:_swipeRightGestureRecognizer];
-    
     _doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapGesture:)];
     _doubleTapGestureRecognizer.numberOfTapsRequired = 2;
     [self addGestureRecognizer:_doubleTapGestureRecognizer];
@@ -150,16 +135,6 @@ static NSString *const CellIdentifier = @"Cell";
 {
     const CGPoint point = [gestureRecognizer locationInView:self];
     [self toggleZoomAtPoint:point];
-}
-
-- (void)swipeLeftGesture:(UIGestureRecognizer*)gestureRecognizer
-{
-    [self showNext];
-}
-
-- (void)swipeRightGesture:(UIGestureRecognizer*)gestureRecognizer
-{
-    [self showPrevious];
 }
 
 #pragma mark UICollectionViewDelegate (Paging)
