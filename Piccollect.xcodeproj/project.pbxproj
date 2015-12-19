@@ -14,6 +14,7 @@
 		03324CF41C005CBD000618F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03324CF21C005CBD000618F0 /* LaunchScreen.storyboard */; };
 		03324CFF1C005CBD000618F0 /* PiccollectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03324CFE1C005CBD000618F0 /* PiccollectTests.m */; };
 		03324D0A1C005CBD000618F0 /* PiccollectUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03324D091C005CBD000618F0 /* PiccollectUITests.m */; };
+		033814E11C251F1B0068D44B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 033814E31C251F1B0068D44B /* Localizable.strings */; };
 		03BCA6061C019387009BD8FB /* AlbumListService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03BCA6051C019387009BD8FB /* AlbumListService.m */; };
 		03BCA60B1C019D06009BD8FB /* albums.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03BCA60A1C019D06009BD8FB /* albums.plist */; };
 		03BCA60F1C019FE4009BD8FB /* Album.m in Sources */ = {isa = PBXBuildFile; fileRef = 03BCA60E1C019FE4009BD8FB /* Album.m */; };
@@ -77,6 +78,9 @@
 		03324D051C005CBD000618F0 /* PiccollectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PiccollectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03324D091C005CBD000618F0 /* PiccollectUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PiccollectUITests.m; sourceTree = "<group>"; };
 		03324D0B1C005CBD000618F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		033814DF1C251EC80068D44B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
+		033814E01C251EC80068D44B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		033814E21C251F1B0068D44B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		03BCA6041C019387009BD8FB /* AlbumListService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlbumListService.h; path = CoreService/AlbumListService.h; sourceTree = "<group>"; };
 		03BCA6051C019387009BD8FB /* AlbumListService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlbumListService.m; path = CoreService/AlbumListService.m; sourceTree = "<group>"; };
 		03BCA60A1C019D06009BD8FB /* albums.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = albums.plist; path = Lists/albums.plist; sourceTree = "<group>"; };
@@ -193,6 +197,7 @@
 				03324CED1C005CBD000618F0 /* Main.storyboard */,
 				03324CF01C005CBD000618F0 /* Assets.xcassets */,
 				03324CF21C005CBD000618F0 /* LaunchScreen.storyboard */,
+				033814E31C251F1B0068D44B /* Localizable.strings */,
 				03324CF51C005CBD000618F0 /* Info.plist */,
 				03BCA6091C019CC8009BD8FB /* Lists */,
 				03324CE11C005CBD000618F0 /* Supporting Files */,
@@ -446,6 +451,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03324CF41C005CBD000618F0 /* LaunchScreen.storyboard in Resources */,
+				033814E11C251F1B0068D44B /* Localizable.strings in Resources */,
 				03324CF11C005CBD000618F0 /* Assets.xcassets in Resources */,
 				03F73F761C0B1F0500BCDBCE /* Overlay@2x.png in Resources */,
 				03BCA60B1C019D06009BD8FB /* albums.plist in Resources */,
@@ -541,6 +547,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				03324CEE1C005CBD000618F0 /* Base */,
+				033814DF1C251EC80068D44B /* zh-Hant */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -549,8 +556,17 @@
 			isa = PBXVariantGroup;
 			children = (
 				03324CF31C005CBD000618F0 /* Base */,
+				033814E01C251EC80068D44B /* zh-Hant */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		033814E31C251F1B0068D44B /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				033814E21C251F1B0068D44B /* zh-Hant */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

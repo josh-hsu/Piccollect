@@ -1,0 +1,84 @@
+
+/* Class = "UILabel"; text = "Facebook"; ObjectID = "4yG-HO-cef"; */
+"4yG-HO-cef.text" = "Facebook";
+
+/* Class = "UILabel"; text = "Tumblr"; ObjectID = "8NU-Rx-ssF"; */
+"8NU-Rx-ssF.text" = "Tumblr";
+
+/* Class = "UILabel"; text = "user@gmail.com"; ObjectID = "Aut-JG-oFz"; */
+"Aut-JG-oFz.text" = "user@gmail.com";
+
+/* Class = "UIButton"; normalTitle = "確定"; ObjectID = "HWD-db-IV3"; */
+"HWD-db-IV3.normalTitle" = "確定";
+
+/* Class = "UIBarButtonItem"; title = "編輯"; ObjectID = "Iay-am-TlX"; */
+"Iay-am-TlX.title" = "編輯";
+
+/* Class = "UILabel"; text = "夜間模式"; ObjectID = "KHz-9p-85f"; */
+"KHz-9p-85f.text" = "夜間模式";
+
+/* Class = "UILabel"; text = "Facebook, Twitter, Instagram supported"; ObjectID = "NDk-cv-Gan"; */
+"NDk-cv-Gan.text" = "Facebook, Twitter, Instagram supported";
+
+/* Class = "UILabel"; text = "Josh Hsu"; ObjectID = "SOp-3T-0cj"; */
+"SOp-3T-0cj.text" = "Josh Hsu";
+
+/* Class = "UINavigationItem"; title = "密碼驗證"; ObjectID = "SXa-Ob-kb7"; */
+"SXa-Ob-kb7.title" = "密碼驗證";
+
+/* Class = "UITableViewSection"; headerTitle = "帳號設定"; ObjectID = "UzZ-ih-hAr"; */
+"UzZ-ih-hAr.headerTitle" = "帳號設定";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Y1X-Sc-Md2"; */
+"Y1X-Sc-Md2.text" = "Label";
+
+/* Class = "UILabel"; text = "user@gmail.com"; ObjectID = "ZtH-Cg-UbK"; */
+"ZtH-Cg-UbK.text" = "user@gmail.com";
+
+/* Class = "UITabBarItem"; title = "相簿"; ObjectID = "acW-dT-cKf"; */
+"acW-dT-cKf.title" = "相簿";
+
+/* Class = "UITabBarItem"; title = "社群"; ObjectID = "cPa-gy-q4n"; */
+"cPa-gy-q4n.title" = "社群";
+
+/* Class = "UINavigationItem"; title = "我的相簿"; ObjectID = "eVc-WX-bR8"; */
+"eVc-WX-bR8.title" = "我的相簿";
+
+/* Class = "UILabel"; text = "Google"; ObjectID = "eZl-Za-79z"; */
+"eZl-Za-79z.text" = "Google";
+
+/* Class = "UILabel"; text = "Ryan Hsu"; ObjectID = "jmd-NC-dqz"; */
+"jmd-NC-dqz.text" = "Ryan Hsu";
+
+/* Class = "UINavigationItem"; title = "Title"; ObjectID = "kxf-Bn-L33"; */
+"kxf-Bn-L33.title" = "Title";
+
+/* Class = "UINavigationItem"; title = "設定"; ObjectID = "lSi-eL-BCV"; */
+"lSi-eL-BCV.title" = "設定";
+
+/* Class = "UITableViewSection"; headerTitle = "相簿設定/功能"; ObjectID = "mYg-J5-bbK"; */
+"mYg-J5-bbK.headerTitle" = "相簿設定/功能";
+
+/* Class = "UILabel"; text = "加密相簿"; ObjectID = "o9V-7v-at4"; */
+"o9V-7v-at4.text" = "加密相簿";
+
+/* Class = "UIBarButtonItem"; title = "離開"; ObjectID = "t85-B2-2Gu"; */
+"t85-B2-2Gu.title" = "離開";
+
+/* Class = "UILabel"; text = "Instagram"; ObjectID = "vYu-1W-SJh"; */
+"vYu-1W-SJh.text" = "Instagram";
+
+/* Class = "UINavigationItem"; title = "相片牆"; ObjectID = "wUJ-Vl-5ct"; */
+"wUJ-Vl-5ct.title" = "相片牆";
+
+/* Class = "UILabel"; text = "將所有相片壓縮轉存至雲端"; ObjectID = "xS5-Bs-L8J"; */
+"xS5-Bs-L8J.text" = "將所有相片壓縮轉存至雲端";
+
+/* Class = "UILabel"; text = "Default Album"; ObjectID = "z3c-7M-IYj"; */
+"z3c-7M-IYj.text" = "Default Album";
+
+/* Class = "UILabel"; text = "加入帳號"; ObjectID = "zEq-FU-wV5"; */
+"zEq-FU-wV5.text" = "加入帳號";
+
+/* Class = "UITabBarItem"; title = "設定"; ObjectID = "zQo-fT-LBF"; */
+"zQo-fT-LBF.title" = "設定";

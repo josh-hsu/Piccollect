@@ -15,16 +15,18 @@
 @synthesize passworkTextField, delegate, errorAlert;
 @synthesize settingsService;
 
+#define LSTR(arg) NSLocalizedString(arg, nil)
+
 int max_try;
 
 - (void) initialAlert{
-    errorAlert = [[UIAlertView alloc] initWithTitle:@"驗證錯誤" message:@"您必須輸入正確的密碼" delegate:nil cancelButtonTitle:@"確定" otherButtonTitles:nil, nil];
+    errorAlert = [[UIAlertView alloc] initWithTitle:LSTR(@"Authorization Failed") message:LSTR(@"Please try again") delegate:nil cancelButtonTitle:LSTR(@"OK") otherButtonTitles:nil, nil];
 }
 
 - (void) showAlert{
     max_try--;
     [passworkTextField setText:@""];
-    [maxTryLabel setText:[NSString stringWithFormat:@"尚可嘗試：%d次",max_try]];
+    [maxTryLabel setText:[NSString stringWithFormat:LSTR(@"You have %d times to try") ,max_try]];
     
     if(max_try <= 0)
         exit(0);

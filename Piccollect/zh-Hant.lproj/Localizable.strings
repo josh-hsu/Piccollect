@@ -1,0 +1,51 @@
+/* 
+  Localizable.strings
+  Piccollect
+
+  Created by Josh on 2015/12/19.
+  Copyright © 2015年 Mu Mu Corp. All rights reserved.
+*/
+
+// Universal localization
+
+"OK" = "好";
+"Cancel" = "取消";
+"Confirm" = "確定";
+"Delete" = "刪除";
+"Finish" = "完成";
+"Edit" = "編輯";
+
+// Password view localization
+
+"Password Authentication";
+"Authorization Failed" = "驗證失敗";
+"Please try again" = "請再試一次";
+"You have %d times to try" = "你還可以再試 %d 次";
+
+// Album table view
+
+"My Albums" = "我的相簿";
+"Wait for authentication" = "等待驗證";
+"New Album" = "新增相簿";
+"Please input title" = "請輸入標題";
+"Title" = "標題";
+"Remove Album" = "刪除相簿";
+"Do you want to remove all photos altogether?\nIf you answer NO, those photos will save to default album." = "需要連同照片一同刪除嗎？\n若只刪除相簿，其他相片將自動轉存至預設相簿";
+"Remove all photos" = "全部刪除";
+"Remove album only" = "只刪除相簿";
+"Edit Album" = "編輯相簿";
+
+// Photo Wall
+
+"Photo Wall" = "相片牆";
+"Add Account" = "加入帳號";
+
+
+// Settings
+"Settings" = "設定";
+"Compress all photos and upload to Cloud" = "壓縮所有相片並上傳至雲端空間";
+"Encrypt Albums" = "加密相簿";
+"Night Mode" = "夜間模式";
+"Album Settings/Features" = "相簿設定/功能";
+"Account Settings" = "帳號設定";
+

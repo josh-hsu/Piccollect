@@ -21,6 +21,8 @@
 @synthesize mAlbumList;
 @synthesize mTableViewIB, mEditButtonIB;
 
+#define LSTR(arg) NSLocalizedString(arg, nil)
+
 static BOOL isAuthorized = NO;
 
 #pragma mark - list access
@@ -88,7 +90,7 @@ static BOOL isAuthorized = NO;
         [subtitleLabel setText:[NSString stringWithFormat:@"%ld", [thisAlbum.mAlbumPhotos count]]];
         topImageView.image = [mAlbumList topPhotoInAlbum:thisAlbum];
     } else {
-        [titleLabel setText:@"等待驗證"];
+        [titleLabel setText:LSTR(@"Wait for authentication")];
         [subtitleLabel setText:@""];
         topImageView.image = [UIImage imageNamed:@"prototypeImage"];
     }
@@ -135,7 +137,7 @@ static BOOL isAuthorized = NO;
 }
 
 - (NSString*)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return @"刪除";
+    return LSTR(@"Delete");
 }
 
 
@@ -159,16 +161,16 @@ static BOOL isAuthorized = NO;
 // Add album
 - (IBAction)addNewAlbum:(id)sender {
     UIAlertController * alert=   [UIAlertController
-                                  alertControllerWithTitle:@"新增相簿"
-                                  message:@"請輸入名稱"
+                                  alertControllerWithTitle:LSTR(@"New Album")
+                                  message:LSTR(@"Please input title")
                                   preferredStyle:UIAlertControllerStyleAlert];
 
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:LSTR(@"Cancel") style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        [alert dismissViewControllerAnimated:YES completion:nil];
                                                    }];
 
-    UIAlertAction* ok = [UIAlertAction actionWithTitle:@"完成" style:UIAlertActionStyleDefault
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:LSTR(@"Finish") style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction * action) {
                                                    NSString *userInput = [alert.textFields objectAtIndex:0].text;
                                                    if (![userInput isEqualToString:@""]) {
@@ -182,7 +184,7 @@ static BOOL isAuthorized = NO;
     [alert addAction:ok];
     
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"標題";
+        textField.placeholder = LSTR(@"Title");
     }];
     
     [self presentViewController:alert animated:YES completion:nil];
@@ -192,11 +194,11 @@ static BOOL isAuthorized = NO;
     static BOOL isEditing = NO;
     
     if (!isEditing) {
-        mEditButtonIB.title = @"完成";
+        mEditButtonIB.title = LSTR(@"Finish");
         [self.mTableViewIB setEditing:YES animated:YES];
         isEditing = YES;
     } else {
-        mEditButtonIB.title = @"編輯";
+        mEditButtonIB.title = LSTR(@"Edit");
         [self.mTableViewIB setEditing:NO animated:YES];
         isEditing = NO;
     }
@@ -217,23 +219,23 @@ static BOOL isAuthorized = NO;
     }
     
     UIAlertController * alert=   [UIAlertController
-                                  alertControllerWithTitle:@"刪除相簿"
-                                  message:@"需要連同照片一同刪除嗎？\n若只刪除相簿，其他相片將自動轉存至預設相簿"
+                                  alertControllerWithTitle:LSTR(@"Remove Album")
+                                  message:LSTR(@"Do you want to remove all photos altogether?\nIf you answer NO, those photos will save to default album.")
                                   preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:LSTR(@"Cancel") style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        [alert dismissViewControllerAnimated:YES completion:nil];
                                                    }];
     
-    UIAlertAction* allAlbum = [UIAlertAction actionWithTitle:@"全部刪除" style:UIAlertActionStyleDestructive
+    UIAlertAction* allAlbum = [UIAlertAction actionWithTitle:LSTR(@"Remove all photos") style:UIAlertActionStyleDestructive
                                                       handler:^(UIAlertAction * action) {
                                                           [mAlbumList removeAlbumWithKey:thisAlbum.mAlbumKey mergeBack:NO];
                                                           [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
                                                           [tableView reloadData];
                                                       }];
     
-    UIAlertAction* onlyAlbum = [UIAlertAction actionWithTitle:@"只刪除相簿" style:UIAlertActionStyleDefault
+    UIAlertAction* onlyAlbum = [UIAlertAction actionWithTitle:LSTR(@"Remove album only") style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction * action) {
                                                    [mAlbumList removeAlbumWithKey:thisAlbum.mAlbumKey mergeBack:YES];
                                                    [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
@@ -257,16 +259,16 @@ static BOOL isAuthorized = NO;
     }
     
     UIAlertController * alert=   [UIAlertController
-                                  alertControllerWithTitle:@"編輯相簿"
-                                  message:@"請輸入名稱"
+                                  alertControllerWithTitle:LSTR(@"Edit Album")
+                                  message:LSTR(@"Please input title")
                                   preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:LSTR(@"Cancel") style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        [alert dismissViewControllerAnimated:YES completion:nil];
                                                    }];
     
-    UIAlertAction* ok = [UIAlertAction actionWithTitle:@"完成" style:UIAlertActionStyleDefault
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:LSTR(@"Finish") style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction * action) {
                                                    NSString *userInput = [alert.textFields objectAtIndex:0].text;
                                                    if (![userInput isEqualToString:@""]) {

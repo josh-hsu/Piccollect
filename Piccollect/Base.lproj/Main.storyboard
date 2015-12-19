@@ -32,7 +32,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HWD-db-IV3">
                                 <rect key="frame" x="139" y="222" width="96" height="22"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="確定"/>
+                                <state key="normal" title="Confirm"/>
                                 <connections>
                                     <action selector="done:" destination="B1i-VA-lgA" eventType="touchUpInside" id="Tlr-Wj-Q4N"/>
                                 </connections>
@@ -40,8 +40,8 @@
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qhd-Y2-9VJ">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <items>
-                                    <navigationItem title="密碼驗證" id="SXa-Ob-kb7">
-                                        <barButtonItem key="leftBarButtonItem" title="離開" id="t85-B2-2Gu">
+                                    <navigationItem title="Password Authentication" id="SXa-Ob-kb7">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="t85-B2-2Gu">
                                             <connections>
                                                 <action selector="cancel:" destination="B1i-VA-lgA" id="ZVS-NI-usV"/>
                                             </connections>
@@ -69,7 +69,7 @@
             </objects>
             <point key="canvasLocation" x="1780.5" y="-1848.5"/>
         </scene>
-        <!--我的相簿-->
+        <!--My Albums-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
                 <viewController id="9pv-A4-QxB" customClass="AlbumTableViewController" sceneMemberID="viewController">
@@ -119,7 +119,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="我的相簿" id="eVc-WX-bR8">
+                    <navigationItem key="navigationItem" title="My Albums" id="eVc-WX-bR8">
                         <leftBarButtonItems>
                             <barButtonItem systemItem="add" id="zxP-xu-zxy">
                                 <connections>
@@ -132,7 +132,7 @@
                                 </connections>
                             </barButtonItem>
                         </leftBarButtonItems>
-                        <barButtonItem key="rightBarButtonItem" title="編輯" id="Iay-am-TlX">
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="Iay-am-TlX">
                             <connections>
                                 <action selector="editTableVIew:" destination="9pv-A4-QxB" id="iW2-a8-h9F"/>
                             </connections>
@@ -202,7 +202,7 @@
             </objects>
             <point key="canvasLocation" x="1780.5" y="-1072.5"/>
         </scene>
-        <!--相片牆-->
+        <!--Photo Wall-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
                 <viewController id="8rJ-Kc-sve" customClass="SocialViewController" sceneMemberID="viewController">
@@ -214,7 +214,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="加入帳號" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="zEq-FU-wV5">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Add Account" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="zEq-FU-wV5">
                                 <rect key="frame" x="115" y="291" width="144" height="42"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="36"/>
@@ -230,7 +230,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="相片牆" id="wUJ-Vl-5ct"/>
+                    <navigationItem key="navigationItem" title="Photo Wall" id="wUJ-Vl-5ct"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
@@ -257,7 +257,7 @@
             </objects>
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </scene>
-        <!--設定-->
+        <!--Settings-->
         <scene sceneID="PC2-aV-wJ0">
             <objects>
                 <tableViewController id="7i9-5z-hSz" sceneMemberID="viewController">
@@ -266,7 +266,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
-                            <tableViewSection headerTitle="帳號設定" id="UzZ-ih-hAr">
+                            <tableViewSection headerTitle="Account Settings" id="UzZ-ih-hAr">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="72" id="X5p-9Z-ft6">
                                         <rect key="frame" x="0.0" y="114" width="375" height="72"/>
@@ -370,7 +370,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="相簿設定/功能" id="mYg-J5-bbK">
+                            <tableViewSection headerTitle="Album Settings/Features" id="mYg-J5-bbK">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="JvN-Nh-JQv">
                                         <rect key="frame" x="0.0" y="443" width="375" height="44"/>
@@ -379,7 +379,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="將所有相片壓縮轉存至雲端" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xS5-Bs-L8J">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Compress all photos and upload to Cloud" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xS5-Bs-L8J">
                                                     <rect key="frame" x="25" y="11" width="342" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -395,13 +395,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="加密相簿" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o9V-7v-at4">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Encrypt Albums" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o9V-7v-at4">
                                                     <rect key="frame" x="25" y="11" width="217" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sB0-g6-KTD">
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sB0-g6-KTD">
                                                     <rect key="frame" x="318" y="6" width="51" height="31"/>
                                                 </switch>
                                             </subviews>
@@ -414,7 +414,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="夜間模式" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KHz-9p-85f">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Night Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KHz-9p-85f">
                                                     <rect key="frame" x="26" y="11" width="217" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -434,17 +434,17 @@
                             <outlet property="delegate" destination="7i9-5z-hSz" id="6dN-AL-GPW"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="設定" id="lSi-eL-BCV"/>
+                    <navigationItem key="navigationItem" title="Settings" id="lSi-eL-BCV"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ncH-OU-U5H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1181.5" y="891.5"/>
         </scene>
-        <!--相簿-->
+        <!--My Albums-->
         <scene sceneID="J35-wp-gDi">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yaa-sp-vzl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="相簿" image="first" id="acW-dT-cKf"/>
+                    <tabBarItem key="tabBarItem" title="My Albums" image="first" id="acW-dT-cKf"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0Mu-Z6-Yh2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -459,11 +459,11 @@
             </objects>
             <point key="canvasLocation" x="594.5" y="-1072.5"/>
         </scene>
-        <!--社群-->
+        <!--Photo Wall-->
         <scene sceneID="y2y-cF-a5m">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DFO-Ug-8jS" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="社群" image="second" id="cPa-gy-q4n"/>
+                    <tabBarItem key="tabBarItem" title="Photo Wall" image="second" id="cPa-gy-q4n"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="WvY-hP-C4R">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -478,11 +478,11 @@
             </objects>
             <point key="canvasLocation" x="594.5" y="-0.5"/>
         </scene>
-        <!--設定-->
+        <!--Settings-->
         <scene sceneID="Zht-Vi-phY">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wbh-CX-5Wa" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="設定" image="third" id="zQo-fT-LBF"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="third" id="zQo-fT-LBF"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="VWC-Q2-Vhc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
