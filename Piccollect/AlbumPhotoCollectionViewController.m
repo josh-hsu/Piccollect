@@ -83,7 +83,7 @@
 - (void)setTitleForIndex:(NSUInteger)index
 {
     const NSUInteger count = [self numberOfImagesInGalleryView:self.galleryView];
-    self.title = [NSString stringWithFormat:@"%ld of %ld", (long)index + 1, (long)count];
+    self.title = [NSString stringWithFormat:@"%ld / %ld", (long)index + 1, (long)count];
 }
 
 

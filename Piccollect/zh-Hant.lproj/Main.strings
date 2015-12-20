@@ -36,10 +36,10 @@
 "ZtH-Cg-UbK.text" = "user@gmail.com";
 
 /* Class = "UITabBarItem"; title = "相簿"; ObjectID = "acW-dT-cKf"; */
-"acW-dT-cKf.title" = "相簿";
+"acW-dT-cKf.title" = "我的相簿";
 
 /* Class = "UITabBarItem"; title = "社群"; ObjectID = "cPa-gy-q4n"; */
-"cPa-gy-q4n.title" = "社群";
+"cPa-gy-q4n.title" = "相片牆";
 
 /* Class = "UINavigationItem"; title = "我的相簿"; ObjectID = "eVc-WX-bR8"; */
 "eVc-WX-bR8.title" = "我的相簿";

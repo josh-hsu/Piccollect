@@ -18,5 +18,6 @@
 @property (nonatomic, retain) AlbumListService *mAlbumListService;
 @property (nonatomic, retain) NSMutableArray *mImageViewArray;
 @property (nonatomic) UILabel *mNoPhotoLabel;
+@property (retain,atomic) UIAlertView *mLoadingDialog;
 
 @end

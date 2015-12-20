@@ -20,6 +20,7 @@
 
 @synthesize mAlbum, mAlbumListService, mImageViewArray;
 @synthesize mCollectionView, mNoPhotoLabel;
+@synthesize mLoadingDialog;
 
 static NSString * const reuseIdentifier = @"Cell";
 static CGSize mCellSize;
@@ -204,7 +205,6 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
 
 #pragma mark - ELCImagePickerControllerDelegate Methods
 
-
 /*
  * display image picker controller for user to select
  * TODO: Note that user might select too many images that will make our saving process hanging
@@ -212,11 +212,29 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
  */
 - (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info
 {
-    int ret = 0;
-    
     [self dismissViewControllerAnimated:YES completion:nil];
     
+    [self loadingProgressDialog];
+    
+    // Save photos in background thread
+    [self performSelectorInBackground:@selector(savePhotosWithInfo:) withObject:info];
+}
+
+- (void)elcImagePickerControllerDidCancel:(ELCImagePickerController *)picker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)savePhotosWithInfo:(NSArray *)info {
+    int ret = 0;
+    long total = [info count];
+    long current = 0;
+    
+    [self updateProgressDialog:current ofTotal:total];
+    
     for (NSDictionary *dict in info) {
+        current++;
+        
         if ([dict objectForKey:UIImagePickerControllerMediaType] == ALAssetTypePhoto){
             if ([dict objectForKey:UIImagePickerControllerOriginalImage]){
                 UIImage* image = [dict objectForKey:UIImagePickerControllerOriginalImage];
@@ -247,16 +265,53 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
         } else {
             NSLog(@"Uknown asset type");
         }
+        
+        //update progress
+        [self updateProgressDialog:current ofTotal:total];
     }
     
-    // Done with saving, refresh it
-    mNoPhotoLabel.text = @"";
-    [self.mCollectionView reloadData];
+    [self didEndProgress];
 }
 
-- (void)elcImagePickerControllerDidCancel:(ELCImagePickerController *)picker
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (void) loadingProgressDialog {
+    mLoadingDialog = [[UIAlertView alloc] initWithTitle: @"Saving photos" message: @"" delegate:self cancelButtonTitle: nil otherButtonTitles: nil];
+    UIActivityIndicatorView *progress= [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(125, 50, 30, 30)];
+    progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    [mLoadingDialog setValue:progress forKey:@"accessoryView"];
+    [progress startAnimating];
+    [mLoadingDialog show];
+}
+
+- (void) updateProgressDialog: (long) current ofTotal: (long) total {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        //Code here to which needs to update the UI in the UI thread goes here
+        NSString *totalProgress = [NSString stringWithFormat:@"%ld/%ld", current, total];
+        [mLoadingDialog setMessage:totalProgress];
+    });
+}
+
+- (void) didEndProgress {
+    if ([NSThread isMainThread])
+    {
+        // Done with saving, refresh it
+        mNoPhotoLabel.text = @"";
+        [self.mCollectionView reloadData];
+        
+        // Dismiss loading progress dialog
+        [mLoadingDialog setTitle:@"已完成"];
+        [mLoadingDialog dismissWithClickedButtonIndex:0 animated:YES];
+    } else {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            //Update UI in UI thread here
+            // Done with saving, refresh it
+            mNoPhotoLabel.text = @"";
+            [self.mCollectionView reloadData];
+            
+            // Dismiss loading progress dialog
+            [mLoadingDialog setTitle:@"已完成"];
+            [mLoadingDialog dismissWithClickedButtonIndex:0 animated:YES];
+        });
+    }
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate
