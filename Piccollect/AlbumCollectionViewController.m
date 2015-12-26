@@ -51,7 +51,8 @@ static CGSize mCellSize;
     // If no photo to show, tell user to add some
     CGRect totalRect = mCollectionView.frame;
     CGFloat y = (totalRect.size.height - 140.0)/2;
-    mNoPhotoLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, y, 300, 40)];
+    mNoPhotoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, y, mCollectionView.frame.size.width, 40)];
+    mNoPhotoLabel.textAlignment = NSTextAlignmentCenter;
     
     if ([mAlbumListService photoCount:mAlbum] == 0) {
         mNoPhotoLabel.text = LSTR(@"No Photo");
