@@ -256,8 +256,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
                 UIImage* thumb;
 
                 // Get thumbnail
-                CGSize thumbnailSize = CGSizeMake(95, 95);
-                thumb = [self scaleImage:image ToSize:thumbnailSize];
+                thumb = [self makeThumbWithImage:image];
                 
                 ret = [mAlbumListService addPhotoWithImage:image andThumb:thumb toAlbum:mAlbum];
                 
@@ -291,8 +290,8 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     [self didEndProgress];
 }
 
-- (UIImage *)scaleImage: (UIImage *)image ToSize:(CGSize)newSize {
-    
+- (UIImage *)makeThumbWithImage: (UIImage *)image {
+    CGSize newSize = CGSizeMake(95, 95);
     CGRect scaledImageRect = CGRectZero;
     
     CGFloat aspectWidth = newSize.width / image.size.width;
@@ -301,10 +300,10 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     
     scaledImageRect.size.width = image.size.width * aspectRatio;
     scaledImageRect.size.height = image.size.height * aspectRatio;
-    scaledImageRect.origin.x = (newSize.width - scaledImageRect.size.width) / 2.0f;
-    scaledImageRect.origin.y = (newSize.height - scaledImageRect.size.height) / 2.0f;
+    scaledImageRect.origin.x = 0.0f;
+    scaledImageRect.origin.y = 0.0f;
     
-    UIGraphicsBeginImageContextWithOptions( newSize, NO, 0 );
+    UIGraphicsBeginImageContextWithOptions( scaledImageRect.size, NO, 0 );
     [image drawInRect:scaledImageRect];
     UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
