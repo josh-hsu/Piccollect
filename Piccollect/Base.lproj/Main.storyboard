@@ -132,7 +132,7 @@
                                 </connections>
                             </barButtonItem>
                         </leftBarButtonItems>
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="Iay-am-TlX">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="Iay-am-TlX">
                             <connections>
                                 <action selector="editTableVIew:" destination="9pv-A4-QxB" id="iW2-a8-h9F"/>
                             </connections>

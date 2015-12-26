@@ -107,7 +107,6 @@ static CGSize mCellSize;
         [cell.contentView addSubview:imageView];
     } else {
         // In this case, the subview of this cell might be dirty
-        // TODO: this is a workaround
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.frame.size.height, cell.frame.size.width)];
         imageView.backgroundColor = [UIColor whiteColor];
         [cell.contentView addSubview:imageView];
