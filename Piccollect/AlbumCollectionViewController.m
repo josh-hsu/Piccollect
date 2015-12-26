@@ -22,6 +22,8 @@
 @synthesize mCollectionView, mNoPhotoLabel;
 @synthesize mLoadingDialog;
 
+#define LSTR(arg) NSLocalizedString(arg, nil)
+
 static NSString * const reuseIdentifier = @"Cell";
 static CGSize mCellSize;
 
@@ -37,7 +39,7 @@ static CGSize mCellSize;
     // view controllers are created lazily
     // in the meantime, load the array with placeholders which will be replaced on demand
     NSMutableArray *viewArray = [[NSMutableArray alloc] init];
-    for (unsigned i = 0; i < [mAlbum.mAlbumPhotos count]; i++)
+    for (unsigned i = 0; i < [mAlbumListService photoCount:mAlbum]; i++)
     {
         [viewArray addObject:[NSNull null]];
     }
@@ -51,8 +53,8 @@ static CGSize mCellSize;
     CGFloat y = (totalRect.size.height - 140.0)/2;
     mNoPhotoLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, y, 300, 40)];
     
-    if ([mAlbum.mAlbumPhotos count] == 0) {
-        mNoPhotoLabel.text = @"沒有照片或影片";
+    if ([mAlbumListService photoCount:mAlbum] == 0) {
+        mNoPhotoLabel.text = LSTR(@"No Photo");
         mNoPhotoLabel.textColor = [UIColor grayColor];
         mNoPhotoLabel.font = [UIFont systemFontOfSize:25.0];
         [mCollectionView addSubview:mNoPhotoLabel];
@@ -69,7 +71,7 @@ static CGSize mCellSize;
 
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    long photoCount = [mAlbum.mAlbumPhotos count];
+    long photoCount = [mAlbumListService photoCount:mAlbum];
     NSLog(@"CollectionView: photo count = %ld", photoCount);
     return photoCount/4 + (photoCount%4 ? 1 : 0);
 }
@@ -88,10 +90,10 @@ static CGSize mCellSize;
     mCellSize = cell.frame.size;
     
     // Only config the cell with photo available
-    if (pageIndex < [mAlbum.mAlbumPhotos count]) {
+    if (pageIndex < [mAlbumListService photoCount:mAlbum]) {
         
         // If we add new photos, we need add more objects in mImageViewArray
-        if ([mAlbum.mAlbumPhotos count] > [mImageViewArray count]) {
+        if ([mAlbumListService photoCount:mAlbum] > [mImageViewArray count]) {
             [mImageViewArray addObject:[NSNull null]];
         }
         
@@ -117,9 +119,22 @@ static CGSize mCellSize;
     UIImageView *imageView = [mImageViewArray objectAtIndex:pageIndex];
 
     if ((NSNull *)imageView == [NSNull null]) {
-        NSString *subimagePath = [mAlbum.mAlbumPhotos objectAtIndex:pageIndex];
+        NSString *subimagePath = [[mAlbumListService photosThumbInAlbum:mAlbum] objectAtIndex:pageIndex];
         NSString *imagePath = [mAlbumListService.mDocumentRootPath stringByAppendingPathComponent:subimagePath];
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
+        
+        // Check if thumbimage is avaiable
+        if (image == nil) {
+            subimagePath = [[mAlbumListService photosInAlbum:mAlbum] objectAtIndex:pageIndex];
+            imagePath = [mAlbumListService.mDocumentRootPath stringByAppendingPathComponent:subimagePath];
+            image = [[UIImage alloc] initWithContentsOfFile:imagePath];
+        }
+        
+        // Check if original image is avaiable
+        if (image == nil) {
+            NSLog(@"BUG: no photo available");
+        }
+        
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, mCellSize.height, mCellSize.width)];
         imageView.image = image;
         imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -238,10 +253,13 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
         if ([dict objectForKey:UIImagePickerControllerMediaType] == ALAssetTypePhoto){
             if ([dict objectForKey:UIImagePickerControllerOriginalImage]){
                 UIImage* image = [dict objectForKey:UIImagePickerControllerOriginalImage];
+                UIImage* thumb;
+
+                // Get thumbnail
+                CGSize thumbnailSize = CGSizeMake(95, 95);
+                thumb = [self scaleImage:image ToSize:thumbnailSize];
                 
-                // Save it to album
-                NSLog(@"CollectionView: Add a photo");
-                ret = [mAlbumListService addPhotoWithImage:image toAlbum:mAlbum];
+                ret = [mAlbumListService addPhotoWithImage:image andThumb:thumb toAlbum:mAlbum];
                 
                 if (ret) {
                     NSLog(@"Save image to album failed, return %d", ret);
@@ -254,7 +272,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
                 UIImage* image = [dict objectForKey:UIImagePickerControllerOriginalImage];
                 
                 // Save it to album
-                ret = [mAlbumListService addPhotoWithImage:image toAlbum:mAlbum];
+                ret = [mAlbumListService addPhotoWithImage:image andThumb:nil toAlbum:mAlbum];
                 
                 if (ret) {
                     NSLog(@"Save image to album failed, return %d", ret);
@@ -273,8 +291,30 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     [self didEndProgress];
 }
 
+- (UIImage *)scaleImage: (UIImage *)image ToSize:(CGSize)newSize {
+    
+    CGRect scaledImageRect = CGRectZero;
+    
+    CGFloat aspectWidth = newSize.width / image.size.width;
+    CGFloat aspectHeight = newSize.height / image.size.height;
+    CGFloat aspectRatio = MAX ( aspectWidth, aspectHeight );
+    
+    scaledImageRect.size.width = image.size.width * aspectRatio;
+    scaledImageRect.size.height = image.size.height * aspectRatio;
+    scaledImageRect.origin.x = (newSize.width - scaledImageRect.size.width) / 2.0f;
+    scaledImageRect.origin.y = (newSize.height - scaledImageRect.size.height) / 2.0f;
+    
+    UIGraphicsBeginImageContextWithOptions( newSize, NO, 0 );
+    [image drawInRect:scaledImageRect];
+    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return scaledImage;
+    
+}
+
 - (void) loadingProgressDialog {
-    mLoadingDialog = [[UIAlertView alloc] initWithTitle: @"Saving photos" message: @"" delegate:self cancelButtonTitle: nil otherButtonTitles: nil];
+    mLoadingDialog = [[UIAlertView alloc] initWithTitle: LSTR(@"Saving photos") message: @"" delegate:self cancelButtonTitle: nil otherButtonTitles: nil];
     UIActivityIndicatorView *progress= [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(125, 50, 30, 30)];
     progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     [mLoadingDialog setValue:progress forKey:@"accessoryView"];
@@ -298,7 +338,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
         [self.mCollectionView reloadData];
         
         // Dismiss loading progress dialog
-        [mLoadingDialog setTitle:@"已完成"];
+        [mLoadingDialog setTitle:LSTR(@"Finished")];
         [mLoadingDialog dismissWithClickedButtonIndex:0 animated:YES];
     } else {
         dispatch_sync(dispatch_get_main_queue(), ^{
@@ -308,7 +348,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
             [self.mCollectionView reloadData];
             
             // Dismiss loading progress dialog
-            [mLoadingDialog setTitle:@"已完成"];
+            [mLoadingDialog setTitle:LSTR(@"Finished")];
             [mLoadingDialog dismissWithClickedButtonIndex:0 animated:YES];
         });
     }

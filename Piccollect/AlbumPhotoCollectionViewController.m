@@ -41,7 +41,7 @@
     // Typically images will be loaded asynchonously. To simulate this we resize the image in background.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        NSString *subimagePath = [mAlbum.mAlbumPhotos objectAtIndex:(index)];
+        NSString *subimagePath = [[mAlbumListService photosInAlbum:mAlbum] objectAtIndex:(index)];
         NSString *imagePath = [mAlbumListService.mDocumentRootPath stringByAppendingPathComponent:subimagePath];
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
         //image = [image demo_imageByScalingByFactor:0.75];
@@ -54,7 +54,7 @@
 
 - (NSUInteger)numberOfImagesInGalleryView:(RMGalleryView*)galleryView
 {
-    return [mAlbum.mAlbumPhotos count];
+    return [mAlbumListService photoCount:mAlbum];
 }
 
 #pragma mark - RMGalleryViewDelegate

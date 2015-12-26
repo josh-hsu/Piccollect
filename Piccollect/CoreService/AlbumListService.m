@@ -414,12 +414,18 @@
     return 0;
 }
 
-- (int) addPhotoWithImage: (UIImage *) img toAlbum: (Album *) thisAlbum {
+- (int) addPhotoWithImage: (UIImage *) img andThumb: (UIImage *)thumb toAlbum: (Album *) thisAlbum {
     // Save the image to database
     NSString *imageFileName = [self generateNewPhotoFileNameWithAlbum: thisAlbum];
-    NSString *savePath = [mDocumentRootPath stringByAppendingPathComponent: imageFileName];
+    NSString *orgImageFileName = [imageFileName stringByAppendingString:@".png"];
+    NSString *thumbImageFileName = [imageFileName stringByAppendingString:@"-thumb.png"];
+    NSString *savePath = [mDocumentRootPath stringByAppendingPathComponent: orgImageFileName];
     [UIImagePNGRepresentation(img) writeToFile:savePath atomically:YES];
-    NSLog(@"New image %@ saved.", imageFileName);
+    if (thumb != nil) {
+        savePath = [mDocumentRootPath stringByAppendingPathComponent:thumbImageFileName];
+        [UIImagePNGRepresentation(thumb) writeToFile:savePath atomically:YES];
+    }
+    NSLog(@"New image %@ saved.", orgImageFileName);
 
     // Update list
     NSMutableArray *photoList = [mAlbumPhotoList objectForKey:thisAlbum.mAlbumKey];
@@ -435,7 +441,8 @@
 
 /*
  * This function is called only in the procedure of album deleting.
- * Merge back to default album is also available in the merge option
+ * Merge back to default album is also available in the merge option.
+ * We should move thumbnail as well.
  */
 - (int) removeAllPhotosInAlbum: (Album *) thisAlbum mergeBackToDefaultAlbum: (BOOL) merge {
 
@@ -453,17 +460,26 @@
     NSFileManager *fm = [[NSFileManager alloc] init];
 
     for (NSString *oldPhotoName in thisAlbum.mAlbumPhotos) {
-        NSString *oldPath = [mDocumentRootPath stringByAppendingPathComponent: oldPhotoName];
+        NSString *thumbOldPhotoFileName = [oldPhotoName stringByAppendingString:@"-thumb.png"];
+        NSString *oldPhotoFileName = [oldPhotoName stringByAppendingString:@".png"];
+        NSString *oldThumbPath = [mDocumentRootPath stringByAppendingPathComponent: thumbOldPhotoFileName];
+        NSString *oldPath = [mDocumentRootPath stringByAppendingPathComponent: oldPhotoFileName];
 
         if (merge) {
             // Batching rename for default
             NSString *newPhotoName = [self generateNewPhotoFileNameWithAlbum: defaultAlbum];
             NSString *newPath = [mDocumentRootPath stringByAppendingPathComponent: newPhotoName];
+            NSString *newThumbName = [newPhotoName stringByAppendingString:@"-thumb.png"];
+            NSString *newThumbPath = [mDocumentRootPath stringByAppendingPathComponent:newThumbName];
             
             if (LOCAL_DEBUG) NSLog(@"Merge %@ to %@", oldPhotoName, newPhotoName);
             BOOL result = [fm moveItemAtPath:oldPath toPath:newPath error:&err];
             if(!result)
-                NSLog(@"BUG: Error moving photo file: %@", err);
+                NSLog(@"BUG: Error moving original photo file: %@", err);
+            
+            result = [fm moveItemAtPath:oldThumbPath toPath:newThumbPath error:&err];
+            if(!result)
+                NSLog(@"May not be a bug: Error moving thumb photo file: %@", err);
             
             [defaultPhotoList addObject:newPhotoName];
             // Increase the incr
@@ -473,6 +489,10 @@
             BOOL result = [fm removeItemAtPath:oldPath error:&err];
             if(!result)
                 NSLog(@"BUG: Error deleting photo file: %@", err);
+            
+            result = [fm removeItemAtPath:oldThumbPath error:&err];
+            if(!result)
+                NSLog(@"May not be a bug: Error moving thumb photo file: %@", err);
         }
     }
 
@@ -492,12 +512,28 @@
     return 0;
 }
 
-- (NSArray *) photosInAlbum: (Album *) album {
-    return nil;
+- (NSMutableArray *) photosInAlbum: (Album *) album {
+    return album.mAlbumPhotos;
+}
+
+- (NSMutableArray *) photosThumbInAlbum: (Album *) album {
+    NSMutableArray *returnArray = [[NSMutableArray alloc] init];
+    NSString *fileName;
+    
+    for (fileName in album.mAlbumPhotos) {
+        NSString *thumbImageFileName = [fileName stringByAppendingString:@"-thumb.png"];
+        [returnArray addObject:thumbImageFileName];
+    }
+    
+    return returnArray;
 }
 
 - (NSArray *) photosInAlbumWithKey: (NSString *) key {
     return nil;
+}
+
+- (long) photoCount: (Album *) album {
+    return [album.mAlbumPhotos count];
 }
 
 /*
@@ -622,14 +658,29 @@
     
     int serial = [thisAlbum.mSerial intValue];
     NSString *incr = thisAlbum.mIncrease;
-    NSString *ret = [NSString stringWithFormat:@"IMG_%d%@.png", serial, incr];
+    NSString *ret = [NSString stringWithFormat:@"IMG_%d%@", serial, incr];
     
     return ret;
 }
 
 - (void) debugPrint {
+    NSLog(@"Auto fixing...");
+    [self autoFix];
     NSLog(@"Album debug: %@", [mAlbumList description]);
     NSLog(@"Photo debug: %@", [mAlbumPhotoList description]);
+}
+
+- (void) autoFix {
+    for (int i = 0; i < mCount; i++) {
+        Album *thisAlbum = [self albumInListAtIndex:i];
+        NSMutableArray *newPhotos = [[NSMutableArray alloc] init];
+        for (NSString *thisPhotoName in thisAlbum.mAlbumPhotos) {
+            NSString *newName = [[thisPhotoName componentsSeparatedByString:@"."] objectAtIndex:0];
+            [newPhotos addObject:newName];
+        }
+        [mAlbumPhotoList setObject:newPhotos forKey:thisAlbum.mAlbumKey];
+    }
+    [mAlbumPhotoList writeToFile:mAlbumPhotoPath atomically:YES];
 }
 
 @end

@@ -73,11 +73,13 @@
 // Photo functions
 - (int) addPhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key;
 - (int) removePhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key;
-- (int) removeAllPhotosInAlbum: (Album *) thisAlbum mergeBackToDefaultAlbum: (BOOL) merge ;
-- (int) addPhotoWithImage: (UIImage *) img toAlbum: (Album *) thisAlbum;
-- (NSArray *) photosInAlbum: (Album *) album;
+- (int) removeAllPhotosInAlbum: (Album *) thisAlbum mergeBackToDefaultAlbum: (BOOL) merge;
+- (int) addPhotoWithImage: (UIImage *) img andThumb: (UIImage *)thumb toAlbum: (Album *) thisAlbum;
+- (NSMutableArray *) photosInAlbum: (Album *) album;
+- (NSMutableArray *) photosThumbInAlbum: (Album *) album;
 - (NSArray *) photosInAlbumWithKey: (NSString *) key;
 - (UIImage *) topPhotoInAlbum: (Album *) album;
+- (long) photoCount: (Album *) album;
 
 // Album functions
 - (Album *) albumInListAtIndex: (NSInteger)idx;

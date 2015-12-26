@@ -35,10 +35,17 @@
 "Remove album only" = "只刪除相簿";
 "Edit Album" = "編輯相簿";
 
+
 // Photo Wall
 
 "Photo Wall" = "相片牆";
 "Add Account" = "加入帳號";
+
+
+// Collection view
+"Saving photos" = "儲存中";
+"Finished" = "已完成";
+"No Photo" = "沒有相片，請按＋加入";
 
 
 // Settings
