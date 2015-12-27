@@ -27,6 +27,7 @@
 static NSString * const reuseIdentifier = @"Cell";
 static CGSize mCellSize;
 static int mCellCountInARow = 4;
+static int mCellWidthHardCoded = 92;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -62,7 +63,10 @@ static int mCellCountInARow = 4;
         [mCollectionView addSubview:mNoPhotoLabel];
     }
 
-    mCellCountInARow = (int)(mCollectionView.frame.size.width / 92);
+    mCellCountInARow = (int)(mCollectionView.frame.size.width / mCellWidthHardCoded);
+    if (mCellCountInARow * mCellWidthHardCoded + mCellCountInARow > mCollectionView.frame.size.width) {
+        mCellCountInARow -= 1;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -171,8 +175,12 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
-    NSLog(@"Transition to size %f * %f", size.width, size.height);
+    NSLog(@"CollcetionView: Transition to size %f * %f", size.width, size.height);
     mCellCountInARow = (int)(size.width / mCellSize.width);
+    if (mCellCountInARow * mCellSize.width + mCellCountInARow > size.width) {
+        mCellCountInARow -= 1;
+    }
+        
     [mCollectionView reloadData];
 }
 
