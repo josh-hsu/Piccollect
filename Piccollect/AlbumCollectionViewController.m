@@ -26,6 +26,7 @@
 
 static NSString * const reuseIdentifier = @"Cell";
 static CGSize mCellSize;
+static int mCellCountInARow = 4;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -60,6 +61,8 @@ static CGSize mCellSize;
         mNoPhotoLabel.font = [UIFont systemFontOfSize:25.0];
         [mCollectionView addSubview:mNoPhotoLabel];
     }
+
+    mCellCountInARow = (int)(mCollectionView.frame.size.width / 92);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,17 +77,17 @@ static CGSize mCellSize;
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     long photoCount = [mAlbumListService photoCount:mAlbum];
     NSLog(@"CollectionView: photo count = %ld", photoCount);
-    return photoCount/4 + (photoCount%4 ? 1 : 0);
+    return photoCount/mCellCountInARow + (photoCount%mCellCountInARow ? 1 : 0);
 }
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 4;
+    return mCellCountInARow;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"albumThumbCollectionCell" forIndexPath:indexPath];
-    long pageIndex = indexPath.row + indexPath.section * 4;
+    long pageIndex = indexPath.row + indexPath.section * mCellCountInARow;
     UIImageView *imageView;
     
     // Initial global variable for cell size
@@ -166,6 +169,13 @@ static CGSize mCellSize;
 minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     return 1.0;
 }
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    NSLog(@"Transition to size %f * %f", size.width, size.height);
+    mCellCountInARow = (int)(size.width / mCellSize.width);
+    [mCollectionView reloadData];
+}
+
 
 /*
 // Uncomment this method to specify if the specified item should be highlighted during tracking
@@ -408,8 +418,8 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     // Allocate next view controller
     AlbumPhotoCollectionViewController *galleryViewController = [AlbumPhotoCollectionViewController new];
     galleryViewController.mAlbum = mAlbum;
-    galleryViewController.mPage = (int)(indexPath.row + 4 * indexPath.section);
-    galleryViewController.galleryIndex = (int)(indexPath.row + 4 * indexPath.section);
+    galleryViewController.mPage = (int)(indexPath.row + mCellCountInARow * indexPath.section);
+    galleryViewController.galleryIndex = (int)(indexPath.row + mCellCountInARow * indexPath.section);
     galleryViewController.mAlbumListService = mAlbumListService;
     
     // The gallery is designed to be presented in a navigation controller or on its own.
