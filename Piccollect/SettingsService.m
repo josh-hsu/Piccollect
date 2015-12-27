@@ -10,4 +10,19 @@
 
 @implementation SettingsService
 
+- (id)init {
+    int ret = -1;
+    if (self = [super init]) {
+        ret = [self initSettingList];
+        
+        if (ret == 0)
+            return self;
+    }
+    return nil;
+}
+
+- (int)initSettingList {
+    return 0;
+}
+
 @end
