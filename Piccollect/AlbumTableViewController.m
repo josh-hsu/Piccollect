@@ -18,7 +18,7 @@
 
 @implementation AlbumTableViewController
 
-@synthesize mAlbumList;
+@synthesize mAlbumList, mSettingsService;
 @synthesize mTableViewIB, mEditButtonIB;
 
 #define LSTR(arg) NSLocalizedString(arg, nil)
@@ -49,15 +49,19 @@ static BOOL isAuthorized = NO;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    // Load password require scene (DEBUGGING)
-    if (!isAuthorized)
+
+    mSettingsService = [[SettingsService alloc] init];
+    if (!mSettingsService) {
+		NSLog(@"FATAL: Setting service can not be initialized");
+		abort();
+    }
+
+    if (!isAuthorized && [[mSettingsService getValueOfPrimaryKey: STOKEN_PASSWORD_REQ] boolValue])
         [self performSegueWithIdentifier:@"showPasswordViewSegue" sender:nil];
-    
+
     // Because the selected row will not reset after user hit back button and return here
     [mTableViewIB deselectRowAtIndexPath:[mTableViewIB indexPathForSelectedRow] animated:YES];
     [self.mTableViewIB reloadData];
-    
 }
 
 - (void)didReceiveMemoryWarning {

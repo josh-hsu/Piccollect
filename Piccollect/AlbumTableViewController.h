@@ -10,6 +10,7 @@
 #import "Album.h"
 #import "AlbumListService.h"
 #import "PasswordViewController.h"
+#import "SettingsService.h"
 
 @interface AlbumTableViewController : UIViewController <StartViewControllerDelegate> {
     int rowUserSelected;
@@ -18,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *mTableViewIB;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *mEditButtonIB;
 @property (strong, nonatomic) AlbumListService *mAlbumList;
+@property (retain, nonatomic) SettingsService *mSettingsService;
 
 - (void) initAlbumList; 
 

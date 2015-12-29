@@ -37,6 +37,8 @@
 	<false/>
 	<key>passwordRequired</key>
 	<false/>
+	<key>password</key>
+	<string>1226</string>
 	<key>saveToCloud</key>
 	<false/>
 </dict>

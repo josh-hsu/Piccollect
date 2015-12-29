@@ -12,6 +12,7 @@
 
 // Plist token
 #define STOKEN_PASSWORD_REQ   @"passwordRequired"
+#define STOKEN_PASSWORD       @"password"
 #define STOKEN_NIGHT_MODE     @"nightMode"
 #define STOKEN_CLOUD_SAVE     @"saveToCloud"
 #define STOKEN_SOCIAL_DICT    @"socialAccounts"
@@ -22,8 +23,22 @@
 #define STOKEN_ACC_TOKEN      @"accountToken"
 #define STOKEN_ACC_NAME       @"accountName"
 
+// Constant
+#define SETTINGS_LIST_NAME    @"settings"
+
 // Setting list
 @property (nonatomic, copy) NSString *mSettingListPath;
 @property (nonatomic, retain) NSMutableDictionary *mSettingList;
+
+// Photos document path
+@property (nonatomic, retain) NSString *mDocumentRootPath;
+
+// Getter
+- (id) getValueOfPrimaryKey: (NSString *) key;
+- (id) getValueOfSocialKey: (NSString *) key;
+
+// Setter
+- (int) setPrimaryKey: (NSString *) key withValue: (id) value;
+- (int) setSocialKey: (NSString *) key withValue: (id) value;
 
 @end

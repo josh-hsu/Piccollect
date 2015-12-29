@@ -10,7 +10,11 @@
 
 @implementation SettingsService
 
-- (id)init {
+@synthesize mSettingList, mSettingListPath, mDocumentRootPath;
+
+#define LOCAL_DEBUG           NO    //YES, turn on Log
+
+- (id) init {
     int ret = -1;
     if (self = [super init]) {
         ret = [self initSettingList];
@@ -21,8 +25,104 @@
     return nil;
 }
 
-- (int)initSettingList {
+/*
+ * initSettingList
+ *
+ * This is the main entry of SettingsService
+ * We should deal with every little details to prevent aborting
+ */
+- (int) initSettingList {
+	NSError *errorDesc;
+    NSPropertyListFormat format;
+
+    // Initial document path for storing photos
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    if(LOCAL_DEBUG) NSLog(@"Document path: %@", documentsDirectory);
+    mDocumentRootPath = documentsDirectory;
+
+    // Find the new albums.plist inside the document folder
+    mSettingListPath = [mDocumentRootPath stringByAppendingPathComponent:SETTINGS_LIST_NAME];
+
+    // If we cannot find list in document folder, copy default list to document
+    if (![[NSFileManager defaultManager] fileExistsAtPath:mSettingListPath]) {
+        if (LOCAL_DEBUG) NSLog(@"First use settings list, load default");
+        NSString *localListPath = [[NSBundle mainBundle] pathForResource:SETTINGS_LIST_NAME ofType:@"plist"];
+        [[NSFileManager defaultManager] copyItemAtPath:localListPath toPath:mSettingListPath error:&errorDesc];
+    }
+
+    NSData *plistXML = [[NSFileManager defaultManager] contentsAtPath:mSettingListPath];
+    mSettingList = (NSMutableDictionary *) [NSPropertyListSerialization propertyListWithData:plistXML
+                                              options:NSPropertyListMutableContainersAndLeaves format:&format error:&errorDesc];
+
+    if (!mSettingList) {
+        NSLog(@"Error reading plist: %@, format: %lu", errorDesc, (unsigned long)format);
+        return -1;
+    }
+
     return 0;
+}
+
+#pragma mark - Getter functions
+/* ===============================================================
+ * Getter functions
+ *
+ * Each getter function might report an inconsist or unexpect value
+ * You should deal with verification of each return
+ * ===============================================================
+ */
+- (id) getValueOfPrimaryKey: (NSString *) key {
+	id return_value;
+
+	if (!key) {
+		NSLog(@"BUG: getValueOfPrimaryKey called with null key");
+		return nil;
+	}
+
+	return_value = [mSettingList objectForKey: key];
+	if (!return_value) {
+		NSLog(@"BUG: the key %@ recently queried has a null return.", key);
+	}
+
+	return return_value;
+}
+
+- (id) getValueOfSocialKey: (NSString *) key {
+	id return_value;
+	NSDictionary *socialDict = [mSettingList objectForKey:STOKEN_SOCIAL_DICT];
+
+	if (!key) {
+		NSLog(@"BUG: getValueOfPrimaryKey called with null key");
+		return nil;
+	}
+
+	return_value = [socialDict objectForKey: key];
+	if (!return_value) {
+		NSLog(@"BUG: the key %@ recently queried has a null return.", key);
+	}
+
+	return return_value;
+}
+
+#pragma mark - Setter functions
+/* ===============================================================
+ * Setter functions
+ * ===============================================================
+ */
+
+- (int) setPrimaryKey: (NSString *) key withValue: (id) value {
+	if (!key || !value) {
+		NSLog(@"BUG: setPrimaryKey called with null key or null value");
+		return -1;
+	}
+
+	[mSettingList setObject:value forKey:key];
+	[mSettingList writeToFile:mSettingListPath atomically:YES];
+	return 0;
+}
+
+- (int) setSocialKey: (NSString *) key withValue: (id) value {
+	return 0;
 }
 
 @end
