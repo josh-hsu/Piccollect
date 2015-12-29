@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SettingsService.h"
+#import "AlbumListService.h"
 
 @interface SettingsViewController : UITableViewController
 
@@ -18,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *mCellNightMode;
 
 @property (retain, nonatomic) SettingsService *mSettingService;
+@property (retain, nonatomic) AlbumListService *mAlbumListService;
 
 
 @end
