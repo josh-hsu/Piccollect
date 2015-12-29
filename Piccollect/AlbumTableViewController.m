@@ -55,8 +55,12 @@ static BOOL isAuthorized = NO;
 		NSLog(@"FATAL: Setting service can not be initialized");
 		abort();
     }
+    
+    if (![[mSettingsService getValueOfPrimaryKey: STOKEN_PASSWORD_REQ] boolValue]) {
+        isAuthorized = YES;
+    }
 
-    if (!isAuthorized && [[mSettingsService getValueOfPrimaryKey: STOKEN_PASSWORD_REQ] boolValue])
+    if (!isAuthorized)
         [self performSegueWithIdentifier:@"showPasswordViewSegue" sender:nil];
 
     // Because the selected row will not reset after user hit back button and return here

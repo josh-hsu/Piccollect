@@ -16,7 +16,7 @@
 @property (retain, atomic) id <StartViewControllerDelegate> delegate;
 @property (retain, atomic) UIAlertView *errorAlert;
 @property (weak, nonatomic) IBOutlet UILabel *maxTryLabel;
-@property (nonatomic, retain) SettingsService *settingsService;
+@property (nonatomic, retain) SettingsService *mSettingsService;
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)done:(id)sender;

@@ -283,7 +283,7 @@
         <!--Settings-->
         <scene sceneID="PC2-aV-wJ0">
             <objects>
-                <tableViewController id="7i9-5z-hSz" sceneMemberID="viewController">
+                <tableViewController id="7i9-5z-hSz" customClass="SettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="qeL-ps-EXC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -426,6 +426,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sB0-g6-KTD">
                                                     <rect key="frame" x="318" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="didSetEncryptAlbums:" destination="7i9-5z-hSz" eventType="valueChanged" id="Y3e-iD-Iwx"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -462,10 +465,17 @@
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="7i9-5z-hSz" id="RZp-On-68q"/>
-                            <outlet property="delegate" destination="7i9-5z-hSz" id="6dN-AL-GPW"/>
+                            <outlet property="delegate" destination="7i9-5z-hSz" id="d0J-3k-IJf"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="lSi-eL-BCV"/>
+                    <connections>
+                        <outlet property="mCellCompressPhotos" destination="JvN-Nh-JQv" id="0a9-Ff-vzL"/>
+                        <outlet property="mCellEncryptAlbums" destination="LbV-k6-HIx" id="mkV-7I-fPt"/>
+                        <outlet property="mCellNightMode" destination="JgH-bH-dAd" id="QqN-lW-vUK"/>
+                        <outlet property="mSwitchEncryptAlbums" destination="sB0-g6-KTD" id="MEg-Jt-Rhp"/>
+                        <outlet property="mSwitchNightMode" destination="fbZ-Zr-Utl" id="KV6-eS-6Pw"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ncH-OU-U5H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

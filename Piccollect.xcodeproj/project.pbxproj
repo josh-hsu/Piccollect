@@ -30,7 +30,7 @@
 		03E98D9A1C1D471F002D97B2 /* RMGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E98D961C1D471F002D97B2 /* RMGalleryViewController.m */; };
 		03E9CEBE1C20051200BB4C71 /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E9CEBD1C20051200BB4C71 /* PasswordViewController.m */; };
 		03E9CEC11C200F8D00BB4C71 /* SettingsService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E9CEC01C200F8D00BB4C71 /* SettingsService.m */; };
-		03E9CEC41C200F9D00BB4C71 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E9CEC31C200F9D00BB4C71 /* Settings.m */; };
+		03EA4B521C3239F60022B12C /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EA4B511C3239F60022B12C /* SettingsViewController.m */; };
 		03F73F4A1C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F73F491C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.m */; };
 		03F73F4D1C0B19BF00BCDBCE /* ELCImagePicker in Resources */ = {isa = PBXBuildFile; fileRef = 03F73F4C1C0B19BF00BCDBCE /* ELCImagePicker */; };
 		03F73F6B1C0B1F0500BCDBCE /* ELCAlbumPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F73F551C0B1F0500BCDBCE /* ELCAlbumPickerController.m */; };
@@ -111,8 +111,8 @@
 		03E9CEBD1C20051200BB4C71 /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
 		03E9CEBF1C200F8D00BB4C71 /* SettingsService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsService.h; sourceTree = "<group>"; };
 		03E9CEC01C200F8D00BB4C71 /* SettingsService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsService.m; sourceTree = "<group>"; };
-		03E9CEC21C200F9D00BB4C71 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
-		03E9CEC31C200F9D00BB4C71 /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
+		03EA4B501C3239F60022B12C /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		03EA4B511C3239F60022B12C /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		03F73F481C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumPhotoCollectionViewController.h; sourceTree = "<group>"; };
 		03F73F491C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumPhotoCollectionViewController.m; sourceTree = "<group>"; };
 		03F73F4C1C0B19BF00BCDBCE /* ELCImagePicker */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ELCImagePicker; path = /Users/josh/Documents/Piccollect/Piccollect/ELCImagePicker; sourceTree = "<absolute>"; };
@@ -259,6 +259,8 @@
 				03F73F491C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.m */,
 				03E9CEBC1C20051200BB4C71 /* PasswordViewController.h */,
 				03E9CEBD1C20051200BB4C71 /* PasswordViewController.m */,
+				03EA4B501C3239F60022B12C /* SettingsViewController.h */,
+				03EA4B511C3239F60022B12C /* SettingsViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -278,8 +280,6 @@
 			children = (
 				03BCA60D1C019FE4009BD8FB /* Album.h */,
 				03BCA60E1C019FE4009BD8FB /* Album.m */,
-				03E9CEC21C200F9D00BB4C71 /* Settings.h */,
-				03E9CEC31C200F9D00BB4C71 /* Settings.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -504,12 +504,12 @@
 				03C0C7561C00A6F400EBA2D4 /* AlbumTableViewController.m in Sources */,
 				03C0C7591C00A72B00EBA2D4 /* SocialViewController.m in Sources */,
 				03E98D991C1D471F002D97B2 /* RMGalleryView.m in Sources */,
-				03E9CEC41C200F9D00BB4C71 /* Settings.m in Sources */,
 				03F73F6E1C0B1F0500BCDBCE /* ELCAssetTablePicker.m in Sources */,
 				03F73F6F1C0B1F0500BCDBCE /* ELCConsole.m in Sources */,
 				03F73F701C0B1F0500BCDBCE /* ELCImagePickerController.m in Sources */,
 				03F73F711C0B1F0500BCDBCE /* ELCOverlayImageView.m in Sources */,
 				03F73F6B1C0B1F0500BCDBCE /* ELCAlbumPickerController.m in Sources */,
+				03EA4B521C3239F60022B12C /* SettingsViewController.m in Sources */,
 				03E98D971C1D471F002D97B2 /* RMGalleryCell.m in Sources */,
 				03E9CEC11C200F8D00BB4C71 /* SettingsService.m in Sources */,
 			);

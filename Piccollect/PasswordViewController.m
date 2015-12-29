@@ -13,7 +13,7 @@
 
 @synthesize maxTryLabel;
 @synthesize passworkTextField, delegate, errorAlert;
-@synthesize settingsService;
+@synthesize mSettingsService;
 
 #define LSTR(arg) NSLocalizedString(arg, nil)
 
@@ -41,7 +41,7 @@ int max_try;
 
 // TODO:這裡還必須處理時間問題。
 - (IBAction)done:(id)sender {
-    NSString *password = @"1226";
+    NSString *password = [mSettingsService getValueOfPrimaryKey:STOKEN_PASSWORD];
     
     if([[passworkTextField text] isEqualToString:password]) {
         [self dismissModal];
@@ -95,7 +95,7 @@ int max_try;
     max_try = 10;
     [passworkTextField becomeFirstResponder]; //使畫面一開始就出現鍵盤，讓使用者可以直接作輸入輸出。
     [self initialAlert];
-    settingsService = [[SettingsService alloc] init]; // should not initialize here
+    mSettingsService = [[SettingsService alloc] init]; // should not initialize here
     
     [super viewDidLoad];
 }
