@@ -222,11 +222,11 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     
     if (!isEditing) {
         //mEditButtonIB.title = LSTR(@"Finish");
-        [mCollectionView setEditing:YES animated:YES];
+        self.editing = YES;
         isEditing = YES;
     } else {
         //mEditButtonIB.title = LSTR(@"Edit");
-        [mCollectionView setEditing:NO animated:YES];
+        self.editing = NO;
         isEditing = NO;
     }
 }
@@ -431,7 +431,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     UICollectionViewCell* cell = (UICollectionViewCell*)cellView;
     NSIndexPath* indexPath = [self.mCollectionView indexPathForCell:cell];
     
-    if (mCollectionView.isEditing) {
+    if (!self.editing) {
         [self showDetailGalleryView: indexPath];
     } else {
         NSLog(@"Editing check on %ld section and %ld row", indexPath.section, indexPath.row);
