@@ -218,7 +218,17 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
 
 
 - (IBAction)editPhotoLibrary:(id)sender {
+    static BOOL isEditing = NO;
     
+    if (!isEditing) {
+        //mEditButtonIB.title = LSTR(@"Finish");
+        [mCollectionView setEditing:YES animated:YES];
+        isEditing = YES;
+    } else {
+        //mEditButtonIB.title = LSTR(@"Edit");
+        [mCollectionView setEditing:NO animated:YES];
+        isEditing = NO;
+    }
 }
 
 
@@ -406,9 +416,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     return estimatedSize;
 }
 
-
 #pragma mark - Gesture Recongnizer
-
 
 - (void)thumbnailTapGestureRecognized:(id)sender
 {
@@ -423,6 +431,14 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     UICollectionViewCell* cell = (UICollectionViewCell*)cellView;
     NSIndexPath* indexPath = [self.mCollectionView indexPathForCell:cell];
     
+    if (mCollectionView.isEditing) {
+        [self showDetailGalleryView: indexPath];
+    } else {
+        NSLog(@"Editing check on %ld section and %ld row", indexPath.section, indexPath.row);
+    }
+}
+
+- (void)showDetailGalleryView:(NSIndexPath *)indexPath {
     // Allocate next view controller
     AlbumPhotoCollectionViewController *galleryViewController = [AlbumPhotoCollectionViewController new];
     galleryViewController.mAlbum = mAlbum;
