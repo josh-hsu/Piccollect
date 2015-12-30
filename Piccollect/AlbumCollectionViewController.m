@@ -26,8 +26,9 @@
 
 static NSString * const reuseIdentifier = @"Cell";
 static CGSize mCellSize;
-static int mCellCountInARow = 4;
-static int mCellWidthHardCoded = 92;
+static int mCellCountInARow = 4;    // Default set to portrait orientation
+static int mCellWidth = 92;         // Golden cell width for 4.7 inch screen
+static int mThumbnailWidth = 95;    // Thumbnail width
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -63,8 +64,9 @@ static int mCellWidthHardCoded = 92;
         [mCollectionView addSubview:mNoPhotoLabel];
     }
 
-    mCellCountInARow = (int)(mCollectionView.frame.size.width / mCellWidthHardCoded);
-    if (mCellCountInARow * mCellWidthHardCoded + mCellCountInARow > mCollectionView.frame.size.width) {
+    //TODO: this should be removed after dynamic cell size implementation is done
+    mCellCountInARow = (int)(mCollectionView.frame.size.width / mCellWidth);
+    if (mCellCountInARow * mCellWidth + mCellCountInARow > mCollectionView.frame.size.width) {
         mCellCountInARow -= 1;
     }
 }
@@ -93,9 +95,6 @@ static int mCellWidthHardCoded = 92;
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"albumThumbCollectionCell" forIndexPath:indexPath];
     long pageIndex = indexPath.row + indexPath.section * mCellCountInARow;
     UIImageView *imageView;
-    
-    // Initial global variable for cell size
-    mCellSize = cell.frame.size;
     
     // Only config the cell with photo available
     if (pageIndex < [mAlbumListService photoCount:mAlbum]) {
@@ -152,7 +151,15 @@ static int mCellWidthHardCoded = 92;
         tapGesture1.numberOfTapsRequired = 1;
         //[tapGesture1 setDelegate:self];
         [imageView addGestureRecognizer:tapGesture1];
-        
+
+        // Add overlay view
+        UIImageView *overlayView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, mCellSize.height, mCellSize.width)];
+        UIImage *overlayImage = [UIImage imageNamed:@"Overlay.png"];
+        overlayView.image = overlayImage;
+        overlayView.contentMode = UIViewContentModeScaleAspectFill;
+        overlayView.hidden = NO; //Need to be YES in the first time, set to NO for debug
+        [imageView addSubview: overlayView];
+
         // Replace back
         [mImageViewArray replaceObjectAtIndex:pageIndex withObject:imageView];
     }
@@ -174,14 +181,43 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     return 1.0;
 }
 
+/*
+ * This handles when size of screen is changed by orientation or reachability
+ */
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     NSLog(@"CollcetionView: Transition to size %f * %f", size.width, size.height);
     mCellCountInARow = (int)(size.width / mCellSize.width);
+
+    // Take insect size between each cell into count
     if (mCellCountInARow * mCellSize.width + mCellCountInARow > size.width) {
         mCellCountInARow -= 1;
     }
         
     [mCollectionView reloadData];
+}
+
+/*
+ * This handles different screen sizes to have different cell sizes
+ * Now we support 4.7 and 5.5 inch screen size
+ * We want 4 cells in a section for portrait orientation and 7 cells
+ * in a section for landscape orientation
+ */
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    long width = collectionView.frame.size.width;
+    long height = collectionView.frame.size.height;
+    long cell_width;
+
+    if (height > width) {
+        mCellCountInARow = 4;
+    } else {
+        mCellCountInARow = 7;
+    }
+
+    cell_width = (long)(width / mCellCountInARow) - 1;
+    mCellWidth = cell_width;
+    NSLog(@"collectionView: cell width = %d, cell count = %d", mCellWidth, mCellCountInARow);
+
+    return CGSizeMake(mCellWidth, mCellWidth);
 }
 
 
@@ -319,7 +355,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
 }
 
 - (UIImage *)makeThumbWithImage: (UIImage *)image {
-    CGSize newSize = CGSizeMake(95, 95);
+    CGSize newSize = CGSizeMake(mThumbnailWidth, mThumbnailWidth);
     CGRect scaledImageRect = CGRectZero;
     
     CGFloat aspectWidth = newSize.width / image.size.width;

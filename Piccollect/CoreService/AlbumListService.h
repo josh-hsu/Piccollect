@@ -37,6 +37,10 @@
 #define ALBUM_PHOTO_LIST_FILE_NAME   @"albumImage.plist"
 #define ALBUM_KEY_NEXT      @"next"
 
+// Album constant
+#define ALS_PHOTO_MOVE      0
+#define ALS_PHOTO_REMOVE    1
+
 /*
  * Properties
  */
