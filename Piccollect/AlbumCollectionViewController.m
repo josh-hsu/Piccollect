@@ -29,6 +29,8 @@ static CGSize mCellSize;
 static int mCellCountInARow = 4;    // Default set to portrait orientation
 static int mCellWidth = 92;         // Golden cell width for 4.7 inch screen
 static int mThumbnailWidth = 95;    // Thumbnail width
+static NSMutableDictionary  *mSelectedPhotos;
+static int mOverlayViewTag = 100;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -158,6 +160,7 @@ static int mThumbnailWidth = 95;    // Thumbnail width
         overlayView.image = overlayImage;
         overlayView.contentMode = UIViewContentModeScaleAspectFill;
         overlayView.hidden = NO; //Need to be YES in the first time, set to NO for debug
+        overlayView.tag = mOverlayViewTag;
         [imageView addSubview: overlayView];
 
         // Replace back
@@ -177,7 +180,7 @@ static int mThumbnailWidth = 95;    // Thumbnail width
 }
 
 - (CGFloat)collectionView:(UICollectionView *) collectionView layout:(UICollectionViewLayout *) collectionViewLayout
-minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
+        minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     return 1.0;
 }
 
@@ -250,6 +253,52 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
 }
 */
 
+#pragma mark - Selection holder
+
+/*
+ * Selection holder uses a NSMutableDictionary to store which item has been selected
+ * key  (NSString): indexPath string
+ * item (NSNumber): pageIndex in long type
+ */
+
+// When user pressed edit button, we should initialize a selection process
+- (void)selectItemStarted {
+    mSelectedPhotos = [[NSMutableDictionary alloc] init];
+}
+
+- (BOOL)selectItemStatusForKey:(NSString *)key {
+    NSString *value = [mSelectedPhotos objectForKey:key];
+
+    if (!value) {
+        return NO;
+    }
+
+    return YES;
+}
+
+// Handle every selection
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath {
+    long pageIndex = (long)(indexPath.row + indexPath.section * mCellCountInARow);
+    NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", pageIndex];
+    NSNumber *value = [[NSNumber alloc] initWithLong:pageIndex];
+    UIImageView *overlayView = [[mImageViewArray objectAtIndex:pageIndex] viewWithTag:mOverlayViewTag];
+
+    // Check if item has been selected
+    if (![self selectItemStatusForKey:rootKey]) {
+        [mSelectedPhotos setObject:value forKey:rootKey];
+        overlayView.hidden = NO;
+    } else {
+        [mSelectedPhotos removeObjectForKey:rootKey];
+        overlayView.hidden = YES;
+    }
+}
+
+// When user pressed finish button with or without action, the selection should be removed
+- (void)selectItemEnded {
+    mSelectedPhotos = nil;
+}
+
+
 #pragma mark - IBAction
 
 
@@ -258,12 +307,16 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
     
     if (!isEditing) {
         //mEditButtonIB.title = LSTR(@"Finish");
+        NSLog(@"Now editing");
         self.editing = YES;
         isEditing = YES;
+        [self selectItemStarted];
     } else {
         //mEditButtonIB.title = LSTR(@"Edit");
+        NSLog(@"Done editing");
         self.editing = NO;
         isEditing = NO;
+        [self selectItemEnded];
     }
 }
 
@@ -471,6 +524,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger) section {
         [self showDetailGalleryView: indexPath];
     } else {
         NSLog(@"Editing check on %ld section and %ld row", indexPath.section, indexPath.row);
+        [self selectItemAtIndexPath: indexPath];
     }
 }
 

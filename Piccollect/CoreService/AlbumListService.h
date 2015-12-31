@@ -14,7 +14,7 @@
 @import AssetsLibrary;
 
 @interface AlbumListService : NSObject {
-    // Local variable, it cannot be accessed outside this method
+    // Local variable, it cannot be accessed outside of this class
     NSMutableArray *mAlbums;
     
     // For debug
@@ -63,40 +63,41 @@
  */
 
 // Initial phase, only run once when view controller presents
-- (int) initAlbumList;
-- (int) initAlbumPhotosList;
-- (void) initAlbumsWithRefresh: (BOOL) needRefresh;
+- (int)initAlbumList;
+- (int)initAlbumPhotosList;
+- (void)initAlbumsWithRefresh:(BOOL)needRefresh;
 
 /* 
  * Utilities for interaction with users
  */
 // Utilities
-- (void) refresh;
-- (NSString *) randomStringWithLength: (int) len;
+- (void)refresh;
+- (NSString *)randomStringWithLength:(int)len;
 
 // Photo functions
-- (int) addPhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key;
-- (int) removePhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key;
-- (int) removeAllPhotosInAlbum: (Album *) thisAlbum mergeBackToDefaultAlbum: (BOOL) merge;
-- (int) addPhotoWithImage: (UIImage *) img andThumb: (UIImage *)thumb toAlbum: (Album *) thisAlbum;
-- (NSMutableArray *) photosInAlbum: (Album *) album;
-- (NSMutableArray *) photosThumbInAlbum: (Album *) album;
-- (NSArray *) photosInAlbumWithKey: (NSString *) key;
-- (UIImage *) topPhotoInAlbum: (Album *) album;
-- (long) photoCount: (Album *) album;
+- (int)addPhotoInPath:(NSString *)path toAlbumWithKey:(NSString *)key;
+- (int)removePhotoInPath:(NSString *)path toAlbumWithKey:(NSString *)key;
+- (int)removeAllPhotosInAlbum:(Album *)thisAlbum mergeBackToDefaultAlbum:(BOOL)merge;
+- (int)addPhotoWithImage:(UIImage *)img andThumb:(UIImage *)thumb toAlbum:(Album *)thisAlbum;
+- (NSMutableArray *)photosInAlbum:(Album *)album;
+- (NSMutableArray *)photosThumbInAlbum:(Album *)album;
+- (NSArray *)photosInAlbumWithKey:(NSString *)key;
+- (UIImage *)topPhotoInAlbum:(Album *)album;
+- (int)editPhotosIn:(NSMutableDictionary *)photos ofAlbum:(Album *)album forType:(int)editType;
+- (long)photoCount:(Album *)album;
 
 // Album functions
-- (Album *) albumInListAtIndex: (NSInteger)idx;
-- (void) reorderAlbumId: (int) idx;
-- (int) createAlbumWithName: (NSString *) name;
-- (int) editAlbumNameWithKey: (NSString *) key value: (NSString *) value;
-- (int) removeAlbumWithKey: (NSString *) key mergeBack: (BOOL) merge;
+- (Album *)albumInListAtIndex:(NSInteger)idx;
+- (void)reorderAlbumId:(int)idx;
+- (int)createAlbumWithName:(NSString *)name;
+- (int)editAlbumNameWithKey:(NSString *)key value:(NSString *)value;
+- (int)removeAlbumWithKey:(NSString *)key mergeBack:(BOOL)merge;
 
 /*
  * Debug functions
  */
-- (void) initPhotoFileDebug;
-- (void) allPhotosCollected:(NSArray*)imgArray;
-- (void) debugPrint;
+- (void)initPhotoFileDebug;
+- (void)allPhotosCollected:(NSArray*)imgArray;
+- (void)debugPrint;
 
 @end

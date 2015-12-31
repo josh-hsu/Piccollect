@@ -532,6 +532,22 @@
     return nil;
 }
 
+/*
+ * This method handles every edit type of photos in this list "photos"
+ * In this moment, we support both move (to another album) and remove (photos)
+ */
+- (int)editPhotosIn:(NSMutableDictionary *)photos ofAlbum:(Album *)album forType:(int)editType {
+    if (editType == ALS_PHOTO_MOVE) {
+        NSLog(@"move photo called");
+    } else if (editType == ALS_PHOTO_REMOVE) {
+        NSLog(@"remove photo called");
+    } else {
+        NSLog(@"BUG: edit type not recognized");
+    }
+
+    return 0;
+}
+
 - (long) photoCount: (Album *) album {
     return [album.mAlbumPhotos count];
 }
