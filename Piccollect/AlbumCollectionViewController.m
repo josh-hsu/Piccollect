@@ -293,6 +293,15 @@ static int mOverlayViewTag = 100;
 
 // When user pressed finish button with or without action, the selection should be removed
 - (void)selectItemEnded {
+    NSEnumerator *enumerator = [mSelectedPhotos keyEnumerator];
+    NSString *key;
+    
+    while ((key = (NSString*)[enumerator nextObject])) {
+        int pageIndex = [key intValue];
+        UIImageView *overlayView = [[mImageViewArray objectAtIndex:pageIndex] viewWithTag:mOverlayViewTag];
+        overlayView.hidden = YES;
+    }
+    
     mSelectedPhotos = nil;
 }
 
