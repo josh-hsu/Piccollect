@@ -27,7 +27,7 @@
 static NSString * const reuseIdentifier = @"Cell";
 static CGSize mCellSize;
 static int mCellCountInARow = 4;    // Default set to portrait orientation
-static int mCellWidth = 92;         // Golden cell width for 4.7 inch screen
+static float mCellWidth = 92.0;     // Golden cell width for 4.7 inch screen
 static int mThumbnailWidth = 95;    // Thumbnail width
 static NSMutableDictionary  *mSelectedPhotos;
 static int mOverlayViewTag = 100;
@@ -65,12 +65,11 @@ static int mOverlayViewTag = 100;
         mNoPhotoLabel.font = [UIFont systemFontOfSize:25.0];
         [mCollectionView addSubview:mNoPhotoLabel];
     }
+}
 
-    //TODO: this should be removed after dynamic cell size implementation is done
-    mCellCountInARow = (int)(mCollectionView.frame.size.width / mCellWidth);
-    if (mCellCountInARow * mCellWidth + mCellCountInARow > mCollectionView.frame.size.width) {
-        mCellCountInARow -= 1;
-    }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self recalculateCellSize:mCollectionView.frame.size];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -159,7 +158,7 @@ static int mOverlayViewTag = 100;
         UIImage *overlayImage = [UIImage imageNamed:@"Overlay.png"];
         overlayView.image = overlayImage;
         overlayView.contentMode = UIViewContentModeScaleAspectFill;
-        overlayView.hidden = NO; //Need to be YES in the first time, set to NO for debug
+        overlayView.hidden = YES; //Need to be YES in the first time, set to NO for debug
         overlayView.tag = mOverlayViewTag;
         [imageView addSubview: overlayView];
 
@@ -189,14 +188,12 @@ static int mOverlayViewTag = 100;
  */
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     NSLog(@"CollcetionView: Transition to size %f * %f", size.width, size.height);
-    mCellCountInARow = (int)(size.width / mCellSize.width);
-
-    // Take insect size between each cell into count
-    if (mCellCountInARow * mCellSize.width + mCellCountInARow > size.width) {
-        mCellCountInARow -= 1;
-    }
-        
+    [self recalculateCellSize:size];
     [mCollectionView reloadData];
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return [self recalculateCellSize:collectionView.frame.size];
 }
 
 /*
@@ -204,23 +201,24 @@ static int mOverlayViewTag = 100;
  * Now we support 4.7 and 5.5 inch screen size
  * We want 4 cells in a section for portrait orientation and 7 cells
  * in a section for landscape orientation
+ * TODO: Fix 4 inch display portrait cell size mismatch
  */
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    long width = collectionView.frame.size.width;
-    long height = collectionView.frame.size.height;
-    long cell_width;
-
+- (CGSize)recalculateCellSize:(CGSize)viewSize {
+    float width = viewSize.width;
+    float height = viewSize.height;
+    float cell_width;
+    
     if (height > width) {
         mCellCountInARow = 4;
     } else {
         mCellCountInARow = 7;
     }
-
+    
     cell_width = (long)(width / mCellCountInARow) - 1;
     mCellWidth = cell_width;
-    NSLog(@"collectionView: cell width = %d, cell count = %d", mCellWidth, mCellCountInARow);
-
-    return CGSizeMake(mCellWidth, mCellWidth);
+    mCellSize = CGSizeMake(mCellWidth, mCellWidth);
+    
+    return mCellSize;
 }
 
 
@@ -306,14 +304,12 @@ static int mOverlayViewTag = 100;
     static BOOL isEditing = NO;
     
     if (!isEditing) {
-        //mEditButtonIB.title = LSTR(@"Finish");
-        NSLog(@"Now editing");
+        self.title = LSTR(@"Edit");
         self.editing = YES;
         isEditing = YES;
         [self selectItemStarted];
     } else {
-        //mEditButtonIB.title = LSTR(@"Edit");
-        NSLog(@"Done editing");
+        self.title = mAlbum.mAlbumName;
         self.editing = NO;
         isEditing = NO;
         [self selectItemEnded];
