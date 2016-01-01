@@ -13,6 +13,8 @@
 @interface AlbumCollectionViewController : UICollectionViewController <ELCImagePickerControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UICollectionView *mCollectionView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *mEditButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *mAddButton;
 
 @property (nonatomic, retain) Album *mAlbum;
 @property (nonatomic, retain) AlbumListService *mAlbumListService;

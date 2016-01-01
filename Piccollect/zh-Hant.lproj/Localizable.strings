@@ -46,6 +46,8 @@
 "Saving photos" = "儲存中";
 "Finished" = "已完成";
 "No Photo" = "沒有相片，請按＋加入";
+"%d photo(s) selected" = "已選擇 %d 張相片";
+"Please select photos" = "請選擇相片";
 
 
 // Settings

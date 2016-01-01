@@ -168,7 +168,7 @@
             </objects>
             <point key="canvasLocation" x="1181.5" y="-1072.5"/>
         </scene>
-        <!--Title-->
+        <!--Photo collection-->
         <scene sceneID="ngV-kV-Utg">
             <objects>
                 <collectionViewController id="h6m-PB-AqY" customClass="AlbumCollectionViewController" sceneMemberID="viewController">
@@ -199,22 +199,24 @@
                             <outlet property="delegate" destination="h6m-PB-AqY" id="O2e-1a-o1i"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Title" id="kxf-Bn-L33">
+                    <navigationItem key="navigationItem" title="Photo collection" id="kxf-Bn-L33">
                         <rightBarButtonItems>
+                            <barButtonItem title="Edit" id="D9t-KQ-OVI">
+                                <connections>
+                                    <action selector="editPhotoLibrary:" destination="h6m-PB-AqY" id="cxu-Dw-xaj"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem systemItem="add" id="hdU-yu-kMp">
                                 <connections>
                                     <action selector="addPhotoInLibrary:" destination="h6m-PB-AqY" id="5ue-Mm-WRU"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem systemItem="action" id="D9t-KQ-OVI">
-                                <connections>
-                                    <action selector="editPhotoLibrary:" destination="h6m-PB-AqY" id="cxu-Dw-xaj"/>
-                                </connections>
-                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="mAddButton" destination="hdU-yu-kMp" id="Gsy-c1-D2V"/>
                         <outlet property="mCollectionView" destination="CS3-dR-BSF" id="sGO-bM-xPQ"/>
+                        <outlet property="mEditButton" destination="D9t-KQ-OVI" id="Anr-CD-kJG"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fpo-PI-jHT" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -19,7 +19,7 @@
 @implementation AlbumCollectionViewController
 
 @synthesize mAlbum, mAlbumListService, mImageViewArray;
-@synthesize mCollectionView, mNoPhotoLabel;
+@synthesize mCollectionView, mNoPhotoLabel, mAddButton, mEditButton;
 @synthesize mLoadingDialog;
 
 #define LSTR(arg) NSLocalizedString(arg, nil)
@@ -65,11 +65,17 @@ static int mOverlayViewTag = 100;
         mNoPhotoLabel.font = [UIFont systemFontOfSize:25.0];
         [mCollectionView addSubview:mNoPhotoLabel];
     }
+    
+    // Hide edit related buttons
+    [mAddButton setEnabled:NO];
+    [mAddButton setTintColor: [UIColor clearColor]];
+    mEditButton.title = LSTR(@"Edit");
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self recalculateCellSize:mCollectionView.frame.size];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -289,6 +295,9 @@ static int mOverlayViewTag = 100;
         [mSelectedPhotos removeObjectForKey:rootKey];
         overlayView.hidden = YES;
     }
+    
+    // Update title
+    self.title = [NSString stringWithFormat:LSTR(@"%d photo(s) selected") , [mSelectedPhotos count]];
 }
 
 // When user pressed finish button with or without action, the selection should be removed
@@ -313,14 +322,21 @@ static int mOverlayViewTag = 100;
     static BOOL isEditing = NO;
     
     if (!isEditing) {
-        self.title = LSTR(@"Edit");
+        self.title = LSTR(@"Please select photos");
         self.editing = YES;
         isEditing = YES;
+        mEditButton.title = LSTR(@"Finish");
+        [mAddButton setEnabled:YES];
+        [mAddButton setTintColor:nil];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         [self selectItemStarted];
     } else {
         self.title = mAlbum.mAlbumName;
         self.editing = NO;
         isEditing = NO;
+        mEditButton.title = LSTR(@"Edit");
+        [mAddButton setEnabled:NO];
+        [mAddButton setTintColor: [UIColor clearColor]];
         [self selectItemEnded];
     }
 }
