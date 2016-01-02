@@ -20,7 +20,7 @@
 
 @synthesize mAlbum, mAlbumListService, mImageViewArray;
 @synthesize mCollectionView, mNoPhotoLabel, mAddButton, mEditButton;
-@synthesize mLoadingDialog;
+@synthesize mLoadingDialog, mToolbar;
 
 #define LSTR(arg) NSLocalizedString(arg, nil)
 
@@ -69,13 +69,24 @@ static int mOverlayViewTag = 100;
     // Hide edit related buttons
     [mAddButton setEnabled:NO];
     [mAddButton setTintColor: [UIColor clearColor]];
-    mEditButton.title = LSTR(@"Edit");
+    mEditButton.title = LSTR(@"Select");
+    
+    // Configure Toolbar
+    mToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-44, self.view.bounds.size.width, 44)];
+    mToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+
+    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *moveButtonItem = [[UIBarButtonItem alloc]initWithTitle:LSTR(@"Move To Default") style:UIBarButtonItemStylePlain  target:self action:@selector(movePhotos)];
+    UIBarButtonItem *removeButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(removePhotos)];
+    UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:nil];
+
+    mToolbar.items = @[composeButtonItem, fixedSpace, moveButtonItem, fixedSpace, removeButtonItem];
+    [self.view addSubview:mToolbar];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self recalculateCellSize:mCollectionView.frame.size];
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -128,6 +139,12 @@ static int mOverlayViewTag = 100;
 }
 
 - (UIImageView *) getImageViewAtIndex: (long) pageIndex {
+    // check if range is out of bound
+    if (pageIndex >= [mAlbumListService photoCount:mAlbum]) {
+        NSLog(@"Request index is not available");
+        return nil;
+    }
+    
     // replace the placeholder if necessary
     UIImageView *imageView = [mImageViewArray objectAtIndex:pageIndex];
 
@@ -164,7 +181,7 @@ static int mOverlayViewTag = 100;
         UIImage *overlayImage = [UIImage imageNamed:@"Overlay.png"];
         overlayView.image = overlayImage;
         overlayView.contentMode = UIViewContentModeScaleAspectFill;
-        overlayView.hidden = YES; //Need to be YES in the first time, set to NO for debug
+        overlayView.hidden = YES;
         overlayView.tag = mOverlayViewTag;
         [imageView addSubview: overlayView];
 
@@ -257,6 +274,52 @@ static int mOverlayViewTag = 100;
 }
 */
 
+
+#pragma mark - IBAction
+
+
+- (IBAction)editPhotoLibrary:(id)sender {
+    static BOOL isEditing = NO;
+    
+    if (!isEditing) {
+        self.title = LSTR(@"Please select photos");
+        self.editing = YES;
+        isEditing = YES;
+        mEditButton.title = LSTR(@"Finish");
+        [mAddButton setEnabled:YES];
+        [mAddButton setTintColor:nil];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.tabBarController.tabBar.hidden = YES;
+        [self selectItemStarted];
+    } else {
+        self.title = mAlbum.mAlbumName;
+        self.editing = NO;
+        isEditing = NO;
+        mEditButton.title = LSTR(@"Select");
+        [mAddButton setEnabled:NO];
+        [mAddButton setTintColor: [UIColor clearColor]];
+        self.tabBarController.tabBar.hidden = NO;
+        [self selectItemEnded];
+    }
+}
+
+
+- (IBAction)addPhotoInLibrary:(id)sender {
+    ELCImagePickerController *elcPicker = [[ELCImagePickerController alloc] initImagePicker];
+    
+    elcPicker.maximumImagesCount = 100; //Set the maximum number of images to select to 100
+    elcPicker.returnsOriginalImage = YES; //Only return the fullScreenImage, not the fullResolutionImage
+    elcPicker.returnsImage = YES; //Return UIimage if YES. If NO, only return asset location information
+    elcPicker.onOrder = YES; //For multiple image selection, display and return order of selected images
+    //elcPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie]; //Supports image and movie types
+    
+    elcPicker.imagePickerDelegate = self;
+    
+    [self presentViewController:elcPicker animated:YES completion:nil];
+}
+
+
+
 #pragma mark - Selection holder
 
 /*
@@ -302,58 +365,25 @@ static int mOverlayViewTag = 100;
 
 // When user pressed finish button with or without action, the selection should be removed
 - (void)selectItemEnded {
-    NSEnumerator *enumerator = [mSelectedPhotos keyEnumerator];
-    NSString *key;
-    
-    while ((key = (NSString*)[enumerator nextObject])) {
-        int pageIndex = [key intValue];
-        UIImageView *overlayView = [[mImageViewArray objectAtIndex:pageIndex] viewWithTag:mOverlayViewTag];
+    for (UIImageView *imageView in mImageViewArray) {
+        UIImageView *overlayView = [imageView viewWithTag:mOverlayViewTag];
         overlayView.hidden = YES;
     }
     
     mSelectedPhotos = nil;
 }
 
+#pragma mark - Toolbar actions
 
-#pragma mark - IBAction
-
-
-- (IBAction)editPhotoLibrary:(id)sender {
-    static BOOL isEditing = NO;
-    
-    if (!isEditing) {
-        self.title = LSTR(@"Please select photos");
-        self.editing = YES;
-        isEditing = YES;
-        mEditButton.title = LSTR(@"Finish");
-        [mAddButton setEnabled:YES];
-        [mAddButton setTintColor:nil];
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-        [self selectItemStarted];
-    } else {
-        self.title = mAlbum.mAlbumName;
-        self.editing = NO;
-        isEditing = NO;
-        mEditButton.title = LSTR(@"Edit");
-        [mAddButton setEnabled:NO];
-        [mAddButton setTintColor: [UIColor clearColor]];
-        [self selectItemEnded];
-    }
+- (void)removePhotos {
+    [mAlbumListService editPhotosIn:mSelectedPhotos ofAlbum:mAlbum forType:ALS_PHOTO_REMOVE];
+    [mImageViewArray removeAllObjects];
+    [mCollectionView reloadData];
 }
 
-
-- (IBAction)addPhotoInLibrary:(id)sender {
-    ELCImagePickerController *elcPicker = [[ELCImagePickerController alloc] initImagePicker];
-    
-    elcPicker.maximumImagesCount = 100; //Set the maximum number of images to select to 100
-    elcPicker.returnsOriginalImage = YES; //Only return the fullScreenImage, not the fullResolutionImage
-    elcPicker.returnsImage = YES; //Return UIimage if YES. If NO, only return asset location information
-    elcPicker.onOrder = YES; //For multiple image selection, display and return order of selected images
-    //elcPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie]; //Supports image and movie types
-    
-    elcPicker.imagePickerDelegate = self;
-    
-    [self presentViewController:elcPicker animated:YES completion:nil];
+- (void)movePhotos {
+    [mAlbumListService editPhotosIn:mSelectedPhotos ofAlbum:mAlbum forType:ALS_PHOTO_MOVE];
+    [mCollectionView reloadData];
 }
 
 #pragma mark - ELCImagePickerControllerDelegate Methods

@@ -200,8 +200,9 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" title="Photo collection" id="kxf-Bn-L33">
+                        <barButtonItem key="backBarButtonItem" title=" " id="lM4-jj-JMR"/>
                         <rightBarButtonItems>
-                            <barButtonItem title="Edit" id="D9t-KQ-OVI">
+                            <barButtonItem title="Select" id="D9t-KQ-OVI">
                                 <connections>
                                     <action selector="editPhotoLibrary:" destination="h6m-PB-AqY" id="cxu-Dw-xaj"/>
                                 </connections>

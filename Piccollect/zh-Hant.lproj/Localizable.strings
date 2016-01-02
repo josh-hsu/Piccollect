@@ -48,7 +48,8 @@
 "No Photo" = "沒有相片，請按＋加入";
 "%d photo(s) selected" = "已選擇 %d 張相片";
 "Please select photos" = "請選擇相片";
-
+"Select" = "選取";
+"Move To Default" = "移動至主相簿";
 
 // Settings
 "Settings" = "設定";

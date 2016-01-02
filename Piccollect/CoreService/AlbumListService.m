@@ -288,9 +288,9 @@
     intincr = intincr % 1000;
     int m3 = (int) intincr / 100;
     intincr = intincr % 100;
-    int m4= (int) intincr / 10;
+    int m4 = (int) intincr / 10;
     intincr = intincr % 10;
-    int m5= (int) intincr;
+    int m5 = (int) intincr;
     
     // Save it to file
     NSString *newIncr = [NSString stringWithFormat:@"%d%d%d%d%d",m1,m2,m3,m4,m5];
@@ -528,8 +528,100 @@
     return returnArray;
 }
 
+- (void)movePhotos:(NSMutableDictionary *)photos ofAlbum:(Album *)thisAlbum toAlbum:(Album *)targetAlbum {
+    NSMutableArray *targetPhotoList = [mAlbumPhotoList objectForKey:targetAlbum.mAlbumKey];
+    NSMutableArray *itemShouldBeRemoved = [NSMutableArray array];
+    if ([targetAlbum.mAlbumKey isEqualToString:thisAlbum.mAlbumKey]) {
+        NSLog(@"BUG: target and default are the same");
+        return;
+    }
+    
+    // Initial file manager
+    NSError *err = NULL;
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    
+    NSEnumerator *enumerator = [photos keyEnumerator];
+    NSString *key;
+    
+    while ((key = (NSString*)[enumerator nextObject])) {
+        int pageIndex = [key intValue];
+        NSString *oldPhotoName = [thisAlbum.mAlbumPhotos objectAtIndex:pageIndex];
+        NSString *thumbOldPhotoFileName = [oldPhotoName stringByAppendingString:@"-thumb.png"];
+        NSString *oldPhotoFileName = [oldPhotoName stringByAppendingString:@".png"];
+        NSString *oldThumbPath = [mDocumentRootPath stringByAppendingPathComponent: thumbOldPhotoFileName];
+        NSString *oldPath = [mDocumentRootPath stringByAppendingPathComponent: oldPhotoFileName];
+        
+        // Batching rename for default
+        NSString *newPhotoName = [self generateNewPhotoFileNameWithAlbum: targetAlbum];
+        NSString *newPath = [mDocumentRootPath stringByAppendingPathComponent: newPhotoName];
+        NSString *newThumbName = [newPhotoName stringByAppendingString:@"-thumb.png"];
+        NSString *newThumbPath = [mDocumentRootPath stringByAppendingPathComponent:newThumbName];
+        
+        // Make removed item array
+        [itemShouldBeRemoved addObject:oldPhotoName];
+
+        if (LOCAL_DEBUG) NSLog(@"Merge %@ to %@", oldPhotoName, newPhotoName);
+        BOOL result = [fm moveItemAtPath:oldPath toPath:newPath error:&err];
+        if(!result)
+            NSLog(@"BUG: Error moving original photo file: %@", err);
+
+        result = [fm moveItemAtPath:oldThumbPath toPath:newThumbPath error:&err];
+        if(!result)
+            NSLog(@"May not be a bug: Error moving thumb photo file: %@", err);
+            
+        [targetPhotoList addObject:newPhotoName];
+        // Increase the incr
+        [self increaseAlbum:targetAlbum];
+    }
+    
+    // Remove item from list should be last thing to prevent index mismatch
+    [thisAlbum.mAlbumPhotos removeObjectsInArray:itemShouldBeRemoved];
+
+    [mAlbumPhotoList setObject:targetPhotoList forKey:targetAlbum.mAlbumKey];
+    [mAlbumPhotoList setObject:thisAlbum.mAlbumPhotos forKey:thisAlbum.mAlbumKey];
+    [mAlbumPhotoList writeToFile:mAlbumPhotoPath atomically:YES];
+}
+
+- (void)removePhotos:(NSMutableDictionary *)photos ofAlbum:(Album *)thisAlbum {
+    NSMutableArray *itemShouldBeRemoved = [NSMutableArray array];
+    
+    // Initial file manager
+    NSError *err = NULL;
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    
+    NSEnumerator *enumerator = [photos keyEnumerator];
+    NSString *key;
+    
+    while ((key = (NSString*)[enumerator nextObject])) {
+        int pageIndex = [key intValue];
+        NSString *oldPhotoName = [thisAlbum.mAlbumPhotos objectAtIndex:pageIndex];
+        NSString *thumbOldPhotoFileName = [oldPhotoName stringByAppendingString:@"-thumb.png"];
+        NSString *oldPhotoFileName = [oldPhotoName stringByAppendingString:@".png"];
+        NSString *oldThumbPath = [mDocumentRootPath stringByAppendingPathComponent: thumbOldPhotoFileName];
+        NSString *oldPath = [mDocumentRootPath stringByAppendingPathComponent: oldPhotoFileName];
+        
+        // Make removed item array
+        [itemShouldBeRemoved addObject:oldPhotoName];
+        
+        if (LOCAL_DEBUG) NSLog(@"Delete %@", oldPhotoName);
+        BOOL result = [fm removeItemAtPath:oldPath error:&err];
+        if(!result)
+            NSLog(@"BUG: Error deleting photo file: %@", err);
+        
+        result = [fm removeItemAtPath:oldThumbPath error:&err];
+        if(!result)
+            NSLog(@"May not be a bug: Error moving thumb photo file: %@", err);
+    }
+    
+    // Remove item from list should be last thing to prevent index mismatch
+    [thisAlbum.mAlbumPhotos removeObjectsInArray:itemShouldBeRemoved];
+    [mAlbumPhotoList setObject:thisAlbum.mAlbumPhotos forKey:thisAlbum.mAlbumKey];
+    [mAlbumPhotoList writeToFile:mAlbumPhotoPath atomically:YES];
+}
+
 - (NSArray *) photosInAlbumWithKey: (NSString *) key {
-    return nil;
+    Album *thisAlbum = [self albumWithKey:key];
+    return [self photosInAlbum:thisAlbum];
 }
 
 /*
@@ -539,8 +631,10 @@
 - (int)editPhotosIn:(NSMutableDictionary *)photos ofAlbum:(Album *)album forType:(int)editType {
     if (editType == ALS_PHOTO_MOVE) {
         NSLog(@"move photo called");
+        [self movePhotos:photos ofAlbum:album toAlbum:[mAlbums objectAtIndex:0]];
     } else if (editType == ALS_PHOTO_REMOVE) {
         NSLog(@"remove photo called");
+        [self removePhotos:photos ofAlbum:album];
     } else {
         NSLog(@"BUG: edit type not recognized");
     }
