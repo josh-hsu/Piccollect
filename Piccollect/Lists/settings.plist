@@ -37,9 +37,13 @@
 	<false/>
 	<key>passwordRequired</key>
 	<false/>
+    <key>useTouchID</key>
+    <false/>
 	<key>password</key>
 	<string>1226</string>
 	<key>saveToCloud</key>
 	<false/>
+    <key>ueLogUpload</key>
+    <false/>
 </dict>
 </plist>

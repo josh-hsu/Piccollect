@@ -123,7 +123,10 @@ int max_try;
     [passworkTextField becomeFirstResponder]; //使畫面一開始就出現鍵盤，讓使用者可以直接作輸入輸出。
     [self initialAlert];
     mSettingsService = [[SettingsService alloc] init]; // should not initialize here
-    [self authenicateWithTouchID];
+    if ([[mSettingsService getValueOfPrimaryKey: STOKEN_USE_TOUCHID] boolValue]) {
+        [self authenicateWithTouchID];
+    }
+    
     [super viewDidLoad];
 }
 

@@ -22,6 +22,8 @@
 #define STOKEN_TUMBLR         @"tumblr"
 #define STOKEN_ACC_TOKEN      @"accountToken"
 #define STOKEN_ACC_NAME       @"accountName"
+#define STOKEN_LOG_UPLOAD     @"ueLogUpload"
+#define STOKEN_USE_TOUCHID    @"useTouchID"
 
 // Constant
 #define SETTINGS_LIST_NAME    @"settings"

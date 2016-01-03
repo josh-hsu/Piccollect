@@ -15,7 +15,7 @@
 "Iay-am-TlX.title" = "編輯";
 
 /* Class = "UILabel"; text = "夜間模式"; ObjectID = "KHz-9p-85f"; */
-"KHz-9p-85f.text" = "夜間模式";
+"KHz-9p-85f.text" = "密碼設定";
 
 /* Class = "UILabel"; text = "Facebook, Twitter, Instagram supported"; ObjectID = "NDk-cv-Gan"; */
 "NDk-cv-Gan.text" = "Facebook, Twitter, Instagram supported";
@@ -57,7 +57,7 @@
 "lSi-eL-BCV.title" = "設定";
 
 /* Class = "UITableViewSection"; headerTitle = "相簿設定/功能"; ObjectID = "mYg-J5-bbK"; */
-"mYg-J5-bbK.headerTitle" = "相簿設定/功能";
+"mYg-J5-bbK.headerTitle" = "相簿上鎖";
 
 /* Class = "UILabel"; text = "加密相簿"; ObjectID = "o9V-7v-at4"; */
 "o9V-7v-at4.text" = "加密相簿";

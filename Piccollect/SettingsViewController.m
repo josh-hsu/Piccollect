@@ -14,8 +14,8 @@
 
 @implementation SettingsViewController
 
-@synthesize mCellCompressPhotos, mCellEncryptAlbums, mCellNightMode;
-@synthesize mSwitchEncryptAlbums, mSwitchNightMode;
+@synthesize mCellCompressPhotos, mCellEncryptAlbums, mCellNightMode, mCellLogUpload, mCellPasswordSetting, mCellUseTouchID;
+@synthesize mSwitchEncryptAlbums, mSwitchNightMode, mSwitchUseTouchID, mSwitchLogUpload;
 @synthesize mSettingService, mAlbumListService;
 
 - (void)viewDidLoad {
@@ -37,10 +37,21 @@
 - (void)prepareView {
     if ([[mSettingService getValueOfPrimaryKey:STOKEN_PASSWORD_REQ] boolValue]) {
         [mSwitchEncryptAlbums setOn:YES];
+        [mSwitchUseTouchID setEnabled:YES];
+    } else {
+        [mSwitchUseTouchID setEnabled:NO];
     }
     
     if ([[mSettingService getValueOfPrimaryKey:STOKEN_NIGHT_MODE] boolValue]) {
         [mSwitchNightMode setOn:YES];
+    }
+    
+    if ([[mSettingService getValueOfPrimaryKey:STOKEN_LOG_UPLOAD] boolValue]) {
+        [mSwitchLogUpload setOn:YES];
+    }
+    
+    if ([[mSettingService getValueOfPrimaryKey:STOKEN_USE_TOUCHID] boolValue]) {
+        [mSwitchUseTouchID setOn:YES];
     }
 }
 
@@ -64,9 +75,11 @@
     if ([switchView isOn]) {
         NSNumber *value = [[NSNumber alloc] initWithBool:YES];
         [mSettingService setPrimaryKey:STOKEN_PASSWORD_REQ withValue:value];
+        [mSwitchUseTouchID setEnabled:YES];
     } else {
         NSNumber *value = [[NSNumber alloc] initWithBool:NO];
         [mSettingService setPrimaryKey:STOKEN_PASSWORD_REQ withValue:value];
+        [mSwitchUseTouchID setEnabled:NO];
     }
 }
 
@@ -78,6 +91,29 @@
     } else {
         NSNumber *value = [[NSNumber alloc] initWithBool:NO];
         [mSettingService setPrimaryKey:STOKEN_NIGHT_MODE withValue:value];
+    }
+}
+
+- (IBAction)didSetUseTouchID:(id)sender {
+    UISwitch *switchView = (UISwitch *) sender;
+    if ([switchView isOn]) {
+        NSNumber *value = [[NSNumber alloc] initWithBool:YES];
+        [mSettingService setPrimaryKey:STOKEN_USE_TOUCHID withValue:value];
+    } else {
+        NSNumber *value = [[NSNumber alloc] initWithBool:NO];
+        [mSettingService setPrimaryKey:STOKEN_USE_TOUCHID withValue:value];
+    }
+}
+
+
+- (IBAction)didSetUELogUpload:(id)sender {
+    UISwitch *switchView = (UISwitch *) sender;
+    if ([switchView isOn]) {
+        NSNumber *value = [[NSNumber alloc] initWithBool:YES];
+        [mSettingService setPrimaryKey:STOKEN_LOG_UPLOAD withValue:value];
+    } else {
+        NSNumber *value = [[NSNumber alloc] initWithBool:NO];
+        [mSettingService setPrimaryKey:STOKEN_LOG_UPLOAD withValue:value];
     }
 }
 

@@ -59,8 +59,34 @@
         NSLog(@"Error reading plist: %@, format: %lu", errorDesc, (unsigned long)format);
         return -1;
     }
+    
+    // Check if there is new value from update
+    [self consistencyCheck];
 
     return 0;
+}
+
+/*
+ * Traveral all the keys in current version on primary settings
+ */
+- (void)consistencyCheck {
+    NSMutableArray *keyArray = [[NSMutableArray alloc] init];
+
+    [keyArray addObject:STOKEN_CLOUD_SAVE];
+    [keyArray addObject:STOKEN_LOG_UPLOAD];
+    [keyArray addObject:STOKEN_NIGHT_MODE];
+    [keyArray addObject:STOKEN_PASSWORD_REQ];
+    [keyArray addObject:STOKEN_USE_TOUCHID];
+    
+    NSLog(@"Setting: Consistency check started");
+    for (NSString *key in keyArray) {
+        id value = [self getValueOfPrimaryKey:key];
+        if (value == nil) {
+            NSNumber *value = [[NSNumber alloc] initWithBool:NO];
+            [self setPrimaryKey:key withValue:value];
+        }
+    }
+    NSLog(@"Setting: Consistency check finished");
 }
 
 #pragma mark - Getter functions
