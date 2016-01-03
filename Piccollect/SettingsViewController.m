@@ -15,8 +15,10 @@
 @implementation SettingsViewController
 
 @synthesize mCellCompressPhotos, mCellEncryptAlbums, mCellNightMode, mCellLogUpload, mCellPasswordSetting, mCellUseTouchID;
-@synthesize mSwitchEncryptAlbums, mSwitchNightMode, mSwitchUseTouchID, mSwitchLogUpload;
+@synthesize mSwitchEncryptAlbums, mSwitchNightMode, mSwitchUseTouchID, mSwitchLogUpload, mTextPasswordSetting;
 @synthesize mSettingService, mAlbumListService;
+
+#define LSTR(arg) NSLocalizedString(arg, nil)
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -53,6 +55,12 @@
     if ([[mSettingService getValueOfPrimaryKey:STOKEN_USE_TOUCHID] boolValue]) {
         [mSwitchUseTouchID setOn:YES];
     }
+    
+    if ([[mSettingService getValueOfPrimaryKey:STOKEN_PASSWORD] isEqualToString:@""]) {
+        [mTextPasswordSetting setText:LSTR(@"No Password")];
+    } else {
+        [mTextPasswordSetting setText:LSTR(@"Password is set")];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,6 +84,7 @@
         NSNumber *value = [[NSNumber alloc] initWithBool:YES];
         [mSettingService setPrimaryKey:STOKEN_PASSWORD_REQ withValue:value];
         [mSwitchUseTouchID setEnabled:YES];
+        [self changePassword];
     } else {
         NSNumber *value = [[NSNumber alloc] initWithBool:NO];
         [mSettingService setPrimaryKey:STOKEN_PASSWORD_REQ withValue:value];
@@ -117,8 +126,74 @@
     }
 }
 
-#pragma mark - Utility
+#pragma mark - Table view controller events
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *theCellClicked = [self.tableView cellForRowAtIndexPath:indexPath];
+    if (mCellPasswordSetting == theCellClicked) {
+        if ([[mSettingService getValueOfPrimaryKey:STOKEN_PASSWORD_REQ] boolValue])
+            [self changePassword];
+    }
+    
+    if(mCellCompressPhotos == theCellClicked) {
+        NSLog(@"compress photo hits");
+    }
+    
+    // Deselect that cell
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
 
+#pragma mark - Prompt message handler
+
+- (void)changePassword {
+    if (![mSettingService getValueOfPrimaryKey:STOKEN_PASSWORD_REQ]) {
+        return;
+    }
+
+    UIAlertController * alert =  [UIAlertController
+                                  alertControllerWithTitle:LSTR(@"New Password")
+                                  message:LSTR(@"Please enter password")
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:LSTR(@"Cancel") style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+    
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:LSTR(@"Finish") style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action) {
+                                                   NSString *userInput = [alert.textFields objectAtIndex:0].text;
+                                                   NSString *secondInput = [alert.textFields objectAtIndex:1].text;
+                                                   if (![userInput isEqualToString:@""] && ![secondInput isEqualToString:@""]) {
+                                                       NSLog(@"Get user's input %@", userInput);
+                                                       if ([userInput isEqualToString:secondInput]) {
+                                                           [mSettingService setPrimaryKey:STOKEN_PASSWORD withValue:userInput];
+                                                           [mTextPasswordSetting setText:LSTR(@"Password is set")];
+                                                       } else {
+                                                           NSLog(@"Passwords mismatch");
+                                                           alert.message = LSTR(@"Error: Two passwords are not matched!");
+                                                           [self presentViewController:alert animated:YES completion:nil];
+                                                       }
+                                                   } else {
+                                                       NSLog(@"Please fill the empty text");
+                                                       alert.message = LSTR(@"Error: Some fields are empty!");
+                                                       [self presentViewController:alert animated:YES completion:nil];
+                                                   }
+                                               }];
+    
+    [alert addAction:cancel];
+    [alert addAction:ok];
+    
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = LSTR(@"Password");
+        textField.keyboardType = UIKeyboardTypeNumberPad;
+    }];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = LSTR(@"Enter again");
+        textField.keyboardType = UIKeyboardTypeNumberPad;
+    }];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
 @end

@@ -86,6 +86,10 @@
             [self setPrimaryKey:key withValue:value];
         }
     }
+    
+    if ([self getValueOfPrimaryKey:STOKEN_PASSWORD] == nil) {
+        [self setPrimaryKey:STOKEN_PASSWORD withValue:@""];
+    }
     NSLog(@"Setting: Consistency check finished");
 }
 
