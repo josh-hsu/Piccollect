@@ -8,6 +8,7 @@
 
 #import "PasswordViewController.h"
 #import "SettingsService.h"
+#import <LocalAuthentication/LocalAuthentication.h>
 
 @implementation PasswordViewController
 
@@ -47,6 +48,32 @@ int max_try;
         [self dismissModal];
     } else {
         [self showAlert];
+    }
+}
+
+- (void)authenicateWithTouchID {
+    LAContext *context = [[LAContext alloc] init];
+    
+    NSError *error = nil;
+    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+        [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:LSTR(@"Touch ID Authentication") reply:^(BOOL success, NSError *error) {
+            if (error) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LSTR(@"Error") message:LSTR(@"There was a problem verifying your identity") delegate:nil
+                                                      cancelButtonTitle:LSTR(@"OK") otherButtonTitles:nil];
+                [alert show];
+                return;
+            }
+
+            if (success) {
+                [self dismissModal];
+            } else {
+                [self showAlert];
+            }
+        }];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LSTR(@"Error") message:LSTR(@"Your device cannot authenticate using TouchID.") delegate:nil
+                                              cancelButtonTitle:LSTR(@"OK") otherButtonTitles:nil];
+        [alert show];
     }
 }
 
@@ -96,7 +123,7 @@ int max_try;
     [passworkTextField becomeFirstResponder]; //使畫面一開始就出現鍵盤，讓使用者可以直接作輸入輸出。
     [self initialAlert];
     mSettingsService = [[SettingsService alloc] init]; // should not initialize here
-    
+    [self authenicateWithTouchID];
     [super viewDidLoad];
 }
 

@@ -14,6 +14,7 @@
 "Delete" = "刪除";
 "Finish" = "完成";
 "Edit" = "編輯";
+"Error" = "錯誤";
 
 // Password view localization
 
@@ -21,6 +22,9 @@
 "Authorization Failed" = "驗證失敗";
 "Please try again" = "請再試一次";
 "You have %d times to try" = "你還可以再試 %d 次";
+"Touch ID Authentication" = "Touch ID 驗證";
+"There was a problem verifying your identity" = "驗證時發生問題";
+"Your device cannot authenticate using TouchID." = "您的裝置無法使用 Touch ID 驗證";
 
 // Album table view
 
@@ -45,7 +49,7 @@
 // Collection view
 "Saving photos" = "儲存中";
 "Finished" = "已完成";
-"No Photo" = "沒有相片，請按＋加入";
+"No Photo" = "沒有相片，請按編輯加入";
 "%d photo(s) selected" = "已選擇 %d 張相片";
 "Please select photos" = "請選擇相片";
 "Select" = "選取";

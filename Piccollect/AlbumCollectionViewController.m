@@ -69,7 +69,7 @@ static int mOverlayViewTag = 100;
     // Hide edit related buttons
     [mAddButton setEnabled:NO];
     [mAddButton setTintColor: [UIColor clearColor]];
-    mEditButton.title = LSTR(@"Select");
+    mEditButton.title = LSTR(@"Edit");
     
     // Configure Toolbar
     mToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-44, self.view.bounds.size.width, 44)];
@@ -87,6 +87,11 @@ static int mOverlayViewTag = 100;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self recalculateCellSize:mCollectionView.frame.size];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self setEditMode:NO];
+    mSelectedPhotos = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -279,27 +284,10 @@ static int mOverlayViewTag = 100;
 
 
 - (IBAction)editPhotoLibrary:(id)sender {
-    static BOOL isEditing = NO;
-    
-    if (!isEditing) {
-        self.title = LSTR(@"Please select photos");
-        self.editing = YES;
-        isEditing = YES;
-        mEditButton.title = LSTR(@"Finish");
-        [mAddButton setEnabled:YES];
-        [mAddButton setTintColor:nil];
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
-        self.tabBarController.tabBar.hidden = YES;
-        [self selectItemStarted];
+    if (!self.editing) {
+        [self setEditMode:YES];
     } else {
-        self.title = mAlbum.mAlbumName;
-        self.editing = NO;
-        isEditing = NO;
-        mEditButton.title = LSTR(@"Select");
-        [mAddButton setEnabled:NO];
-        [mAddButton setTintColor: [UIColor clearColor]];
-        self.tabBarController.tabBar.hidden = NO;
-        [self selectItemEnded];
+        [self setEditMode:NO];
     }
 }
 
@@ -360,7 +348,11 @@ static int mOverlayViewTag = 100;
     }
     
     // Update title
-    self.title = [NSString stringWithFormat:LSTR(@"%d photo(s) selected") , [mSelectedPhotos count]];
+    if ([mSelectedPhotos count] > 0) {
+        self.title = [NSString stringWithFormat:LSTR(@"%d photo(s) selected") , [mSelectedPhotos count]];
+    } else {
+        self.title = LSTR(@"Please select photos");
+    }
 }
 
 // When user pressed finish button with or without action, the selection should be removed
@@ -375,15 +367,38 @@ static int mOverlayViewTag = 100;
 
 #pragma mark - Toolbar actions
 
+- (void)setEditMode:(BOOL)edit {
+    if (edit) {
+        self.title = LSTR(@"Please select photos");
+        self.editing = YES;
+        mEditButton.title = LSTR(@"Finish");
+        [mAddButton setEnabled:YES];
+        [mAddButton setTintColor:nil];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.tabBarController.tabBar.hidden = YES;
+        [self selectItemStarted];
+    } else {
+        self.title = mAlbum.mAlbumName;
+        self.editing = NO;
+        mEditButton.title = LSTR(@"Edit");
+        [mAddButton setEnabled:NO];
+        [mAddButton setTintColor: [UIColor clearColor]];
+        self.tabBarController.tabBar.hidden = NO;
+        [self selectItemEnded];
+    }
+}
+
 - (void)removePhotos {
     [mAlbumListService editPhotosIn:mSelectedPhotos ofAlbum:mAlbum forType:ALS_PHOTO_REMOVE];
     [mImageViewArray removeAllObjects];
     [mCollectionView reloadData];
+    [self setEditMode:NO];
 }
 
 - (void)movePhotos {
     [mAlbumListService editPhotosIn:mSelectedPhotos ofAlbum:mAlbum forType:ALS_PHOTO_MOVE];
     [mCollectionView reloadData];
+    [self setEditMode:NO];
 }
 
 #pragma mark - ELCImagePickerControllerDelegate Methods
@@ -507,6 +522,7 @@ static int mOverlayViewTag = 100;
         // Dismiss loading progress dialog
         [mLoadingDialog setTitle:LSTR(@"Finished")];
         [mLoadingDialog dismissWithClickedButtonIndex:0 animated:YES];
+        [self setEditMode:NO];
     } else {
         dispatch_sync(dispatch_get_main_queue(), ^{
             //Update UI in UI thread here
@@ -517,6 +533,7 @@ static int mOverlayViewTag = 100;
             // Dismiss loading progress dialog
             [mLoadingDialog setTitle:LSTR(@"Finished")];
             [mLoadingDialog dismissWithClickedButtonIndex:0 animated:YES];
+            [self setEditMode:NO];
         });
     }
 }
