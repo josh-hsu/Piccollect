@@ -336,7 +336,7 @@ static int mOverlayViewTag = 100;
     long pageIndex = (long)(indexPath.row + indexPath.section * mCellCountInARow);
     NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", pageIndex];
     NSNumber *value = [[NSNumber alloc] initWithLong:pageIndex];
-    UIImageView *overlayView = [[mImageViewArray objectAtIndex:pageIndex] viewWithTag:mOverlayViewTag];
+    UIImageView *overlayView = [[self getImageViewAtIndex:pageIndex] viewWithTag:mOverlayViewTag];
 
     // Check if item has been selected
     if (![self selectItemStatusForKey:rootKey]) {
@@ -358,8 +358,10 @@ static int mOverlayViewTag = 100;
 // When user pressed finish button with or without action, the selection should be removed
 - (void)selectItemEnded {
     for (UIImageView *imageView in mImageViewArray) {
-        UIImageView *overlayView = [imageView viewWithTag:mOverlayViewTag];
-        overlayView.hidden = YES;
+        if ((NSNull *)imageView != [NSNull null]) {
+            UIImageView *overlayView = [imageView viewWithTag:mOverlayViewTag];
+            overlayView.hidden = YES;
+        }
     }
     
     mSelectedPhotos = nil;
