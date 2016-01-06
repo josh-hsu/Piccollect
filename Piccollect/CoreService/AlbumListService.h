@@ -92,6 +92,7 @@
 - (int)createAlbumWithName:(NSString *)name;
 - (int)editAlbumNameWithKey:(NSString *)key value:(NSString *)value;
 - (int)removeAlbumWithKey:(NSString *)key mergeBack:(BOOL)merge;
+- (void)moveAlbumIndex:(int)from toIndex:(int)to;
 
 /*
  * Debug functions
