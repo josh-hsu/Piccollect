@@ -29,6 +29,20 @@
 #define NUM_LIST_ATTRIBUTE    1     //number of attributes in albums.plist except serial such as "next"
 #define LENGTH_OF_SERIAL      8     //request serial code length for album
 
+
+#pragma mark - Service initial functions
+/* ===================================
+ * Service Initial functions
+ * ===================================
+ */
+
+
+/*
+ * init
+ *
+ * Entry of initial AlbumListService
+ * return nil if service initial failed
+ */
 - (id)init {
     int ret = -1;
     mValidate = NO;
@@ -47,7 +61,7 @@
  * This is the main entry of AlbumListService
  * We should deal with every little details to prevent aborting
  */
-- (int) initAlbumList {
+- (int)initAlbumList {
     NSError *errorDesc;
     NSPropertyListFormat format;
     
@@ -118,7 +132,7 @@
     return 0;
 }
 
-- (void) initAlbumsWithRefresh: (BOOL) needRefresh {
+- (void)initAlbumsWithRefresh:(BOOL)needRefresh {
     if (!mAlbumList) {
         NSLog(@"BUG: There is no album list presented.");
     }
@@ -166,33 +180,80 @@
     
 }
 
-- (void) refresh {
+- (void)refresh {
     mCount = (int)[mAlbumList count] - NUM_LIST_ATTRIBUTE;
     
     [self initAlbumPhotosList];
     [self initAlbumsWithRefresh:YES];
 }
 
-# pragma mark - Album functions
+#pragma mark - Album functions
 /* ===================================
  * Album functions
  * ===================================
  */
 
 
+#pragma mark Album getter
 /*
  * Get album in album list for specific index
  * this is called from a table view, so it's related to the order
  * of how it displayed on screen.
  * return nil if no album
  */
-- (Album *) albumInListAtIndex: (NSInteger)idx {
+- (Album *)albumInListAtIndex:(NSInteger)idx {
     if (idx >= mCount)
         return nil;
     else
         return [mAlbums objectAtIndex:idx];
 }
 
+/*
+ * Get album in album list by specific album key
+ */
+- (Album *)albumWithKey:(NSString *)key {
+    int targetIdx = -1;
+
+    for (unsigned i = 0; i < mCount; i++) {
+        NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", (long)i];
+        NSDictionary *eachPerson = [mAlbumList objectForKey:rootKey];
+        NSString *eachKey   = [eachPerson objectForKey:ALBUM_KEY_KEY];
+
+        if ([eachKey isEqualToString:key]) {
+            targetIdx = i;
+        }
+    }
+
+    if (targetIdx != -1)
+        return [mAlbums objectAtIndex:targetIdx];
+    else
+        return nil;
+}
+
+/*
+ * Get album index in album list by specific album key
+ */
+- (int)albumIndexWithKey:(NSString *)key {
+    int targetIdx = -1;
+
+    for (unsigned i = 0; i < mCount; i++) {
+        NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", (long)i];
+        NSDictionary *eachPerson = [mAlbumList objectForKey:rootKey];
+        NSString *eachKey   = [eachPerson objectForKey:ALBUM_KEY_KEY];
+
+        if ([eachKey isEqualToString:key]) {
+            targetIdx = i;
+        }
+    }
+
+    if (targetIdx != -1)
+        return targetIdx;
+    else
+        return 0;
+}
+
+
+#pragma mark Album operation function
 /*
  * Create an album with user-specific name
  * And yes, we accept duplicate name because we use identity key
@@ -201,7 +262,7 @@
  * the content of album setting will not change after adding or removing
  * an album
  */
-- (int) createAlbumWithName: (NSString *) name {
+- (int)createAlbumWithName:(NSString *)name {
     // Adding to the album list
     NSNumber *root_serial = [[NSNumber alloc] initWithInt: mCount];
     NSString *rootName = [NSString stringWithFormat:@"%d", [root_serial intValue]];
@@ -245,7 +306,7 @@
  * This function does not deal with data type process,
  * make sure your key-value pair is valid.
  */
-- (int) editAlbumNameWithKey: (NSString *) key value: (NSString *) value {
+- (int)editAlbumNameWithKey:(NSString *)key value:(NSString *)value {
     Album *album = [self albumWithKey:key];
     NSString *rootName = [NSString stringWithFormat:@"%d", [self albumIndexWithKey:key]];
     
@@ -271,7 +332,7 @@
  * We need to update Increase (for the next photo file name)
  * both on file and on runtime
  */
-- (int) increaseAlbum: (Album *) album {
+- (int)increaseAlbum:(Album *)album {
     NSString *rootName = [NSString stringWithFormat:@"%d", [self albumIndexWithKey:album.mAlbumKey]];
     int intincr = [album.mIncrease intValue];
     
@@ -319,7 +380,7 @@
  * idx => 5   mCount => 10 [0, 1, 2, ..., 9]
  * we should move 6, 7, 8, 9 to 5, 6, 7, 8
  */
-- (void) reorderAlbumId: (int) idx {
+- (void)reorderAlbumId:(int)idx {
     int index = idx;
     for (unsigned i = index + 1; i < mCount; i++) {
         NSLog(@"i = %d, mCount = %d", i, mCount);
@@ -331,7 +392,7 @@
     }
 }
 
-- (int) removeAlbumWithKey: (NSString *) key mergeBack: (BOOL) merge {
+- (int)removeAlbumWithKey:(NSString *)key mergeBack:(BOOL)merge {
     NSString *deleteTarget = @"";
     int deleteIdx = -1;
 
@@ -363,44 +424,46 @@
     return 0;
 }
 
-- (Album *) albumWithKey: (NSString *) key {
-    int targetIdx = -1;
-    
-    for (unsigned i = 0; i < mCount; i++) {
-        NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", (long)i];
-        NSDictionary *eachPerson = [mAlbumList objectForKey:rootKey];
-        NSString *eachKey   = [eachPerson objectForKey:ALBUM_KEY_KEY];
-        
-        if ([eachKey isEqualToString:key]) {
-            targetIdx = i;
-        }
-    }
-    
-    if (targetIdx != -1)
-        return [mAlbums objectAtIndex:targetIdx];
-    else
-        return nil;
-}
+/*
+ * Move album index
+ * Change the order of each album
+ * If user moves index 4 to index 1, then the index of 1 to 4 should be reordered
+ *
+ *   before: 0 1 2 3 4 5 6 ...
+ *   after : 0 4 1 2 3 5 6 ...
+ *
+ * We order these album by its key id in the albumslist.plist, thus we have to
+ * modify the original list file. Since the albumslist is hold by mAlbumList and
+ * album runtime data is hold by mAlbums, we can modify mAlbumList first and
+ * update mAlbums later.
+ * TODO: Not verified
+ */
+- (void)moveAlbumIndex:(int)from toIndex:(int)to {
+	NSLog(@"ALS: Move index %d to index %d", from, to);
+	NSMutableDictionary *tempAlbum;
+	int increment = 1;
 
-- (int) albumIndexWithKey: (NSString *) key {
-    int targetIdx = -1;
-    
-    for (unsigned i = 0; i < mCount; i++) {
-        NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", (long)i];
-        NSDictionary *eachPerson = [mAlbumList objectForKey:rootKey];
-        NSString *eachKey   = [eachPerson objectForKey:ALBUM_KEY_KEY];
-        
-        if ([eachKey isEqualToString:key]) {
-            targetIdx = i;
-        }
-    }
-    
-    if (targetIdx != -1)
-        return targetIdx;
-    else
-        return 0;
-}
+	if (from > to) {
+		increment = -1;
+	}
 
+	// save the target
+    NSString *holdKey = [[NSString alloc] initWithFormat:@"%d", from];
+    NSString *targetKey = [[NSString alloc] initWithFormat:@"%d", to];
+    NSDictionary *holdAlbum = [mAlbumList objectForKey:holdKey]; //hold here
+
+    for (int i = from; (i - to) != 0 ; i += increment) {
+		NSLog(@"Debug: moving %d to %d", i + increment, i);
+		NSString *fromKey = [[NSString alloc] initWithFormat:@"%d", i + increment];
+		NSString *toKey = [[NSString alloc] initWithFormat:@"%d", i];
+		NSDictionary *fromAlbum = [mAlbumList objectForKey:fromKey];
+		[mAlbumList setObject:fromAlbum forKey:toKey];
+	}
+
+	[mAlbumList setObject:holdAlbum forKey:toKey];
+	[mAlbumList writeToFile:mAlbumListPath atomically:YES];
+	[self initAlbumsWithRefresh:YES];
+}
 
 
 #pragma mark - Photo functions
@@ -410,7 +473,7 @@
  * ===================================
  */
 
-- (int) addPhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key {
+- (int)addPhotoInPath:(NSString *)path toAlbumWithKey:(NSString *)key {
     return 0;
 }
 
@@ -444,7 +507,7 @@
  * Merge back to default album is also available in the merge option.
  * We should move thumbnail as well.
  */
-- (int) removeAllPhotosInAlbum: (Album *) thisAlbum mergeBackToDefaultAlbum: (BOOL) merge {
+- (int)removeAllPhotosInAlbum:(Album *)thisAlbum mergeBackToDefaultAlbum:(BOOL) merge {
 
     // Make sure we are not deleting default album
     Album *defaultAlbum = [self albumInListAtIndex:0];
@@ -508,15 +571,15 @@
     return 0;
 }
 
-- (int) removePhotoInPath: (NSString *) path toAlbumWithKey: (NSString *) key {
+- (int)removePhotoInPath:(NSString *)path toAlbumWithKey:(NSString *)key {
     return 0;
 }
 
-- (NSMutableArray *) photosInAlbum: (Album *) album {
+- (NSMutableArray *)photosInAlbum:(Album *)album {
     return album.mAlbumPhotos;
 }
 
-- (NSMutableArray *) photosThumbInAlbum: (Album *) album {
+- (NSMutableArray *)photosThumbInAlbum:(Album *)album {
     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
     NSString *fileName;
     
@@ -619,7 +682,7 @@
     [mAlbumPhotoList writeToFile:mAlbumPhotoPath atomically:YES];
 }
 
-- (NSArray *) photosInAlbumWithKey: (NSString *) key {
+- (NSArray *)photosInAlbumWithKey:(NSString *)key {
     Album *thisAlbum = [self albumWithKey:key];
     return [self photosInAlbum:thisAlbum];
 }
@@ -642,7 +705,7 @@
     return 0;
 }
 
-- (long) photoCount: (Album *) album {
+- (long)photoCount:(Album *)album {
     return [album.mAlbumPhotos count];
 }
 
@@ -650,7 +713,7 @@
  * return the lastest photo in the album
  * If no photo in this album, it will return default prototypeImage
  */
-- (UIImage *) topPhotoInAlbum: (Album *) album {
+- (UIImage *)topPhotoInAlbum:(Album *)album {
     NSString* firstPhotoFileName;
     NSString* firstPhotoFilePath;
     UIImage* ret;
@@ -674,22 +737,70 @@
     return ret;
 }
 
+#pragma mark - Utility functions
+/*
+ * Utility functions
+ */
+
+- (NSString *)randomStringWithLength:(int)len {
+    NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    NSMutableString *randomString = [NSMutableString stringWithCapacity: len];
+
+    for (int i = 0; i < len; i++) {
+        NSUInteger index = arc4random_uniform((unsigned)[letters length]);
+        [randomString appendFormat: @"%C", [letters characterAtIndex: index]];
+    }
+
+    return randomString;
+}
+
+- (NSString *)generateNewPhotoFileNameWithAlbum:(Album*)thisAlbum {
+    if (thisAlbum == nil) {
+        return @"";
+    }
+
+    int serial = [thisAlbum.mSerial intValue];
+    NSString *incr = thisAlbum.mIncrease;
+    NSString *ret = [NSString stringWithFormat:@"IMG_%d%@", serial, incr];
+
+    return ret;
+}
+
+- (void)debugPrint {
+    NSLog(@"Auto fixing...");
+    [self autoFix];
+    NSLog(@"Album debug: %@", [mAlbumList description]);
+    NSLog(@"Photo debug: %@", [mAlbumPhotoList description]);
+}
+
+- (void)autoFix {
+    for (int i = 0; i < mCount; i++) {
+        Album *thisAlbum = [self albumInListAtIndex:i];
+        NSMutableArray *newPhotos = [[NSMutableArray alloc] init];
+        for (NSString *thisPhotoName in thisAlbum.mAlbumPhotos) {
+            NSString *newName = [[thisPhotoName componentsSeparatedByString:@"."] objectAtIndex:0];
+            [newPhotos addObject:newName];
+        }
+        [mAlbumPhotoList setObject:newPhotos forKey:thisAlbum.mAlbumKey];
+    }
+    [mAlbumPhotoList writeToFile:mAlbumPhotoPath atomically:YES];
+}
 
 #pragma mark - Debug functions
 /*
  * Debug functions
  */
-- (void) initPhotoFileDebug {
+- (void)initPhotoFileDebug {
     [self getAllPictures];
 }
 
-- (void) getAllPictures {
+- (void)getAllPictures {
     imageArray = [[NSArray alloc] init];
     mutableArray = [[NSMutableArray alloc]init];
     NSMutableArray* assetURLDictionaries = [[NSMutableArray alloc] init];
-    
+
     library = [[ALAssetsLibrary alloc] init];
-    
+
     void (^assetEnumerator)(ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
         static int count = 0;
         if(result != nil && count < 13) {
@@ -714,9 +825,9 @@
         }
         count++;
     };
-    
+
     NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
-    
+
     void (^ assetGroupEnumerator) (ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) {
         static BOOL first_group = NO;
         if(group != nil && !first_group) {
@@ -727,14 +838,14 @@
             first_group = YES;
         }
     };
-    
+
     assetGroups = [[NSMutableArray alloc] init];
-    
+
     [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:assetGroupEnumerator
                          failureBlock:^(NSError *error) { NSLog(@"There is an error"); }];
 }
 
-- (void) allPhotosCollected: (NSArray*)imgArray {
+- (void)allPhotosCollected:(NSArray*)imgArray {
     // We can deal with those images in user's photo library here
     NSLog(@"allPhotosCollected called %ld", [imgArray count]);
     int j = 0;
@@ -745,52 +856,6 @@
         }
         j++;
     }
-}
-
-
-#pragma mark - Utility functions
-- (NSString *) randomStringWithLength: (int) len {
-    NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    NSMutableString *randomString = [NSMutableString stringWithCapacity: len];
-    
-    for (int i = 0; i < len; i++) {
-        NSUInteger index = arc4random_uniform((unsigned)[letters length]);
-        [randomString appendFormat: @"%C", [letters characterAtIndex: index]];
-    }
-    
-    return randomString;
-}
-
-- (NSString *) generateNewPhotoFileNameWithAlbum: (Album*) thisAlbum {
-    if (thisAlbum == nil) {
-        return @"";
-    }
-    
-    int serial = [thisAlbum.mSerial intValue];
-    NSString *incr = thisAlbum.mIncrease;
-    NSString *ret = [NSString stringWithFormat:@"IMG_%d%@", serial, incr];
-    
-    return ret;
-}
-
-- (void) debugPrint {
-    NSLog(@"Auto fixing...");
-    [self autoFix];
-    NSLog(@"Album debug: %@", [mAlbumList description]);
-    NSLog(@"Photo debug: %@", [mAlbumPhotoList description]);
-}
-
-- (void) autoFix {
-    for (int i = 0; i < mCount; i++) {
-        Album *thisAlbum = [self albumInListAtIndex:i];
-        NSMutableArray *newPhotos = [[NSMutableArray alloc] init];
-        for (NSString *thisPhotoName in thisAlbum.mAlbumPhotos) {
-            NSString *newName = [[thisPhotoName componentsSeparatedByString:@"."] objectAtIndex:0];
-            [newPhotos addObject:newName];
-        }
-        [mAlbumPhotoList setObject:newPhotos forKey:thisAlbum.mAlbumKey];
-    }
-    [mAlbumPhotoList writeToFile:mAlbumPhotoPath atomically:YES];
 }
 
 @end

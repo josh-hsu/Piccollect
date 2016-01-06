@@ -135,6 +135,8 @@ static BOOL isAuthorized = NO;
 
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+	NSLog(@"Move index %ld to index %ld", fromIndexPath.row, toIndexPath.row);
+	[mAlbumList moveAlbumIndex:(int)fromIndexPath.row toIndex:(int)toIndexPath.row];
 }
 
 
