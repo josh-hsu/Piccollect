@@ -440,7 +440,6 @@
  */
 - (void)moveAlbumIndex:(int)from toIndex:(int)to {
 	NSLog(@"ALS: Move index %d to index %d", from, to);
-	NSMutableDictionary *tempAlbum;
 	int increment = 1;
 
 	if (from > to) {
@@ -460,7 +459,7 @@
 		[mAlbumList setObject:fromAlbum forKey:toKey];
 	}
 
-	[mAlbumList setObject:holdAlbum forKey:toKey];
+	[mAlbumList setObject:holdAlbum forKey:targetKey];
 	[mAlbumList writeToFile:mAlbumListPath atomically:YES];
 	[self initAlbumsWithRefresh:YES];
 }
