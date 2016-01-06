@@ -63,5 +63,12 @@
 "Album Features" = "相簿功能";
 "Account Settings" = "帳號設定";
 "Use Touch ID" = "使用 Touch ID 指紋驗證";
+"Password is set" = "密碼已設定";
+"New Password" = "新密碼";
+"Please enter password" = "請輸入密碼";
+"Password" = "密碼";
+"Enter again" = "再輸入一次";
+"Error: Some fields are empty!" = "錯誤！部分欄位為空";
+"Error: Two passwords are not matched!" = "錯誤！兩個密碼不同";
 
 
