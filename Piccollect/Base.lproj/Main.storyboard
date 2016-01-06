@@ -45,8 +45,10 @@
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HWD-db-IV3">
                                 <rect key="frame" x="20" y="120" width="335" height="37"/>
                                 <color key="backgroundColor" red="0.93199822603080595" green="0.92786877491936171" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <state key="normal" title="Confirm"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Confirm">
+                                    <color key="titleShadowColor" red="0.69227560434883118" green="0.70965172943963373" blue="0.76178010471204183" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="done:" destination="B1i-VA-lgA" eventType="touchUpInside" id="Tlr-Wj-Q4N"/>
                                 </connections>
