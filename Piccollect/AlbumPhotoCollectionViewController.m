@@ -9,6 +9,8 @@
 #import "AlbumPhotoCollectionViewController.h"
 #import "AlbumListService.h"
 
+#define USE_ASYNC_JOB       0
+
 // RMGalleryViewController is designed to be subclased. In this example the subclass acts as the gallery data source,  takes care of displaying a dynamic title in the navigation bar and provides and action bar button system item.
 @interface AlbumPhotoCollectionViewController()<RMGalleryViewDataSource, RMGalleryViewDelegate>
 
@@ -38,18 +40,23 @@
 
 - (void)galleryView:(RMGalleryView*)galleryView imageForIndex:(NSUInteger)index completion:(void (^)(UIImage *))completionBlock
 {
+#if USE_ASYNC_JOB
     // Typically images will be loaded asynchonously. To simulate this we resize the image in background.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
+#endif
         NSString *subimagePath = [[mAlbumListService photosInAlbum:mAlbum] objectAtIndex:(index)];
         NSString *imagePath = [mAlbumListService.mDocumentRootPath stringByAppendingPathComponent:subimagePath];
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
+        NSLog(@"Loading image of %@", imagePath);
         //image = [image demo_imageByScalingByFactor:0.75];
-        
-        dispatch_sync(dispatch_get_main_queue(), ^{
+#if USE_ASYNC_JOB
+        dispatch_async(dispatch_get_main_queue(), ^{
+#endif
             completionBlock(image);
+#if USE_ASYNC_JOB
         });
     });
+#endif
 }
 
 - (NSUInteger)numberOfImagesInGalleryView:(RMGalleryView*)galleryView
