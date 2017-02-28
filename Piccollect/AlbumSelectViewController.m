@@ -15,7 +15,7 @@
 @implementation AlbumSelectViewController
 
 @synthesize mAlbumList, delegate;
-@synthesize mTableViewIB, mEditButtonIB;
+@synthesize mTableViewIB, mEditButtonIB, mNavBarIB, mCancelButtonIB;
 
 #define LSTR(arg) NSLocalizedString(arg, nil)
 
@@ -46,6 +46,14 @@
     // Because the selected row will not reset after user hit back button and return here
     [mTableViewIB deselectRowAtIndexPath:[mTableViewIB indexPathForSelectedRow] animated:YES];
     [self.mTableViewIB reloadData];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    [self.mCancelButtonIB setTitle:LSTR(@"Cancel")];
+    [self.mNavBarIB setTitle:LSTR(@"Album Select")];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -81,7 +81,7 @@ static Boolean isSelectingAlbum = false;
     UIBarButtonItem *removeButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(removePhotos)];
     UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(menuPhotos)];
 
-    mToolbar.items = @[composeButtonItem, fixedSpace, moveButtonItem, fixedSpace, removeButtonItem];
+    mToolbar.items = @[fixedSpace, composeButtonItem, fixedSpace, moveButtonItem, fixedSpace, removeButtonItem, fixedSpace];
     [self.view addSubview:mToolbar];
 }
 

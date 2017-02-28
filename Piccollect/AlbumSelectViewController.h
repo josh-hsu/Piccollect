@@ -15,6 +15,8 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *mTableViewIB;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *mEditButtonIB;
+@property (weak, nonatomic) IBOutlet UINavigationItem *mNavBarIB;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *mCancelButtonIB;
 @property (strong, nonatomic) AlbumListService *mAlbumList;
 @property (retain, atomic) id <AlbumSelectControllerDelegate> delegate;
 
