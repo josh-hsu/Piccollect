@@ -54,6 +54,10 @@
 "Please select photos" = "請選擇相片";
 "Select" = "選取";
 "Move To Default" = "移動至主相簿";
+"Move To" = "移動至";
+
+// Album Select
+"Album Select" = "選擇相簿";
 
 // Settings
 "Settings" = "設定";

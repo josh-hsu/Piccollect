@@ -83,7 +83,7 @@
 - (NSMutableArray *)photosThumbInAlbum:(Album *)album;
 - (NSArray *)photosInAlbumWithKey:(NSString *)key;
 - (UIImage *)topPhotoInAlbum:(Album *)album;
-- (int)editPhotosIn:(NSMutableDictionary *)photos ofAlbum:(Album *)album forType:(int)editType;
+- (int)editPhotosIn:(NSMutableDictionary *)photos ofAlbum:(Album *)album toAlbum:(Album *)toAlbum forType:(int)editType;
 - (long)photoCount:(Album *)album;
 
 // Album functions

@@ -31,6 +31,7 @@ static float mCellWidth = 92.0;     // Golden cell width for 4.7 inch screen
 static int mThumbnailWidth = 95;    // Thumbnail width
 static NSMutableDictionary  *mSelectedPhotos;
 static int mOverlayViewTag = 100;
+static Boolean isSelectingAlbum = false;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -76,9 +77,9 @@ static int mOverlayViewTag = 100;
     mToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 
     UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem *moveButtonItem = [[UIBarButtonItem alloc]initWithTitle:LSTR(@"Move To Default") style:UIBarButtonItemStylePlain  target:self action:@selector(movePhotos)];
+    UIBarButtonItem *moveButtonItem = [[UIBarButtonItem alloc]initWithTitle:LSTR(@"Move To") style:UIBarButtonItemStylePlain  target:self action:@selector(movePhotos)];
     UIBarButtonItem *removeButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(removePhotos)];
-    UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:nil];
+    UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(menuPhotos)];
 
     mToolbar.items = @[composeButtonItem, fixedSpace, moveButtonItem, fixedSpace, removeButtonItem];
     [self.view addSubview:mToolbar];
@@ -90,8 +91,10 @@ static int mOverlayViewTag = 100;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [self setEditMode:NO];
-    mSelectedPhotos = nil;
+    if (!isSelectingAlbum) {
+        mSelectedPhotos = nil;
+        [self setEditMode:NO];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -391,16 +394,20 @@ static int mOverlayViewTag = 100;
 }
 
 - (void)removePhotos {
-    [mAlbumListService editPhotosIn:mSelectedPhotos ofAlbum:mAlbum forType:ALS_PHOTO_REMOVE];
+    [mAlbumListService editPhotosIn:mSelectedPhotos ofAlbum:mAlbum toAlbum: NULL forType:ALS_PHOTO_REMOVE];
     [mImageViewArray removeAllObjects];
     [mCollectionView reloadData];
     [self setEditMode:NO];
 }
 
 - (void)movePhotos {
-    [mAlbumListService editPhotosIn:mSelectedPhotos ofAlbum:mAlbum forType:ALS_PHOTO_MOVE];
-    [mCollectionView reloadData];
-    [self setEditMode:NO];
+    isSelectingAlbum = true;
+    [self performSegueWithIdentifier:@"showAlbumSelect" sender:NULL];
+}
+
+- (void)menuPhotos {
+    NSLog(@"Perform menu photos");
+    //[self performSegueWithIdentifier:@"showAlbumSelect" sender:NULL];
 }
 
 #pragma mark - ELCImagePickerControllerDelegate Methods
@@ -624,9 +631,37 @@ static int mOverlayViewTag = 100;
     [self presentViewController:viewControllerToPresent animated:YES completion:nil];
 }
 
+
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"showAlbumSelect"]) {
+        AlbumSelectViewController *addController = (AlbumSelectViewController *)[segue destinationViewController];
+        addController.delegate = self;
+    }
+}
+
 - (void)dismissGallery:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - AlbumSelectControllerDelegate
+//protocol : AlbumSelectControllerDelegate implementation
+- (void)albumSelectDidCancel:(AlbumSelectViewController *)controller{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    isSelectingAlbum = false;
+}
+
+- (void)albumSelectDidFinish:(AlbumSelectViewController *)controller albumKey: (Album *) album {
+    NSLog(@"Receive album select key %@", album.mAlbumKey);
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [mAlbumListService editPhotosIn:mSelectedPhotos ofAlbum:mAlbum toAlbum:album forType:ALS_PHOTO_MOVE];
+    [mCollectionView reloadData];
+    [self setEditMode:NO];
+    isSelectingAlbum = false;
+    mSelectedPhotos = nil;
 }
 
 @end

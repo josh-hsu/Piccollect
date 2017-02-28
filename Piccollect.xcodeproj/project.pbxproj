@@ -31,6 +31,7 @@
 		03E9CEBE1C20051200BB4C71 /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E9CEBD1C20051200BB4C71 /* PasswordViewController.m */; };
 		03E9CEC11C200F8D00BB4C71 /* SettingsService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E9CEC01C200F8D00BB4C71 /* SettingsService.m */; };
 		03EA4B521C3239F60022B12C /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EA4B511C3239F60022B12C /* SettingsViewController.m */; };
+		03F56BBA1E65257C00D3AD4D /* AlbumSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F56BB91E65257C00D3AD4D /* AlbumSelectViewController.m */; };
 		03F73F4A1C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F73F491C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.m */; };
 		03F73F4D1C0B19BF00BCDBCE /* ELCImagePicker in Resources */ = {isa = PBXBuildFile; fileRef = 03F73F4C1C0B19BF00BCDBCE /* ELCImagePicker */; };
 		03F73F6B1C0B1F0500BCDBCE /* ELCAlbumPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F73F551C0B1F0500BCDBCE /* ELCAlbumPickerController.m */; };
@@ -113,6 +114,8 @@
 		03E9CEC01C200F8D00BB4C71 /* SettingsService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsService.m; sourceTree = "<group>"; };
 		03EA4B501C3239F60022B12C /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		03EA4B511C3239F60022B12C /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		03F56BB81E65257C00D3AD4D /* AlbumSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumSelectViewController.h; sourceTree = "<group>"; };
+		03F56BB91E65257C00D3AD4D /* AlbumSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumSelectViewController.m; sourceTree = "<group>"; };
 		03F73F481C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumPhotoCollectionViewController.h; sourceTree = "<group>"; };
 		03F73F491C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumPhotoCollectionViewController.m; sourceTree = "<group>"; };
 		03F73F4C1C0B19BF00BCDBCE /* ELCImagePicker */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ELCImagePicker; path = /Users/josh/Documents/Piccollect/Piccollect/ELCImagePicker; sourceTree = "<absolute>"; };
@@ -257,6 +260,8 @@
 				03BCA6131C01FC98009BD8FB /* AlbumCollectionViewController.m */,
 				03F73F481C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.h */,
 				03F73F491C0AE33300BCDBCE /* AlbumPhotoCollectionViewController.m */,
+				03F56BB81E65257C00D3AD4D /* AlbumSelectViewController.h */,
+				03F56BB91E65257C00D3AD4D /* AlbumSelectViewController.m */,
 				03E9CEBC1C20051200BB4C71 /* PasswordViewController.h */,
 				03E9CEBD1C20051200BB4C71 /* PasswordViewController.m */,
 				03EA4B501C3239F60022B12C /* SettingsViewController.h */,
@@ -496,6 +501,7 @@
 				03324CE61C005CBD000618F0 /* AppDelegate.m in Sources */,
 				03F73F6C1C0B1F0500BCDBCE /* ELCAsset.m in Sources */,
 				03324CE31C005CBD000618F0 /* main.m in Sources */,
+				03F56BBA1E65257C00D3AD4D /* AlbumSelectViewController.m in Sources */,
 				03BCA60F1C019FE4009BD8FB /* Album.m in Sources */,
 				03F73F6D1C0B1F0500BCDBCE /* ELCAssetCell.m in Sources */,
 				03E98D9A1C1D471F002D97B2 /* RMGalleryViewController.m in Sources */,

@@ -181,7 +181,7 @@
         <scene sceneID="ngV-kV-Utg">
             <objects>
                 <collectionViewController id="h6m-PB-AqY" customClass="AlbumCollectionViewController" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="CS3-dR-BSF">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="CS3-dR-BSF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -226,11 +226,88 @@
                         <outlet property="mAddButton" destination="hdU-yu-kMp" id="Gsy-c1-D2V"/>
                         <outlet property="mCollectionView" destination="CS3-dR-BSF" id="sGO-bM-xPQ"/>
                         <outlet property="mEditButton" destination="D9t-KQ-OVI" id="Anr-CD-kJG"/>
+                        <segue destination="8Cw-eC-HeC" kind="presentation" identifier="showAlbumSelect" id="bQL-Fl-2CS"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fpo-PI-jHT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1370" y="-1401"/>
+        </scene>
+        <!--Album Select View Controller-->
+        <scene sceneID="X4n-I4-yas">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PuD-hV-yRy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="8Cw-eC-HeC" customClass="AlbumSelectViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="C4J-RJ-7cu"/>
+                        <viewControllerLayoutGuide type="bottom" id="Bfm-1n-Lcs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Te6-E9-Qui">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="neg-iF-Klw">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Album Select" id="N3r-kZ-90C">
+                                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="H38-0h-2HL">
+                                            <connections>
+                                                <action selector="cancelSelectAlbum:" destination="8Cw-eC-HeC" id="3k3-hK-X7D"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="117" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VnU-Zs-RH0">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="albumListTableCell" rowHeight="113" id="itS-rR-vfR">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="113"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="itS-rR-vfR" id="7jW-GX-2oU">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="112"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="prototypeImage" translatesAutoresizingMaskIntoConstraints="NO" id="Xsj-RO-wUA">
+                                                    <rect key="frame" x="15" y="11" width="96" height="96"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Default Album" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNd-W3-JZ7">
+                                                    <rect key="frame" x="129" y="36" width="245" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P7j-Ds-PsB">
+                                                    <rect key="frame" x="129" y="60" width="246" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="8Cw-eC-HeC" id="RGa-s7-T27"/>
+                                    <outlet property="delegate" destination="8Cw-eC-HeC" id="o0F-kV-14p"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="mEditButtonIB" destination="H38-0h-2HL" id="Yz7-El-k4p"/>
+                        <outlet property="mTableViewIB" destination="VnU-Zs-RH0" id="Svl-wT-gzq"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="2143.1999999999998" y="-1400.1499250374814"/>
         </scene>
         <!--Photo Wall-->
         <scene sceneID="wg7-f3-ORb">

@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "ELCImagePicker/ELCImagePickerHeader.h"
+#import "AlbumSelectViewController.h"
 
 @class Album, AlbumListService;
-@interface AlbumCollectionViewController : UICollectionViewController <ELCImagePickerControllerDelegate>
+@interface AlbumCollectionViewController : UICollectionViewController <ELCImagePickerControllerDelegate, AlbumSelectControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UICollectionView *mCollectionView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *mEditButton;

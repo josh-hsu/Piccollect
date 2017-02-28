@@ -25,7 +25,7 @@
 @synthesize mCount;
 @synthesize mDocumentRootPath;
 @synthesize mAlbumPhotoList, mAlbumPhotoPath, mValidate, mNextAlbumSerial;
-#define LOCAL_DEBUG           NO    //YES, turn on Log
+#define LOCAL_DEBUG           YES    //YES, turn on Log
 #define NUM_LIST_ATTRIBUTE    1     //number of attributes in albums.plist except serial such as "next"
 #define LENGTH_OF_SERIAL      8     //request serial code length for album
 
@@ -123,7 +123,6 @@
     NSData *plistXML = [[NSFileManager defaultManager] contentsAtPath:mAlbumPhotoPath];
     mAlbumPhotoList = (NSMutableDictionary *) [NSPropertyListSerialization propertyListWithData:plistXML
                                                                                         options:NSPropertyListMutableContainersAndLeaves format:&format error:&errorDesc];
-    
     if (!mAlbumPhotoList) {
         NSLog(@"Error reading plist: %@, format: %lu", errorDesc, (unsigned long)format);
         return -1;
@@ -221,6 +220,7 @@
 
         if ([eachKey isEqualToString:key]) {
             targetIdx = i;
+            break;
         }
     }
 
@@ -690,10 +690,10 @@
  * This method handles every edit type of photos in this list "photos"
  * In this moment, we support both move (to another album) and remove (photos)
  */
-- (int)editPhotosIn:(NSMutableDictionary *)photos ofAlbum:(Album *)album forType:(int)editType {
+- (int)editPhotosIn:(NSMutableDictionary *)photos ofAlbum:(Album *)album toAlbum:(Album *)toAlbum forType:(int)editType {
     if (editType == ALS_PHOTO_MOVE) {
         NSLog(@"move photo called");
-        [self movePhotos:photos ofAlbum:album toAlbum:[mAlbums objectAtIndex:0]];
+        [self movePhotos:photos ofAlbum:album toAlbum:toAlbum];
     } else if (editType == ALS_PHOTO_REMOVE) {
         NSLog(@"remove photo called");
         [self removePhotos:photos ofAlbum:album];
