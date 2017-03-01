@@ -15,6 +15,9 @@
 		03324CFF1C005CBD000618F0 /* PiccollectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03324CFE1C005CBD000618F0 /* PiccollectTests.m */; };
 		03324D0A1C005CBD000618F0 /* PiccollectUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03324D091C005CBD000618F0 /* PiccollectUITests.m */; };
 		033814E11C251F1B0068D44B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 033814E31C251F1B0068D44B /* Localizable.strings */; };
+		037B013C1E6701C200DA0CC7 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037B013B1E6701C200DA0CC7 /* ShareViewController.m */; };
+		037B013F1E6701C200DA0CC7 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 037B013D1E6701C200DA0CC7 /* MainInterface.storyboard */; };
+		037B01431E6701C200DA0CC7 /* Piccollect Share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 037B01381E6701C200DA0CC7 /* Piccollect Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		03BCA6061C019387009BD8FB /* AlbumListService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03BCA6051C019387009BD8FB /* AlbumListService.m */; };
 		03BCA60B1C019D06009BD8FB /* albums.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03BCA60A1C019D06009BD8FB /* albums.plist */; };
 		03BCA60F1C019FE4009BD8FB /* Album.m in Sources */ = {isa = PBXBuildFile; fileRef = 03BCA60E1C019FE4009BD8FB /* Album.m */; };
@@ -63,7 +66,28 @@
 			remoteGlobalIDString = 03324CDD1C005CBD000618F0;
 			remoteInfo = Piccollect;
 		};
+		037B01411E6701C200DA0CC7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 03324CD61C005CBD000618F0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 037B01371E6701C200DA0CC7;
+			remoteInfo = "Piccollect Share";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		037B01471E6701C200DA0CC7 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				037B01431E6701C200DA0CC7 /* Piccollect Share.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		03324CDE1C005CBD000618F0 /* Piccollect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Piccollect.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +107,13 @@
 		033814DF1C251EC80068D44B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		033814E01C251EC80068D44B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		033814E21C251F1B0068D44B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		037B01381E6701C200DA0CC7 /* Piccollect Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Piccollect Share.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		037B013A1E6701C200DA0CC7 /* ShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		037B013B1E6701C200DA0CC7 /* ShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
+		037B013E1E6701C200DA0CC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		037B01401E6701C200DA0CC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		037B01481E67073900DA0CC7 /* Piccollect.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Piccollect.entitlements; sourceTree = "<group>"; };
+		037B01491E67078100DA0CC7 /* Piccollect Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Piccollect Share.entitlements"; sourceTree = "<group>"; };
 		03BCA6041C019387009BD8FB /* AlbumListService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlbumListService.h; path = CoreService/AlbumListService.h; sourceTree = "<group>"; };
 		03BCA6051C019387009BD8FB /* AlbumListService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlbumListService.m; path = CoreService/AlbumListService.m; sourceTree = "<group>"; };
 		03BCA60A1C019D06009BD8FB /* albums.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = albums.plist; path = Lists/albums.plist; sourceTree = "<group>"; };
@@ -166,6 +197,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		037B01351E6701C200DA0CC7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -178,6 +216,7 @@
 				03324CE01C005CBD000618F0 /* Piccollect */,
 				03324CFD1C005CBD000618F0 /* PiccollectTests */,
 				03324D081C005CBD000618F0 /* PiccollectUITests */,
+				037B01391E6701C200DA0CC7 /* Piccollect Share */,
 				03324CDF1C005CBD000618F0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -188,6 +227,7 @@
 				03324CDE1C005CBD000618F0 /* Piccollect.app */,
 				03324CFA1C005CBD000618F0 /* PiccollectTests.xctest */,
 				03324D051C005CBD000618F0 /* PiccollectUITests.xctest */,
+				037B01381E6701C200DA0CC7 /* Piccollect Share.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -195,6 +235,7 @@
 		03324CE01C005CBD000618F0 /* Piccollect */ = {
 			isa = PBXGroup;
 			children = (
+				037B01481E67073900DA0CC7 /* Piccollect.entitlements */,
 				03F73F4B1C0B197B00BCDBCE /* ThirdPartyLibrary */,
 				03BCA60C1C019FA0009BD8FB /* Objects */,
 				03BCA6071C01939C009BD8FB /* CoreService */,
@@ -234,6 +275,18 @@
 				03324D0B1C005CBD000618F0 /* Info.plist */,
 			);
 			path = PiccollectUITests;
+			sourceTree = "<group>";
+		};
+		037B01391E6701C200DA0CC7 /* Piccollect Share */ = {
+			isa = PBXGroup;
+			children = (
+				037B01491E67078100DA0CC7 /* Piccollect Share.entitlements */,
+				037B013A1E6701C200DA0CC7 /* ShareViewController.h */,
+				037B013B1E6701C200DA0CC7 /* ShareViewController.m */,
+				037B013D1E6701C200DA0CC7 /* MainInterface.storyboard */,
+				037B01401E6701C200DA0CC7 /* Info.plist */,
+			);
+			path = "Piccollect Share";
 			sourceTree = "<group>";
 		};
 		03BCA6071C01939C009BD8FB /* CoreService */ = {
@@ -362,10 +415,12 @@
 				03324CDA1C005CBD000618F0 /* Sources */,
 				03324CDB1C005CBD000618F0 /* Frameworks */,
 				03324CDC1C005CBD000618F0 /* Resources */,
+				037B01471E6701C200DA0CC7 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				037B01421E6701C200DA0CC7 /* PBXTargetDependency */,
 			);
 			name = Piccollect;
 			productName = Piccollect;
@@ -408,6 +463,23 @@
 			productReference = 03324D051C005CBD000618F0 /* PiccollectUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		037B01371E6701C200DA0CC7 /* Piccollect Share */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 037B01441E6701C200DA0CC7 /* Build configuration list for PBXNativeTarget "Piccollect Share" */;
+			buildPhases = (
+				037B01341E6701C200DA0CC7 /* Sources */,
+				037B01351E6701C200DA0CC7 /* Frameworks */,
+				037B01361E6701C200DA0CC7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Piccollect Share";
+			productName = "Piccollect Share";
+			productReference = 037B01381E6701C200DA0CC7 /* Piccollect Share.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -420,6 +492,11 @@
 					03324CDD1C005CBD000618F0 = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = UT7ZNXTKC3;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					03324CF91C005CBD000618F0 = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -430,6 +507,16 @@
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = DR68TNYMKL;
 						TestTargetID = 03324CDD1C005CBD000618F0;
+					};
+					037B01371E6701C200DA0CC7 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = UT7ZNXTKC3;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -449,6 +536,7 @@
 				03324CDD1C005CBD000618F0 /* Piccollect */,
 				03324CF91C005CBD000618F0 /* PiccollectTests */,
 				03324D041C005CBD000618F0 /* PiccollectUITests */,
+				037B01371E6701C200DA0CC7 /* Piccollect Share */,
 			);
 		};
 /* End PBXProject section */
@@ -485,6 +573,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		037B01361E6701C200DA0CC7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				037B013F1E6701C200DA0CC7 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,6 +633,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		037B01341E6701C200DA0CC7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				037B013C1E6701C200DA0CC7 /* ShareViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -549,6 +653,11 @@
 			isa = PBXTargetDependency;
 			target = 03324CDD1C005CBD000618F0 /* Piccollect */;
 			targetProxy = 03324D061C005CBD000618F0 /* PBXContainerItemProxy */;
+		};
+		037B01421E6701C200DA0CC7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 037B01371E6701C200DA0CC7 /* Piccollect Share */;
+			targetProxy = 037B01411E6701C200DA0CC7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -577,6 +686,14 @@
 				033814E21C251F1B0068D44B /* zh-Hant */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		037B013D1E6701C200DA0CC7 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				037B013E1E6701C200DA0CC7 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -674,6 +791,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Piccollect/Piccollect.entitlements;
 				DEVELOPMENT_TEAM = UT7ZNXTKC3;
 				INFOPLIST_FILE = Piccollect/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
@@ -688,6 +806,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Piccollect/Piccollect.entitlements;
 				DEVELOPMENT_TEAM = UT7ZNXTKC3;
 				INFOPLIST_FILE = Piccollect/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
@@ -746,6 +865,38 @@
 			};
 			name = Release;
 		};
+		037B01451E6701C200DA0CC7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Piccollect Share/Piccollect Share.entitlements";
+				DEVELOPMENT_TEAM = UT7ZNXTKC3;
+				INFOPLIST_FILE = "Piccollect Share/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mumu.Piccollect.Piccollect-Share";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		037B01461E6701C200DA0CC7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Piccollect Share/Piccollect Share.entitlements";
+				DEVELOPMENT_TEAM = UT7ZNXTKC3;
+				INFOPLIST_FILE = "Piccollect Share/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mumu.Piccollect.Piccollect-Share";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -784,6 +935,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		037B01441E6701C200DA0CC7 /* Build configuration list for PBXNativeTarget "Piccollect Share" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				037B01451E6701C200DA0CC7 /* Debug */,
+				037B01461E6701C200DA0CC7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

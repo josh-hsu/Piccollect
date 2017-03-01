@@ -35,7 +35,18 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.mumu.piccollect.Piccollect-Share"];
+    if ([userDefaults boolForKey:@"has-new-image"]) {
+        NSLog(@"Did receive share image to save.");
+        NSData* imageData = [userDefaults objectForKey:@"share-image"];
+        UIImage* image = [UIImage imageWithData:imageData];
+        
+        AlbumListService* mAlbumService = [[AlbumListService alloc] init];
+        UIImage* thumbnail = [Album makeThumbWithImage:image size:95];
+        [mAlbumService addPhotoWithImage:image andThumb:thumbnail toAlbum:[mAlbumService albumInListAtIndex:0]];
+        [userDefaults setBool:NO forKey:@"has-new-image"];
+    }
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

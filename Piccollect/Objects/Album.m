@@ -21,6 +21,26 @@
     self.mSerial = serial;
 }
 
-
++ (UIImage *)makeThumbWithImage: (UIImage *)image size:(int)w {
+    CGSize newSize = CGSizeMake(w, w);
+    CGRect scaledImageRect = CGRectZero;
+    
+    CGFloat aspectWidth = newSize.width / image.size.width;
+    CGFloat aspectHeight = newSize.height / image.size.height;
+    CGFloat aspectRatio = MAX ( aspectWidth, aspectHeight );
+    
+    scaledImageRect.size.width = image.size.width * aspectRatio;
+    scaledImageRect.size.height = image.size.height * aspectRatio;
+    scaledImageRect.origin.x = 0.0f;
+    scaledImageRect.origin.y = 0.0f;
+    
+    UIGraphicsBeginImageContextWithOptions( scaledImageRect.size, NO, 0 );
+    [image drawInRect:scaledImageRect];
+    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return scaledImage;
+    
+}
 
 @end

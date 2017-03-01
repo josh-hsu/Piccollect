@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#import <UIKit/UIKit.h>
 
 @interface Album : NSObject {
 
@@ -23,4 +25,5 @@
 
 - (void)initWithName:(NSString*) Name key:(NSString*)key date:(NSDate*)date order:(NSNumber*)order incr:(NSString*) incr serial:(NSNumber*) serial;
 
++ (UIImage *)makeThumbWithImage: (UIImage *)image size:(int)w;
 @end

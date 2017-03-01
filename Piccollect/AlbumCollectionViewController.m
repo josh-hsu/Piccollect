@@ -44,12 +44,7 @@ static Boolean isSelectingAlbum = false;
     
     // view controllers are created lazily
     // in the meantime, load the array with placeholders which will be replaced on demand
-    NSMutableArray *viewArray = [[NSMutableArray alloc] init];
-    for (unsigned i = 0; i < [mAlbumListService photoCount:mAlbum]; i++)
-    {
-        [viewArray addObject:[NSNull null]];
-    }
-    self.mImageViewArray = viewArray;
+    [self renewImageViewArray];
     
     // Do any additional setup after loading the view.
     self.title = mAlbum.mAlbumName;
@@ -155,7 +150,6 @@ static Boolean isSelectingAlbum = false;
     
     // replace the placeholder if necessary
     UIImageView *imageView = [mImageViewArray objectAtIndex:pageIndex];
-
     if ((NSNull *)imageView == [NSNull null]) {
         NSString *subimagePath = [[mAlbumListService photosThumbInAlbum:mAlbum] objectAtIndex:pageIndex];
         NSString *imagePath = [mAlbumListService.mDocumentRootPath stringByAppendingPathComponent:subimagePath];
@@ -198,6 +192,15 @@ static Boolean isSelectingAlbum = false;
     }
     
     return imageView;
+}
+
+- (void) renewImageViewArray {
+    NSMutableArray *viewArray = [[NSMutableArray alloc] init];
+    for (unsigned i = 0; i < [mAlbumListService photoCount:mAlbum]; i++)
+    {
+        [viewArray addObject:[NSNull null]];
+    }
+    self.mImageViewArray = viewArray;
 }
 
 
@@ -395,7 +398,8 @@ static Boolean isSelectingAlbum = false;
 
 - (void)removePhotos {
     [mAlbumListService editPhotosIn:mSelectedPhotos ofAlbum:mAlbum toAlbum: NULL forType:ALS_PHOTO_REMOVE];
-    [mImageViewArray removeAllObjects];
+    // replace all imageview in array with null, so we can regenerate correct image when collectinView redraw
+    [self renewImageViewArray];
     [mCollectionView reloadData];
     [self setEditMode:NO];
 }
@@ -448,7 +452,7 @@ static Boolean isSelectingAlbum = false;
                 UIImage* thumb;
 
                 // Get thumbnail
-                thumb = [self makeThumbWithImage:image];
+                thumb = [Album makeThumbWithImage:image size:mThumbnailWidth];
                 
                 ret = [mAlbumListService addPhotoWithImage:image andThumb:thumb toAlbum:mAlbum];
                 
@@ -480,28 +484,6 @@ static Boolean isSelectingAlbum = false;
     }
     
     [self didEndProgress];
-}
-
-- (UIImage *)makeThumbWithImage: (UIImage *)image {
-    CGSize newSize = CGSizeMake(mThumbnailWidth, mThumbnailWidth);
-    CGRect scaledImageRect = CGRectZero;
-    
-    CGFloat aspectWidth = newSize.width / image.size.width;
-    CGFloat aspectHeight = newSize.height / image.size.height;
-    CGFloat aspectRatio = MAX ( aspectWidth, aspectHeight );
-    
-    scaledImageRect.size.width = image.size.width * aspectRatio;
-    scaledImageRect.size.height = image.size.height * aspectRatio;
-    scaledImageRect.origin.x = 0.0f;
-    scaledImageRect.origin.y = 0.0f;
-    
-    UIGraphicsBeginImageContextWithOptions( scaledImageRect.size, NO, 0 );
-    [image drawInRect:scaledImageRect];
-    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return scaledImage;
-    
 }
 
 - (void) loadingProgressDialog {

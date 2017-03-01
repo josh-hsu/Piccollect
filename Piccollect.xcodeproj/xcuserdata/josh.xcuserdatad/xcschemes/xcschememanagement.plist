@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Piccollect Share.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>Piccollect.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +28,11 @@
 			<true/>
 		</dict>
 		<key>03324D041C005CBD000618F0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>037B01371E6701C200DA0CC7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
