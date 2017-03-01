@@ -36,14 +36,19 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.mumu.piccollect.Piccollect-Share"];
+    
     if ([userDefaults boolForKey:@"has-new-image"]) {
-        NSLog(@"Did receive share image to save.");
-        NSData* imageData = [userDefaults objectForKey:@"share-image"];
-        UIImage* image = [UIImage imageWithData:imageData];
-        
         AlbumListService* mAlbumService = [[AlbumListService alloc] init];
-        UIImage* thumbnail = [Album makeThumbWithImage:image size:95];
-        [mAlbumService addPhotoWithImage:image andThumb:thumbnail toAlbum:[mAlbumService albumInListAtIndex:0]];
+        long imageCount = [userDefaults integerForKey:@"share-image-count"];
+        
+        for (int i = 0; i < imageCount; i++ ) {
+            NSString *thisKey = [NSString stringWithFormat:@"share-image-%d", i];
+            NSData* imageData = [userDefaults objectForKey:thisKey];
+            UIImage* image = [UIImage imageWithData:imageData];
+            UIImage* thumbnail = [Album makeThumbWithImage:image size:95];
+            [mAlbumService addPhotoWithImage:image andThumb:thumbnail toAlbum:[mAlbumService albumInListAtIndex:0]];
+        }
+        
         [userDefaults setBool:NO forKey:@"has-new-image"];
     }
 

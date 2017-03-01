@@ -34,61 +34,32 @@
     
     __weak ShareViewController *theController = self;
     __block BOOL hasData = NO;
+    static int imageCount = 0;
+    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.mumu.piccollect.Piccollect-Share"];
+
     [self.extensionContext.inputItems enumerateObjectsUsingBlock:^(NSExtensionItem * _Nonnull extItem, NSUInteger idx, BOOL * _Nonnull stop) {
         
         [extItem.attachments enumerateObjectsUsingBlock:^(NSItemProvider * _Nonnull itemProvider, NSUInteger idx, BOOL * _Nonnull stop) {
-            
-            if ([itemProvider hasItemConformingToTypeIdentifier:@"public.url"])
-            {
-                [itemProvider loadItemForTypeIdentifier:@"public.url"
-                                                options:nil
-                                      completionHandler:^(id<NSSecureCoding>  _Nullable item, NSError * _Null_unspecified error) {
-                                          
-                                          if ([(NSObject *)item isKindOfClass:[NSURL class]])
-                                          {
-                                              NSLog(@"URL = %@", item);
-                                              NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.cn.vimfung.ShareExtensionDemo"];
-                                              [userDefaults setValue:((NSURL *)item).absoluteString forKey:@"share-url"];
-                                              //Mark as new share
-                                              [userDefaults setBool:YES forKey:@"has-new-share"];
-                                              
-                                              [activityIndicatorView stopAnimating];
-                                              [theController.extensionContext completeRequestReturningItems:@[extItem] completionHandler:nil];
-                                          }
-                                          
-                                      }];
-                
-                hasData = YES;
-                *stop = YES;
-            } else if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeImage]) {
+            if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeImage]) {
                 [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeImage options:nil completionHandler:
-                 ^(UIImage *image, NSError *error) {
-                     NSLog(@"Get Image");
-                     NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.mumu.piccollect.Piccollect-Share"];
-                     [userDefaults setObject:UIImagePNGRepresentation(image) forKey:@"share-image"];
-                     //Mark as new share
-                     [userDefaults setBool:YES forKey:@"has-new-image"];
-                     
-                     [activityIndicatorView stopAnimating];
-                     [theController.extensionContext completeRequestReturningItems:@[extItem] completionHandler:nil];
+                            ^(UIImage *image, NSError *error) {
+                                NSString *thisKey = [NSString stringWithFormat:@"share-image-%ld", idx];
+                                [userDefaults setObject:UIImagePNGRepresentation(image) forKey:thisKey];
+                                [activityIndicatorView stopAnimating];
+                                [theController.extensionContext completeRequestReturningItems:@[extItem] completionHandler:nil];
                 }];
                 
                 hasData = YES;
-                *stop = YES;
+                imageCount ++; //this cannot be used as index in a completion block, you should use idx instead.
             }
-            
         }];
         
-        if (hasData)
-        {
-            *stop = YES;
-        }
+        [userDefaults setBool:YES forKey:@"has-new-image"];
+        [userDefaults setInteger:imageCount forKey:@"share-image-count"];
         
     }];
     
-    if (!hasData)
-    {
-        // Exit
+    if (!hasData) {
         [self.extensionContext completeRequestReturningItems:@[] completionHandler:nil];
     }
 }
