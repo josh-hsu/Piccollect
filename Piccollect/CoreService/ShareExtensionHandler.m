@@ -26,6 +26,7 @@
         }
         
         [userDefaults setBool:NO forKey:@"has-new-image"];
+        [userDefaults setInteger:0 forKey:@"share-image-count"];
         return true;
     } else {
         return false;
