@@ -63,6 +63,8 @@ static BOOL isAuthorized = NO;
     if (!isAuthorized)
         [self performSegueWithIdentifier:@"showPasswordViewSegue" sender:nil];
 
+    [ShareExtensionHandler checkNewPhotosFromExtension:mAlbumList];
+    
     // Because the selected row will not reset after user hit back button and return here
     [mTableViewIB deselectRowAtIndexPath:[mTableViewIB indexPathForSelectedRow] animated:YES];
     [self.mTableViewIB reloadData];

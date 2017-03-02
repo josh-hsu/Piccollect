@@ -11,6 +11,7 @@
 #import "AlbumListService.h"
 #import "PasswordViewController.h"
 #import "SettingsService.h"
+#import "CoreService/ShareExtensionHandler.h"
 
 @interface AlbumTableViewController : UIViewController <StartViewControllerDelegate> {
     int rowUserSelected;

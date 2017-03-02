@@ -33,33 +33,47 @@
     [activityIndicatorView startAnimating];
     
     __weak ShareViewController *theController = self;
-    __block BOOL hasData = NO;
-    static int imageCount = 0;
+    __block NSInteger imageCount = 0;
+    __block NSInteger fetchCount = 0;
+    //static dispatch_once_t oncePredicate;
     NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.mumu.piccollect.Piccollect-Share"];
-
+    
     [self.extensionContext.inputItems enumerateObjectsUsingBlock:^(NSExtensionItem * _Nonnull extItem, NSUInteger idx, BOOL * _Nonnull stop) {
+        // this is a stupid way to get image count, but i don't have better idea to confirm that item is actually an image
+        [extItem.attachments enumerateObjectsUsingBlock:^(NSItemProvider * _Nonnull itemProvider, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeImage]) {
+                imageCount++;
+            }
+        }];
+        NSLog(@"Enumerate image count %ld", imageCount);
         
         [extItem.attachments enumerateObjectsUsingBlock:^(NSItemProvider * _Nonnull itemProvider, NSUInteger idx, BOOL * _Nonnull stop) {
             if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeImage]) {
-                [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeImage options:nil completionHandler:
-                            ^(UIImage *image, NSError *error) {
-                                NSString *thisKey = [NSString stringWithFormat:@"share-image-%ld", idx];
-                                [userDefaults setObject:UIImagePNGRepresentation(image) forKey:thisKey];
-                                [activityIndicatorView stopAnimating];
-                                [theController.extensionContext completeRequestReturningItems:@[extItem] completionHandler:nil];
-                }];
                 
-                hasData = YES;
-                imageCount ++; //this cannot be used as index in a completion block, you should use idx instead.
+                // retrieve data from itemProvider. This is done in asynchronous way
+                [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeImage options:nil completionHandler:
+                 ^(UIImage *image, NSError *error) {
+                     NSString *thisKey = [NSString stringWithFormat:@"share-image-%ld", idx];
+                     [userDefaults setObject:UIImagePNGRepresentation(image) forKey:thisKey];
+                     [activityIndicatorView stopAnimating];
+                     
+                     // this should only be called once and only once at the last object is fetched
+                     fetchCount ++;
+                     if(fetchCount == imageCount) {
+                         //dispatch_once(&oncePredicate, ^{
+                             NSLog(@"All done, run controller");
+                             [userDefaults setBool:YES forKey:@"has-new-image"];
+                             [userDefaults setInteger:imageCount forKey:@"share-image-count"];
+                             [theController.extensionContext completeRequestReturningItems:@[] completionHandler:nil];
+                         //});
+                     }
+                     NSLog(@"Enumerate done 1");
+                 }];
             }
         }];
-        
-        [userDefaults setBool:YES forKey:@"has-new-image"];
-        [userDefaults setInteger:imageCount forKey:@"share-image-count"];
-        
     }];
     
-    if (!hasData) {
+    if (imageCount == 0) {
         [self.extensionContext completeRequestReturningItems:@[] completionHandler:nil];
     }
 }

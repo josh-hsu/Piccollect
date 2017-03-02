@@ -78,10 +78,18 @@ static Boolean isSelectingAlbum = false;
 
     mToolbar.items = @[fixedSpace, composeButtonItem, fixedSpace, moveButtonItem, fixedSpace, removeButtonItem, fixedSpace];
     [self.view addSubview:mToolbar];
+    
+    // Check if we have new image shared from extension
+    [ShareExtensionHandler checkNewPhotosFromExtension:mAlbumListService];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
     [self recalculateCellSize:mCollectionView.frame.size];
 }
 

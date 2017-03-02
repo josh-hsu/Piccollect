@@ -35,23 +35,7 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.mumu.piccollect.Piccollect-Share"];
     
-    if ([userDefaults boolForKey:@"has-new-image"]) {
-        AlbumListService* mAlbumService = [[AlbumListService alloc] init];
-        long imageCount = [userDefaults integerForKey:@"share-image-count"];
-        
-        for (int i = 0; i < imageCount; i++ ) {
-            NSString *thisKey = [NSString stringWithFormat:@"share-image-%d", i];
-            NSData* imageData = [userDefaults objectForKey:thisKey];
-            UIImage* image = [UIImage imageWithData:imageData];
-            UIImage* thumbnail = [Album makeThumbWithImage:image size:95];
-            [mAlbumService addPhotoWithImage:image andThumb:thumbnail toAlbum:[mAlbumService albumInListAtIndex:0]];
-        }
-        
-        [userDefaults setBool:NO forKey:@"has-new-image"];
-    }
-
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ELCImagePicker/ELCImagePickerHeader.h"
 #import "AlbumSelectViewController.h"
+#import "CoreService/ShareExtensionHandler.h"
 
 @class Album, AlbumListService;
 @interface AlbumCollectionViewController : UICollectionViewController <ELCImagePickerControllerDelegate, AlbumSelectControllerDelegate>
