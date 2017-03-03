@@ -199,7 +199,7 @@
     
     if (!viewControllerBasedStatusBarAppearence)
     {
-        [[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationFade];
+        [[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationSlide];
     }
     UINavigationController *navigationController = self.navigationController;
     UINavigationBar *navigationBar = navigationController.navigationBar;
@@ -210,7 +210,8 @@
             [self setNeedsStatusBarAppearanceUpdate];
         }
         navigationBar.alpha = hidden ? 0 : 1;
-        self.toolbar.alpha = hidden ? 0 : 1;
+        //self.toolbar.alpha = hidden ? 0 : 1; //this won't work in iOS 10
+        self.toolbar.hidden = hidden;
         
         [self animatingBarsHidden:hidden];
     }];
