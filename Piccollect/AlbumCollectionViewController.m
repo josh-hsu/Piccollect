@@ -71,12 +71,14 @@ static Boolean isSelectingAlbum = false;
     mToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-44, self.view.bounds.size.width, 44)];
     mToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 
-    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     UIBarButtonItem *moveButtonItem = [[UIBarButtonItem alloc]initWithTitle:LSTR(@"Move To") style:UIBarButtonItemStylePlain  target:self action:@selector(movePhotos)];
     UIBarButtonItem *removeButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(removePhotos)];
     UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(menuPhotos)];
 
-    mToolbar.items = @[fixedSpace, composeButtonItem, fixedSpace, moveButtonItem, fixedSpace, removeButtonItem, fixedSpace];
+    fixedSpace.width = 10.0;
+    mToolbar.items = @[fixedSpace, composeButtonItem, flexibleSpace, moveButtonItem, flexibleSpace, removeButtonItem, fixedSpace];
     [self.view addSubview:mToolbar];
     
     // Check if we have new image shared from extension

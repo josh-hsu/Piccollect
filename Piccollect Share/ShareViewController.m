@@ -14,6 +14,8 @@
 
 @implementation ShareViewController
 
+#define LSTR(arg) NSLocalizedString(arg, nil)
+
 - (BOOL)isContentValid {
     // Do validation of contentText and/or NSExtensionContext attachments here
     return YES;
@@ -78,8 +80,8 @@
     // To add configuration options via table cells at the bottom of the sheet, return an array of SLComposeSheetConfigurationItem here.
     SLComposeSheetConfigurationItem * oneItem = [[SLComposeSheetConfigurationItem alloc] init];
     
-    oneItem.title = @"儲存至預設相簿";
-    oneItem.value = @"目前只支援到預設相簿";
+    oneItem.title = LSTR(@"Save to Default Album");
+    oneItem.value = LSTR(@"Select Albums");
     oneItem.valuePending = NO;
     
     return@[oneItem];
