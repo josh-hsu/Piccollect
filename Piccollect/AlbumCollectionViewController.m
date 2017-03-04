@@ -11,6 +11,7 @@
 #import "AlbumListService.h"
 #import "ELCImagePicker/ELCImagePickerHeader.h"
 #import "RMGalleryTransition.h"
+#import "Log.h"
 
 @interface AlbumCollectionViewController ()<UIViewControllerTransitioningDelegate, RMGalleryTransitionDelegate>
 
@@ -24,6 +25,7 @@
 
 #define LSTR(arg) NSLocalizedString(arg, nil)
 
+static NSString * TAG = @"CollectionView";
 static NSString * const reuseIdentifier = @"Cell";
 static CGSize mCellSize;
 static int mCellCountInARow = 4;    // Default set to portrait orientation
@@ -38,6 +40,8 @@ static Boolean isSelectingAlbum = false;
     
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
+    
+    [Log LOG:TAG args:@"viewDidLoad"];
     
     // Register cell classes
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
@@ -80,17 +84,21 @@ static Boolean isSelectingAlbum = false;
     fixedSpace.width = 10.0;
     mToolbar.items = @[fixedSpace, composeButtonItem, flexibleSpace, moveButtonItem, flexibleSpace, removeButtonItem, fixedSpace];
     [self.view addSubview:mToolbar];
-    
-    // Check if we have new image shared from extension
-    [ShareExtensionHandler checkNewPhotosFromExtension:mAlbumListService];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [Log LOG:TAG args:@"viewDidAppear"];
+    [mCollectionView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [Log LOG:TAG args:@"viewWillAppear"];
+    
+    // Check if we have new image shared from extension
+    [ShareExtensionHandler checkNewPhotosFromExtension:mAlbumListService];
     
     [self recalculateCellSize:mCollectionView.frame.size];
 }
@@ -113,7 +121,7 @@ static Boolean isSelectingAlbum = false;
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     long photoCount = [mAlbumListService photoCount:mAlbum];
-    NSLog(@"CollectionView: photo count = %ld", photoCount);
+    [Log LOG:TAG args:@"CollectionView: photo count = %ld", photoCount];
     return photoCount/mCellCountInARow + (photoCount%mCellCountInARow ? 1 : 0);
 }
 

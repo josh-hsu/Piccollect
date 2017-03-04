@@ -15,6 +15,7 @@
 		03324CFF1C005CBD000618F0 /* PiccollectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03324CFE1C005CBD000618F0 /* PiccollectTests.m */; };
 		03324D0A1C005CBD000618F0 /* PiccollectUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03324D091C005CBD000618F0 /* PiccollectUITests.m */; };
 		033814E11C251F1B0068D44B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 033814E31C251F1B0068D44B /* Localizable.strings */; };
+		033A89B31E6A76E800B44DC8 /* Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 033A89B21E6A76E800B44DC8 /* Log.m */; };
 		034722301E6836A100608A22 /* ShareExtensionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 0347222F1E6836A100608A22 /* ShareExtensionHandler.m */; };
 		037B013C1E6701C200DA0CC7 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037B013B1E6701C200DA0CC7 /* ShareViewController.m */; };
 		037B013F1E6701C200DA0CC7 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 037B013D1E6701C200DA0CC7 /* MainInterface.storyboard */; };
@@ -108,6 +109,8 @@
 		033814DF1C251EC80068D44B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		033814E01C251EC80068D44B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		033814E21C251F1B0068D44B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		033A89B11E6A74DB00B44DC8 /* Log.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Log.h; path = Objects/Log.h; sourceTree = "<group>"; };
+		033A89B21E6A76E800B44DC8 /* Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Log.m; path = Objects/Log.m; sourceTree = "<group>"; };
 		0347222F1E6836A100608A22 /* ShareExtensionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShareExtensionHandler.m; path = CoreService/ShareExtensionHandler.m; sourceTree = "<group>"; };
 		034722311E6836C100608A22 /* ShareExtensionHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ShareExtensionHandler.h; path = CoreService/ShareExtensionHandler.h; sourceTree = "<group>"; };
 		037B01381E6701C200DA0CC7 /* Piccollect Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Piccollect Share.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -343,6 +346,8 @@
 			children = (
 				03BCA60D1C019FE4009BD8FB /* Album.h */,
 				03BCA60E1C019FE4009BD8FB /* Album.m */,
+				033A89B11E6A74DB00B44DC8 /* Log.h */,
+				033A89B21E6A76E800B44DC8 /* Log.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -613,6 +618,7 @@
 				03C0C7561C00A6F400EBA2D4 /* AlbumTableViewController.m in Sources */,
 				03C0C7591C00A72B00EBA2D4 /* SocialViewController.m in Sources */,
 				03E98D991C1D471F002D97B2 /* RMGalleryView.m in Sources */,
+				033A89B31E6A76E800B44DC8 /* Log.m in Sources */,
 				03F73F6E1C0B1F0500BCDBCE /* ELCAssetTablePicker.m in Sources */,
 				03F73F6F1C0B1F0500BCDBCE /* ELCConsole.m in Sources */,
 				03F73F701C0B1F0500BCDBCE /* ELCImagePickerController.m in Sources */,
