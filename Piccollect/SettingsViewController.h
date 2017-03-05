@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SettingsService.h"
 #import "AlbumListService.h"
+#import "Log.h"
 
 @interface SettingsViewController : UITableViewController
 

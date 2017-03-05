@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "Album.h"
 #import "AlbumListService.h"
+#import "Log.h"
+
 @protocol AlbumSelectControllerDelegate;
 
 @interface AlbumSelectViewController : UIViewController

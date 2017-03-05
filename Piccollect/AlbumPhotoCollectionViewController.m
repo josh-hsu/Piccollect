@@ -20,6 +20,8 @@
 
 @synthesize mAlbum, mAlbumListService, mPage;
 
+static NSString* TAG = @"AlbumPhotoCollectionView";
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -47,7 +49,7 @@
         NSString *subimagePath = [[mAlbumListService photosInAlbum:mAlbum] objectAtIndex:(index)];
         NSString *imagePath = [mAlbumListService.mDocumentRootPath stringByAppendingPathComponent:subimagePath];
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
-        NSLog(@"Loading image of %@", imagePath);
+        [Log LOG:TAG args:@"Loading image of %@", imagePath];
         //image = [image demo_imageByScalingByFactor:0.75];
 #if USE_ASYNC_JOB
         dispatch_async(dispatch_get_main_queue(), ^{

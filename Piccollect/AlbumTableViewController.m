@@ -24,6 +24,7 @@
 #define LSTR(arg) NSLocalizedString(arg, nil)
 
 static BOOL isAuthorized = NO;
+static NSString* TAG = @"AlbumTableView";
 
 #pragma mark - list access
 
@@ -31,9 +32,9 @@ static BOOL isAuthorized = NO;
     mAlbumList = [[AlbumListService alloc] init];
     
     if (mAlbumList != nil) {
-        NSLog(@"Loading album list from service, total: %d", mAlbumList.mCount);
+        [Log LOG:TAG args:@"Loading album list from service, total: %d", mAlbumList.mCount];
     } else {
-        NSLog(@"Initial AlbumListService failed, this is a serious BUG");
+        [Log LOG:TAG args:@"Initial AlbumListService failed, this is a serious BUG"];
         abort();
     }
 }
@@ -52,7 +53,7 @@ static BOOL isAuthorized = NO;
 
     mSettingsService = [[SettingsService alloc] init];
     if (!mSettingsService) {
-		NSLog(@"FATAL: Setting service can not be initialized");
+		[Log LOG:TAG args:@"FATAL: Setting service can not be initialized"];
 		abort();
     }
     
@@ -137,7 +138,7 @@ static BOOL isAuthorized = NO;
 
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-	NSLog(@"Move index %ld to index %ld", fromIndexPath.row, toIndexPath.row);
+	[Log LOG:TAG args:@"Move index %ld to index %ld", fromIndexPath.row, toIndexPath.row];
 	[mAlbumList moveAlbumIndex:(int)fromIndexPath.row toIndex:(int)toIndexPath.row];
 }
 
@@ -226,7 +227,7 @@ static BOOL isAuthorized = NO;
     
     Album *thisAlbum = [mAlbumList albumInListAtIndex:[indexPaths objectAtIndex:0].row];
     if (thisAlbum == NULL) {
-        NSLog(@"BUG: remove album with null pointer");
+        [Log LOG:TAG args:@"BUG: remove album with null pointer"];
         return;
     }
     
@@ -266,7 +267,7 @@ static BOOL isAuthorized = NO;
     
     Album *thisAlbum = [mAlbumList albumInListAtIndex:[indexPaths objectAtIndex:0].row];
     if (thisAlbum == NULL) {
-        NSLog(@"BUG: remove album with null pointer");
+        [Log LOG:TAG args:@"BUG: remove album with null pointer"];
         return;
     }
     
@@ -308,7 +309,7 @@ static BOOL isAuthorized = NO;
 }
 
 - (void)addSightingViewControllerDidFinish:(PasswordViewController *)controller{
-    NSLog(@"password correct");
+    [Log LOG:TAG args:@"password correct"];
     isAuthorized = YES;
     [self dismissViewControllerAnimated:YES completion:nil];
 }

@@ -19,6 +19,7 @@
 #define LSTR(arg) NSLocalizedString(arg, nil)
 
 int max_try;
+static NSString* TAG = @"PasswordView";
 
 - (void) initialAlert{
     errorAlert = [[UIAlertView alloc] initWithTitle:LSTR(@"Authorization Failed") message:LSTR(@"Please try again") delegate:nil cancelButtonTitle:LSTR(@"OK") otherButtonTitles:nil, nil];
@@ -86,7 +87,7 @@ int max_try;
 
 - (void) dismissModal{
     [self.delegate addSightingViewControllerDidFinish:self];
-    NSLog(@"Password authorization passed");
+    [Log LOG:TAG args:@"Password authorization passed"];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

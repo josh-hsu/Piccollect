@@ -11,7 +11,6 @@
 #import "AlbumListService.h"
 #import "ELCImagePicker/ELCImagePickerHeader.h"
 #import "RMGalleryTransition.h"
-#import "Log.h"
 
 @interface AlbumCollectionViewController ()<UIViewControllerTransitioningDelegate, RMGalleryTransitionDelegate>
 
@@ -25,7 +24,7 @@
 
 #define LSTR(arg) NSLocalizedString(arg, nil)
 
-static NSString * TAG = @"CollectionView";
+static NSString* TAG = @"AlbumCollectionView";
 static NSString * const reuseIdentifier = @"Cell";
 static CGSize mCellSize;
 static int mCellCountInARow = 4;    // Default set to portrait orientation

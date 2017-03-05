@@ -12,7 +12,7 @@
 
 @synthesize mSettingList, mSettingListPath, mDocumentRootPath;
 
-#define LOCAL_DEBUG           NO    //YES, turn on Log
+static NSString* TAG = @"SettingService";
 
 - (id) init {
     int ret = -1;
@@ -38,7 +38,7 @@
     // Initial document path for storing photos
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    if(LOCAL_DEBUG) NSLog(@"Document path: %@", documentsDirectory);
+    [Log LOG:TAG args:@"Document path: %@", documentsDirectory];
     mDocumentRootPath = documentsDirectory;
 
     // Find the new albums.plist inside the document folder
@@ -46,7 +46,7 @@
 
     // If we cannot find list in document folder, copy default list to document
     if (![[NSFileManager defaultManager] fileExistsAtPath:mSettingListPath]) {
-        if (LOCAL_DEBUG) NSLog(@"First use settings list, load default");
+        [Log LOG:TAG args:@"First use settings list, load default"];
         NSString *localListPath = [[NSBundle mainBundle] pathForResource:SETTINGS_LIST_NAME ofType:@"plist"];
         [[NSFileManager defaultManager] copyItemAtPath:localListPath toPath:mSettingListPath error:&errorDesc];
     }
@@ -56,7 +56,7 @@
                                               options:NSPropertyListMutableContainersAndLeaves format:&format error:&errorDesc];
 
     if (!mSettingList) {
-        NSLog(@"Error reading plist: %@, format: %lu", errorDesc, (unsigned long)format);
+        [Log LOG:TAG args:@"Error reading plist: %@, format: %lu", errorDesc, (unsigned long)format];
         return -1;
     }
     
@@ -78,7 +78,7 @@
     [keyArray addObject:STOKEN_PASSWORD_REQ];
     [keyArray addObject:STOKEN_USE_TOUCHID];
     
-    NSLog(@"Setting: Consistency check started");
+    [Log LOG:TAG args:@"Setting: Consistency check started"];
     for (NSString *key in keyArray) {
         id value = [self getValueOfPrimaryKey:key];
         if (value == nil) {
@@ -90,7 +90,7 @@
     if ([self getValueOfPrimaryKey:STOKEN_PASSWORD] == nil) {
         [self setPrimaryKey:STOKEN_PASSWORD withValue:@""];
     }
-    NSLog(@"Setting: Consistency check finished");
+    [Log LOG:TAG args:@"Setting: Consistency check finished"];
 }
 
 #pragma mark - Getter functions
@@ -105,13 +105,13 @@
 	id return_value;
 
 	if (!key) {
-		NSLog(@"BUG: getValueOfPrimaryKey called with null key");
+		[Log LOG:TAG args:@"BUG: getValueOfPrimaryKey called with null key"];
 		return nil;
 	}
 
 	return_value = [mSettingList objectForKey: key];
 	if (!return_value) {
-		NSLog(@"BUG: the key %@ recently queried has a null return.", key);
+		[Log LOG:TAG args:@"BUG: the key %@ recently queried has a null return.", key];
 	}
 
 	return return_value;
@@ -122,13 +122,13 @@
 	NSDictionary *socialDict = [mSettingList objectForKey:STOKEN_SOCIAL_DICT];
 
 	if (!key) {
-		NSLog(@"BUG: getValueOfPrimaryKey called with null key");
+		[Log LOG:TAG args:@"BUG: getValueOfPrimaryKey called with null key"];
 		return nil;
 	}
 
 	return_value = [socialDict objectForKey: key];
 	if (!return_value) {
-		NSLog(@"BUG: the key %@ recently queried has a null return.", key);
+		[Log LOG:TAG args:@"BUG: the key %@ recently queried has a null return.", key];
 	}
 
 	return return_value;
@@ -142,7 +142,7 @@
 
 - (int) setPrimaryKey: (NSString *) key withValue: (id) value {
 	if (!key || !value) {
-		NSLog(@"BUG: setPrimaryKey called with null key or null value");
+		[Log LOG:TAG args:@"BUG: setPrimaryKey called with null key or null value"];
 		return -1;
 	}
 

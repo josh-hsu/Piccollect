@@ -10,6 +10,7 @@
 #import "ELCImagePicker/ELCImagePickerHeader.h"
 #import "AlbumSelectViewController.h"
 #import "CoreService/ShareExtensionHandler.h"
+#import "Log.h"
 
 @class Album, AlbumListService;
 @interface AlbumCollectionViewController : UICollectionViewController <ELCImagePickerControllerDelegate, AlbumSelectControllerDelegate>

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RMGalleryViewController.h"
+#import "Log.h"
 
 @class Album, AlbumListService;
 @interface AlbumPhotoCollectionViewController : RMGalleryViewController

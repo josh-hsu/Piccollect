@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Log.h"
 
 @interface SettingsService : NSObject
 

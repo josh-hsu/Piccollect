@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Log.h"
+
 @protocol StartViewControllerDelegate;
 @class SettingsService;
 

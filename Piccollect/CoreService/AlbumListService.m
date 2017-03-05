@@ -25,10 +25,11 @@
 @synthesize mCount;
 @synthesize mDocumentRootPath;
 @synthesize mAlbumPhotoList, mAlbumPhotoPath, mValidate, mNextAlbumSerial;
-#define LOCAL_DEBUG           YES    //YES, turn on Log
+
 #define NUM_LIST_ATTRIBUTE    1     //number of attributes in albums.plist except serial such as "next"
 #define LENGTH_OF_SERIAL      8     //request serial code length for album
 
+static NSString* TAG = @"AlbumListService";
 
 #pragma mark - Service initial functions
 /* ===================================
@@ -68,7 +69,7 @@
     // Initial document path for storing photos
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    if(LOCAL_DEBUG) NSLog(@"Document path: %@", documentsDirectory);
+    [Log LOG:TAG args:@"Document path: %@", documentsDirectory];
     mDocumentRootPath = documentsDirectory;
     
     // Find the new albums.plist inside the document folder
@@ -77,7 +78,7 @@
     // If we cannot find list in document folder, copy default list to document
     //if (true) { /* For debug, put golden list back */
     if (![[NSFileManager defaultManager] fileExistsAtPath:mAlbumListPath]) {
-        if (LOCAL_DEBUG) NSLog(@"Load default");
+        [Log LOG:TAG args:@"Load default"];
         NSString *localListPath = [[NSBundle mainBundle] pathForResource:ALBUM_LIST_NAME ofType:@"plist"];
         [[NSFileManager defaultManager] copyItemAtPath:localListPath toPath:mAlbumListPath error:&errorDesc];
     }
@@ -87,12 +88,12 @@
                                               options:NSPropertyListMutableContainersAndLeaves format:&format error:&errorDesc];
     
     if (!mAlbumList) {
-        NSLog(@"Error reading plist: %@, format: %lu", errorDesc, (unsigned long)format);
+        [Log LOG:TAG args:@"Error reading plist: %@, format: %lu", errorDesc, (unsigned long)format];
         return -1;
     }
 
     mCount = (int)[mAlbumList count] - NUM_LIST_ATTRIBUTE; //Because we have a "next" field on the top
-    NSLog(@"mCount = %d", mCount);
+    [Log LOG:TAG args:@"mCount = %d", mCount];
     
     [self initAlbumPhotosList];
     [self initAlbumsWithRefresh:NO];
@@ -124,7 +125,7 @@
     mAlbumPhotoList = (NSMutableDictionary *) [NSPropertyListSerialization propertyListWithData:plistXML
                                                                                         options:NSPropertyListMutableContainersAndLeaves format:&format error:&errorDesc];
     if (!mAlbumPhotoList) {
-        NSLog(@"Error reading plist: %@, format: %lu", errorDesc, (unsigned long)format);
+        [Log LOG:TAG args:@"Error reading plist: %@, format: %lu", errorDesc, (unsigned long)format];
         return -1;
     }
     
@@ -133,7 +134,7 @@
 
 - (void)initAlbumsWithRefresh:(BOOL)needRefresh {
     if (!mAlbumList) {
-        NSLog(@"BUG: There is no album list presented.");
+        [Log LOG:TAG args:@"BUG: There is no album list presented."];
     }
     
     if (!mAlbums || needRefresh) {
@@ -154,7 +155,7 @@
         NSString *incr   = [eachPerson objectForKey:ALBUM_KEY_INCR];
         NSNumber *serial = [eachPerson objectForKey:ALBUM_KEY_SERIAL];
         
-        NSLog(@"init: this album %d with INCR %@", i, incr);
+        [Log LOG:TAG args:@"init: this album %d with INCR %@", i, incr];
         
         Album *thisAlbum = [Album alloc];
         [thisAlbum initWithName:name key:key date:cdate order:order incr:incr serial:serial];
@@ -170,7 +171,7 @@
         
         // Fill the photos index
         thisAlbum.mAlbumPhotos = eachAlbumPhoto;
-        NSLog(@"Initial album photo: %ld", [thisAlbum.mAlbumPhotos count]);
+        [Log LOG:TAG args:@"Initial album photo: %ld", [thisAlbum.mAlbumPhotos count]];
         
         [mAlbums addObject:thisAlbum];
     }
@@ -269,7 +270,7 @@
     NSDate *today = [[NSDate alloc] initWithTimeIntervalSinceNow:0];
     NSString *key = [self randomStringWithLength:LENGTH_OF_SERIAL];
     // Create data
-    if(LOCAL_DEBUG) NSLog(@"LOG: create album with serial %d", mNextAlbumSerial);
+    [Log LOG:TAG args:@"LOG: create album with serial %d", mNextAlbumSerial];
     NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                  name, ALBUM_KEY_NAME,
                                  key, ALBUM_KEY_KEY,
@@ -338,7 +339,7 @@
     
     intincr += 1;
     if (intincr > 99999) {
-        NSLog(@"Too many photos! cannot add more.");
+        [Log LOG:TAG args:@"Too many photos! cannot add more."];
         return -9;
     }
     
@@ -355,7 +356,7 @@
     
     // Save it to file
     NSString *newIncr = [NSString stringWithFormat:@"%d%d%d%d%d",m1,m2,m3,m4,m5];
-    NSLog(@"increaseAlbum: new increase is %@", newIncr);
+    [Log LOG:TAG args:@"increaseAlbum: new increase is %@", newIncr];
     NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                  album.mAlbumName, ALBUM_KEY_NAME,
                                  album.mAlbumKey, ALBUM_KEY_KEY,
@@ -383,7 +384,7 @@
 - (void)reorderAlbumId:(int)idx {
     int index = idx;
     for (unsigned i = index + 1; i < mCount; i++) {
-        NSLog(@"i = %d, mCount = %d", i, mCount);
+        [Log LOG:TAG args:@"i = %d, mCount = %d", i, mCount];
         NSString *rootKey = [[NSString alloc] initWithFormat:@"%ld", (long)i];
         NSString *targetKey = [[NSString alloc] initWithFormat:@"%ld", (long)i-1];
         NSDictionary *eachPerson = [mAlbumList objectForKey:rootKey];
@@ -402,19 +403,19 @@
         NSString *eachKey   = [eachPerson objectForKey:ALBUM_KEY_KEY];
         
         if ([eachKey isEqualToString:key]) {
-            NSLog(@"Found it");
+            [Log LOG:TAG args:@"Found it"];
             deleteTarget = rootKey;
             deleteIdx = i;
         }
     }
     
     if (![deleteTarget isEqualToString:@""]) {
-        if(LOCAL_DEBUG) NSLog(@"LOG: remove index %d with merge back %@", deleteIdx, merge ? @"YES" : @"NO");
+        [Log LOG:TAG args:@"LOG: remove index %d with merge back %@", deleteIdx, merge ? @"YES" : @"NO"];
         [self removeAllPhotosInAlbum:[self albumWithKey:key] mergeBackToDefaultAlbum:merge];
         [mAlbumList removeObjectForKey:deleteTarget];
         [self reorderAlbumId:deleteIdx];
     } else {
-        NSLog(@"BUG: cannot find album key to delete!");
+        [Log LOG:TAG args:@"BUG: cannot find album key to delete!"];
         return -1;
     }
     
@@ -439,7 +440,7 @@
  * TODO: Not verified
  */
 - (void)moveAlbumIndex:(int)from toIndex:(int)to {
-	NSLog(@"ALS: Move index %d to index %d", from, to);
+	[Log LOG:TAG args:@"ALS: Move index %d to index %d", from, to];
 	int increment = 1;
 
 	if (from > to) {
@@ -487,7 +488,7 @@
         savePath = [mDocumentRootPath stringByAppendingPathComponent:thumbImageFileName];
         [UIImagePNGRepresentation(thumb) writeToFile:savePath atomically:YES];
     }
-    NSLog(@"New image %@ saved.", orgImageFileName);
+    [Log LOG:TAG args:@"New image %@ saved.", orgImageFileName];
 
     // Update list
     NSMutableArray *photoList = [mAlbumPhotoList objectForKey:thisAlbum.mAlbumKey];
@@ -534,27 +535,27 @@
             NSString *newThumbName = [newPhotoName stringByAppendingString:@"-thumb.png"];
             NSString *newThumbPath = [mDocumentRootPath stringByAppendingPathComponent:newThumbName];
             
-            if (LOCAL_DEBUG) NSLog(@"Merge %@ to %@", oldPhotoName, newPhotoName);
+            [Log LOG:TAG args:@"Merge %@ to %@", oldPhotoName, newPhotoName];
             BOOL result = [fm moveItemAtPath:oldPath toPath:newPath error:&err];
             if(!result)
-                NSLog(@"BUG: Error moving original photo file: %@", err);
+                [Log LOG:TAG args:@"BUG: Error moving original photo file: %@", err];
             
             result = [fm moveItemAtPath:oldThumbPath toPath:newThumbPath error:&err];
             if(!result)
-                NSLog(@"May not be a bug: Error moving thumb photo file: %@", err);
+                [Log LOG:TAG args:@"May not be a bug: Error moving thumb photo file: %@", err];
             
             [defaultPhotoList addObject:newPhotoName];
             // Increase the incr
             [self increaseAlbum:defaultAlbum];
         } else {
-            if (LOCAL_DEBUG) NSLog(@"Delete %@", oldPhotoName);
+            [Log LOG:TAG args:@"Delete %@", oldPhotoName];
             BOOL result = [fm removeItemAtPath:oldPath error:&err];
             if(!result)
-                NSLog(@"BUG: Error deleting photo file: %@", err);
+                [Log LOG:TAG args:@"BUG: Error deleting photo file: %@", err];
             
             result = [fm removeItemAtPath:oldThumbPath error:&err];
             if(!result)
-                NSLog(@"May not be a bug: Error moving thumb photo file: %@", err);
+                [Log LOG:TAG args:@"May not be a bug: Error moving thumb photo file: %@", err];
         }
     }
 
@@ -594,7 +595,7 @@
     NSMutableArray *targetPhotoList = [mAlbumPhotoList objectForKey:targetAlbum.mAlbumKey];
     NSMutableArray *itemShouldBeRemoved = [NSMutableArray array];
     if ([targetAlbum.mAlbumKey isEqualToString:thisAlbum.mAlbumKey]) {
-        NSLog(@"BUG: target and default are the same");
+        [Log LOG:TAG args:@"BUG: target and default are the same"];
         return;
     }
     
@@ -622,14 +623,14 @@
         // Make removed item array
         [itemShouldBeRemoved addObject:oldPhotoName];
 
-        if (LOCAL_DEBUG) NSLog(@"Merge %@ to %@", oldPhotoName, newPhotoName);
+        [Log LOG:TAG args:@"Merge %@ to %@", oldPhotoName, newPhotoName];
         BOOL result = [fm moveItemAtPath:oldPath toPath:newPath error:&err];
         if(!result)
-            NSLog(@"BUG: Error moving original photo file: %@", err);
+            [Log LOG:TAG args:@"BUG: Error moving original photo file: %@", err];
 
         result = [fm moveItemAtPath:oldThumbPath toPath:newThumbPath error:&err];
         if(!result)
-            NSLog(@"May not be a bug: Error moving thumb photo file: %@", err);
+            [Log LOG:TAG args:@"May not be a bug: Error moving thumb photo file: %@", err];
             
         [targetPhotoList addObject:newPhotoName];
         // Increase the incr
@@ -665,14 +666,14 @@
         // Make removed item array
         [itemShouldBeRemoved addObject:oldPhotoName];
         
-        if (LOCAL_DEBUG) NSLog(@"Delete %@", oldPhotoName);
+        [Log LOG:TAG args:@"Delete %@", oldPhotoName];
         BOOL result = [fm removeItemAtPath:oldPath error:&err];
         if(!result)
-            NSLog(@"BUG: Error deleting photo file: %@", err);
+            [Log LOG:TAG args:@"BUG: Error deleting photo file: %@", err];
         
         result = [fm removeItemAtPath:oldThumbPath error:&err];
         if(!result)
-            NSLog(@"May not be a bug: Error moving thumb photo file: %@", err);
+            [Log LOG:TAG args:@"May not be a bug: Error moving thumb photo file: %@", err];
     }
     
     // Remove item from list should be last thing to prevent index mismatch
@@ -692,13 +693,13 @@
  */
 - (int)editPhotosIn:(NSMutableDictionary *)photos ofAlbum:(Album *)album toAlbum:(Album *)toAlbum forType:(int)editType {
     if (editType == ALS_PHOTO_MOVE) {
-        NSLog(@"move photo called");
+        [Log LOG:TAG args:@"move photo called"];
         [self movePhotos:photos ofAlbum:album toAlbum:toAlbum];
     } else if (editType == ALS_PHOTO_REMOVE) {
-        NSLog(@"remove photo called");
+        [Log LOG:TAG args:@"remove photo called"];
         [self removePhotos:photos ofAlbum:album];
     } else {
-        NSLog(@"BUG: edit type not recognized");
+        [Log LOG:TAG args:@"BUG: edit type not recognized"];
     }
 
     return 0;
@@ -719,17 +720,17 @@
     long photoCountInAlbum = [album.mAlbumPhotos count];
     
     if (!mValidate) {
-        NSLog(@"BUG: try to get photo before it validate");
+        [Log LOG:TAG args:@"BUG: try to get photo before it validate"];
         return nil;
     }
     
     if (photoCountInAlbum > 0) {
         firstPhotoFileName = [album.mAlbumPhotos objectAtIndex:photoCountInAlbum - 1];
         firstPhotoFilePath = [[NSString alloc] initWithFormat:@"%@/%@", mDocumentRootPath, firstPhotoFileName];
-        if (LOCAL_DEBUG) NSLog(@"First photo path is: %@", firstPhotoFilePath);
+        [Log LOG:TAG args:@"First photo path is: %@", firstPhotoFilePath];
         ret = [[UIImage alloc] initWithContentsOfFile:firstPhotoFilePath];
     } else {
-        if (LOCAL_DEBUG) NSLog(@"There is no photo in this album, give it a default top photo");
+        [Log LOG:TAG args:@"There is no photo in this album, give it a default top photo"];
         ret = [UIImage imageNamed:@"prototypeImage"];
     }
     
@@ -833,7 +834,7 @@
             [group enumerateAssetsUsingBlock:assetEnumerator];
             [assetGroups addObject:group];
             //count = (int)[group numberOfAssets];
-            if(LOCAL_DEBUG) NSLog(@"group enumerator finished");
+            [Log LOG:TAG args:@"group enumerator finished"];
             first_group = YES;
         }
     };

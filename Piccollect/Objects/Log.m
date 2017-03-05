@@ -15,7 +15,7 @@
     va_list args;
     va_start(args, arg_list);
     NSString *contents = [[NSString alloc] initWithFormat:arg_list arguments:args];
-    NSString *log = [[NSString alloc] initWithFormat:@"%@: %@", TAG, contents];
+    NSString *log = [[NSString alloc] initWithFormat:@"[%@] %@", TAG, contents];
     NSLog(@"%@", log);
     va_end(args);
 }

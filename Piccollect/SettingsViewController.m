@@ -20,6 +20,8 @@
 
 #define LSTR(arg) NSLocalizedString(arg, nil)
 
+static NSString* TAG = @"SettingView";
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -27,7 +29,7 @@
     mAlbumListService = [[AlbumListService alloc] init];
 
     if (!mSettingService || !mAlbumListService) {
-		NSLog(@"FATAL: Cannot get setting service or album list service");
+        [Log LOG:TAG args:@"FATAL: Cannot get setting service or album list service"];
 	}
 
     [self prepareView];
@@ -136,7 +138,7 @@
     }
     
     if(mCellCompressPhotos == theCellClicked) {
-        NSLog(@"compress photo hits");
+        [Log LOG:TAG args:@"compress photo hits"];
     }
     
     // Deselect that cell
@@ -165,17 +167,17 @@
                                                    NSString *userInput = [alert.textFields objectAtIndex:0].text;
                                                    NSString *secondInput = [alert.textFields objectAtIndex:1].text;
                                                    if (![userInput isEqualToString:@""] && ![secondInput isEqualToString:@""]) {
-                                                       NSLog(@"Get user's input %@", userInput);
+                                                       [Log LOG:TAG args:@"Get user's input %@", userInput];
                                                        if ([userInput isEqualToString:secondInput]) {
                                                            [mSettingService setPrimaryKey:STOKEN_PASSWORD withValue:userInput];
                                                            [mTextPasswordSetting setText:LSTR(@"Password is set")];
                                                        } else {
-                                                           NSLog(@"Passwords mismatch");
+                                                           [Log LOG:TAG args:@"Passwords mismatch"];
                                                            alert.message = LSTR(@"Error: Two passwords are not matched!");
                                                            [self presentViewController:alert animated:YES completion:nil];
                                                        }
                                                    } else {
-                                                       NSLog(@"Please fill the empty text");
+                                                       [Log LOG:TAG args:@"Please fill the empty text"];
                                                        alert.message = LSTR(@"Error: Some fields are empty!");
                                                        [self presentViewController:alert animated:YES completion:nil];
                                                    }

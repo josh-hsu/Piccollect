@@ -19,15 +19,17 @@
 
 #define LSTR(arg) NSLocalizedString(arg, nil)
 
+static NSString* TAG = @"AlbumSelectView";
+
 #pragma mark - list access
 
 - (void)initAlbumList {
     mAlbumList = [[AlbumListService alloc] init];
     
     if (mAlbumList != nil) {
-        NSLog(@"Loading album list from service, total: %d", mAlbumList.mCount);
+        [Log LOG:TAG args:@"Loading album list from service, total: %d", mAlbumList.mCount];
     } else {
-        NSLog(@"Initial AlbumListService failed, this is a serious BUG");
+        [Log LOG:TAG args:@"Initial AlbumListService failed, this is a serious BUG"];
         abort();
     }
 }
@@ -91,7 +93,7 @@
 #pragma mark - Table view delegates
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath* )indexPath {
-    NSLog(@"Table %ld has been tapped.", indexPath.row);
+    [Log LOG:TAG args:@"Table %ld has been tapped.", indexPath.row];
     Album *thisAlbum = [mAlbumList albumInListAtIndex:indexPath.row];
     
     [self.delegate albumSelectDidFinish: self albumKey:thisAlbum];
